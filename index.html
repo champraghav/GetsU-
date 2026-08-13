@@ -1033,6 +1033,130 @@
             border-color: var(--moss);
         }
 
+        .form-error {
+            color: var(--beet);
+            font-size: 12px;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .form-group.invalid input,
+        .form-group.invalid textarea {
+            border-color: var(--beet);
+        }
+
+        .form-group.invalid .form-error {
+            display: block;
+        }
+
+        /* ==================== CHECKOUT / CONFIRMATION / POLICY MODALS ==================== */
+        .modal-content.wide {
+            max-width: 640px;
+        }
+
+        .modal-scroll {
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            margin: 0 -0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field-row.three {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .order-mini {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-mini-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            padding: 0.3rem 0;
+        }
+
+        .order-mini-item span:last-child { font-family: var(--font-mono); }
+
+        .order-mini-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--line);
+            margin-top: 0.5rem;
+            padding-top: 0.6rem;
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 14.5px;
+        }
+
+        .order-mini-total span:last-child { font-family: var(--font-mono); }
+
+        .confirm-icon {
+            width: 44px;
+            height: 44px;
+            color: var(--moss);
+            margin-bottom: 1rem;
+        }
+
+        .confirm-id {
+            font-family: var(--font-mono);
+            background: var(--paper-raised);
+            border: 1px dashed var(--line);
+            border-radius: 4px;
+            padding: 0.65rem 1rem;
+            font-size: 14.5px;
+            color: var(--ink);
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+
+        .confirm-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .policy-body h3 {
+            font-size: 15px;
+            margin: 1.25rem 0 0.5rem;
+            color: var(--ink);
+        }
+
+        .policy-body h3:first-child { margin-top: 0; }
+
+        .policy-body p, .policy-body li {
+            color: var(--ink-soft);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .policy-body ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 13.5px;
+            color: var(--moss);
+            text-decoration: none;
+        }
+
+        .contact-email:hover { color: var(--moss-deep); }
+
         /* ==================== CART SIDEBAR ==================== */
         .cart-sidebar {
             position: fixed;
@@ -1244,7 +1368,9 @@
 
             .cart-sidebar { width: 100%; right: -100%; }
             .modal-content { width: 95%; margin: 18% auto; }
+            .modal-content.wide { margin: 10% auto; }
             .newsletter { flex-direction: column; align-items: stretch; text-align: left; }
+            .field-row, .field-row.three { grid-template-columns: 1fr; }
         }
 
         .search-modal {
@@ -1607,6 +1733,12 @@
             </div>
         </div>
         <button class="btn btn-primary" onclick="openContact()" style="padding: 0.9rem 2rem; font-size: 15px;">Send Us a Message</button>
+        <div>
+            <a class="contact-email" href="mailto:teamgetsu.31@gmail.com">
+                <svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M3 6l9 7 9-7"/></svg>
+                teamgetsu.31@gmail.com
+            </a>
+        </div>
     </section>
 
     <!-- FOOTER -->
@@ -1615,38 +1747,38 @@
             <div class="footer-brand">
                 <div class="logo">GetsU</div>
                 <p>Clean-label, nutrient-dense food that's delicious, convenient, and affordable. Made for you.</p>
+                <p style="margin-top:0.75rem;"><a href="mailto:teamgetsu.31@gmail.com" style="color:inherit;">teamgetsu.31@gmail.com</a></p>
             </div>
             <div class="footer-section">
                 <h4>About</h4>
                 <ul>
-                    <li><a href="#about">Our Story</a></li>
-                    <li><a href="#team">Our Team</a></li>
-                    <li><a href="#mission">Our Mission</a></li>
-                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#why">Our Story</a></li>
+                    <li><a href="#values">Our Values</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Shop</h4>
                 <ul>
-                    <li><a href="#breakfast">Breakfast</a></li>
-                    <li><a href="#snacks">Snacks</a></li>
-                    <li><a href="#beverages">Beverages</a></li>
-                    <li><a href="#specialty">Specialty</a></li>
+                    <li><a href="#products" onclick="scrollToSection('products')">Featured</a></li>
+                    <li><a href="#" onclick="openSearch(); return false;">Search products</a></li>
+                    <li><a href="#" onclick="openShop(); return false;">View cart</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Support</h4>
                 <ul>
-                    <li><a href="#shipping">Shipping Info</a></li>
-                    <li><a href="#returns">Returns</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#" onclick="openPolicy('shipping'); return false;">Shipping Info</a></li>
+                    <li><a href="#" onclick="openPolicy('returns'); return false;">Returns</a></li>
+                    <li><a href="#" onclick="openPolicy('faq'); return false;">FAQ</a></li>
+                    <li><a href="#" onclick="openContact(); return false;">Contact Us</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 GetsU. Made For You. All rights reserved.</p>
-            <p><a href="#privacy">Privacy Policy</a> &nbsp;·&nbsp; <a href="#terms">Terms of Service</a></p>
+            <p><a href="#" onclick="openPolicy('privacy'); return false;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" onclick="openPolicy('terms'); return false;">Terms of Service</a></p>
         </div>
     </footer>
 
@@ -1678,6 +1810,97 @@
         </div>
     </div>
 
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content wide">
+            <button class="close" onclick="closeCheckout()" aria-label="Close">&times;</button>
+            <h2>Checkout</h2>
+            <p>Tell us where to send your order. We'll confirm payment with you directly.</p>
+
+            <div class="order-mini" id="checkoutOrderMini"></div>
+
+            <div class="modal-scroll">
+                <form id="checkoutForm" onsubmit="submitCheckout(event)" novalidate>
+                    <div class="form-group" id="fld-ckName">
+                        <label for="ckName">Full name</label>
+                        <input type="text" id="ckName" required>
+                        <div class="form-error">Please enter your name.</div>
+                    </div>
+                    <div class="field-row">
+                        <div class="form-group" id="fld-ckPhone">
+                            <label for="ckPhone">Phone number</label>
+                            <input type="tel" id="ckPhone" placeholder="10-digit mobile number" required>
+                            <div class="form-error">Enter a valid 10-digit phone number.</div>
+                        </div>
+                        <div class="form-group" id="fld-ckEmail">
+                            <label for="ckEmail">Email</label>
+                            <input type="email" id="ckEmail" required>
+                            <div class="form-error">Enter a valid email address.</div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="fld-ckAddress">
+                        <label for="ckAddress">Delivery address</label>
+                        <input type="text" id="ckAddress" placeholder="House no., street, area" required>
+                        <div class="form-error">Please enter your delivery address.</div>
+                    </div>
+                    <div class="field-row three">
+                        <div class="form-group" id="fld-ckCity">
+                            <label for="ckCity">City</label>
+                            <input type="text" id="ckCity" required>
+                            <div class="form-error">Required.</div>
+                        </div>
+                        <div class="form-group" id="fld-ckState">
+                            <label for="ckState">State</label>
+                            <input type="text" id="ckState" required>
+                            <div class="form-error">Required.</div>
+                        </div>
+                        <div class="form-group" id="fld-ckPincode">
+                            <label for="ckPincode">Pincode</label>
+                            <input type="text" id="ckPincode" placeholder="6-digit" required>
+                            <div class="form-error">Enter a valid 6-digit pincode.</div>
+                        </div>
+                    </div>
+
+                    <!--
+                        RAZORPAY INTEGRATION SLOT
+                        Once your Razorpay KYC is approved, go to Dashboard → Payment Buttons,
+                        create a button, and paste the <script> snippet Razorpay gives you into
+                        this div (id="razorpayButtonSlot") in place of the "Place Order" button
+                        below. Until then, orders are captured here and confirmed by email.
+                    -->
+                    <div id="razorpayButtonSlot"></div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
+                    <p style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER CONFIRMATION MODAL -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeConfirmation()" aria-label="Close">&times;</button>
+            <svg class="icon confirm-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+            <h2>Order received</h2>
+            <p>Thanks<span id="confirmName"></span> — we've saved your order and will reach out to confirm payment and delivery.</p>
+            <div class="confirm-id" id="confirmOrderId"></div>
+            <div class="confirm-actions">
+                <a class="btn btn-primary btn-block" id="confirmEmailBtn" href="#">Email us to confirm</a>
+                <button class="btn btn-secondary btn-block" onclick="closeConfirmation()">Continue browsing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POLICY MODAL (Shipping / Returns / FAQ / Privacy / Terms) -->
+    <div id="policyModal" class="modal">
+        <div class="modal-content wide">
+            <button class="close" onclick="closePolicy()" aria-label="Close">&times;</button>
+            <h2 id="policyTitle"></h2>
+            <div class="modal-scroll policy-body" id="policyBody"></div>
+        </div>
+    </div>
+
     <!-- CART SIDEBAR -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -1704,11 +1927,16 @@
                 <span>Total</span>
                 <span id="total">₹0</span>
             </div>
-            <button class="btn btn-primary btn-block" onclick="checkout()" style="margin-top: 1rem;">Proceed to Checkout</button>
+            <button class="btn btn-primary btn-block" onclick="openCheckout()" style="margin-top: 1rem;">Proceed to Checkout</button>
         </div>
     </div>
 
     <script>
+        // BUSINESS CONFIG — fill these in as they become available
+        const BUSINESS_EMAIL = 'teamgetsu.31@gmail.com';
+        const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
+        const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
+
         // PRODUCTS DATABASE
         const products = [
             { id: 1, name: 'High-Protein Oats', category: 'breakfast', price: 349, original: 449, features: ['25g Protein', 'No Sugar'], badge: 'Popular' },
@@ -1865,14 +2093,108 @@
             document.getElementById('cartSidebar').classList.toggle('open');
         }
 
-        function checkout() {
+        // ==================== CHECKOUT ====================
+        function cartTotals() {
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const tax = Math.round(subtotal * 0.05);
-            alert(`Order total: ₹${subtotal + tax}\n\nIn a live store, this would continue to payment.\n\nContact: hello@getsu.com`);
+            return { subtotal, tax, total: subtotal + tax };
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) return;
+            const { subtotal, tax, total } = cartTotals();
+            const mini = document.getElementById('checkoutOrderMini');
+            mini.innerHTML = cart.map(item => `
+                <div class="order-mini-item">
+                    <span>${item.name} × ${item.qty}</span>
+                    <span>₹${item.price * item.qty}</span>
+                </div>
+            `).join('') + `
+                <div class="order-mini-item"><span>Tax</span><span>₹${tax}</span></div>
+                <div class="order-mini-item"><span>Shipping</span><span>Free</span></div>
+                <div class="order-mini-total"><span>Total</span><span>₹${total}</span></div>
+            `;
+            document.getElementById('cartSidebar').classList.remove('open');
+            document.getElementById('checkoutModal').classList.add('open');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('open');
+        }
+
+        function setFieldError(fieldId, isInvalid) {
+            document.getElementById('fld-' + fieldId).classList.toggle('invalid', isInvalid);
+        }
+
+        function validateCheckoutForm(fields) {
+            let valid = true;
+            const checks = {
+                ckName: fields.name.trim().length > 0,
+                ckPhone: /^[6-9]\d{9}$/.test(fields.phone.trim()),
+                ckEmail: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email.trim()),
+                ckAddress: fields.address.trim().length > 0,
+                ckCity: fields.city.trim().length > 0,
+                ckState: fields.state.trim().length > 0,
+                ckPincode: /^\d{6}$/.test(fields.pincode.trim()),
+            };
+            for (const [fieldId, ok] of Object.entries(checks)) {
+                setFieldError(fieldId, !ok);
+                if (!ok) valid = false;
+            }
+            return valid;
+        }
+
+        function submitCheckout(event) {
+            event.preventDefault();
+
+            const fields = {
+                name: document.getElementById('ckName').value,
+                phone: document.getElementById('ckPhone').value,
+                email: document.getElementById('ckEmail').value,
+                address: document.getElementById('ckAddress').value,
+                city: document.getElementById('ckCity').value,
+                state: document.getElementById('ckState').value,
+                pincode: document.getElementById('ckPincode').value,
+            };
+
+            if (!validateCheckoutForm(fields)) return;
+
+            const { subtotal, tax, total } = cartTotals();
+            const order = {
+                id: 'GU' + Date.now().toString().slice(-8),
+                date: new Date().toISOString(),
+                customer: fields,
+                items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+                subtotal, tax, total,
+                status: RAZORPAY_PAYMENT_BUTTON_ID ? 'paid' : 'pending_payment',
+            };
+
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            orders.push(order);
+            localStorage.setItem('getsuOrders', JSON.stringify(orders));
+
             cart = [];
             saveCart();
             updateCartUI();
-            toggleCart();
+            closeCheckout();
+            document.getElementById('checkoutForm').reset();
+            showOrderConfirmation(order);
+        }
+
+        function showOrderConfirmation(order) {
+            document.getElementById('confirmName').textContent = ', ' + order.customer.name;
+            document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
+
+            const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
+            const body = `Order ID: ${order.id}\n\n${itemLines}\n\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}`;
+            const subject = `GetsU Order ${order.id}`;
+            document.getElementById('confirmEmailBtn').href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            document.getElementById('confirmationModal').classList.add('open');
+        }
+
+        function closeConfirmation() {
+            document.getElementById('confirmationModal').classList.remove('open');
         }
 
         function openShop() {
@@ -1891,10 +2213,86 @@
             event.preventDefault();
             const name = document.getElementById('contactName').value;
             const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const message = document.getElementById('contactMessage').value;
 
-            alert(`Thank you, ${name}!\n\nWe've received your message and will get back to you soon.\n\nEmail: ${email}`);
+            const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\n\n${message}`;
+            window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('Message from ' + name + ' via GetsU site')}&body=${encodeURIComponent(body)}`;
+
+            showNotification('Opening your email app to send this to us…');
             closeContact();
             event.target.reset();
+        }
+
+        // ==================== POLICY PAGES ====================
+        const POLICIES = {
+            shipping: {
+                title: 'Shipping Info',
+                body: `
+                    <h3>Delivery timelines</h3>
+                    <p>Orders are dispatched within 1–2 business days of confirmation. Delivery typically takes 3–6 business days depending on your location within India.</p>
+                    <h3>Shipping cost</h3>
+                    <p>Shipping is free on all orders. There is no minimum order value required.</p>
+                    <h3>Tracking</h3>
+                    <p>Once your order ships, we'll share tracking details on the phone number and email you provide at checkout.</p>
+                `
+            },
+            returns: {
+                title: 'Returns & Refunds',
+                body: `
+                    <h3>Damaged or incorrect items</h3>
+                    <p>Since GetsU sells food products, we don't accept returns once a package is opened. If your order arrives damaged, incorrect, or with a broken seal, contact us within 48 hours of delivery with photos and we'll send a replacement or refund at no cost to you.</p>
+                    <h3>How to request one</h3>
+                    <p>Email <a href="mailto:teamgetsu.31@gmail.com">teamgetsu.31@gmail.com</a> with your order ID and the issue. We aim to resolve every request within 3 business days.</p>
+                `
+            },
+            faq: {
+                title: 'Frequently Asked Questions',
+                body: `
+                    <h3>What does "clean label" mean?</h3>
+                    <p>Every ingredient on our packaging is something you can recognize and pronounce — no artificial preservatives, no hidden fillers, no misleading health claims.</p>
+                    <h3>How do I pay?</h3>
+                    <p>We're rolling out online payments now. Until then, place your order on the site and we'll reach out by email to confirm and collect payment via UPI or bank transfer.</p>
+                    <h3>Where do you ship?</h3>
+                    <p>Currently across India. Reach out if you need delivery outside India and we'll see what we can do.</p>
+                    <h3>Can I change or cancel an order?</h3>
+                    <p>Yes — email us with your order ID as soon as possible. We can make changes any time before the order ships.</p>
+                `
+            },
+            privacy: {
+                title: 'Privacy Policy',
+                body: `
+                    <h3>What we collect</h3>
+                    <p>When you place an order or contact us, we collect your name, phone number, email, and delivery address. We use this only to process your order and communicate with you about it.</p>
+                    <h3>How it's stored</h3>
+                    <p>Order details you submit are currently stored locally in your browser and shared with us directly by email — we don't sell or share your data with third parties for marketing.</p>
+                    <h3>Contact</h3>
+                    <p>Questions about your data? Email <a href="mailto:teamgetsu.31@gmail.com">teamgetsu.31@gmail.com</a>.</p>
+                `
+            },
+            terms: {
+                title: 'Terms of Service',
+                body: `
+                    <h3>Orders</h3>
+                    <p>Placing an order through this site is a request to purchase — it's confirmed once we get back to you to arrange payment. Prices are listed in Indian Rupees (₹) and may change without notice.</p>
+                    <h3>Product information</h3>
+                    <p>We describe our products as accurately as we can. Always check the ingredient list on the physical packaging if you have allergies or dietary restrictions.</p>
+                    <h3>Limitation</h3>
+                    <p>GetsU is not liable for indirect or incidental damages arising from product use beyond the replacement/refund described in our Returns policy.</p>
+                `
+            },
+        };
+
+        function openPolicy(key) {
+            const policy = POLICIES[key];
+            if (!policy) return;
+            document.getElementById('policyTitle').textContent = policy.title;
+            document.getElementById('policyBody').innerHTML = policy.body;
+            document.getElementById('policyModal').classList.add('open');
+        }
+
+        function closePolicy() {
+            document.getElementById('policyModal').classList.remove('open');
         }
 
         function openSearch() {
@@ -1962,9 +2360,16 @@
             }
         });
 
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+        });
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.getElementById('cartSidebar').classList.remove('open');
+                document.querySelectorAll('.modal.open').forEach(m => m.classList.remove('open'));
                 closeSearch();
             }
         });
