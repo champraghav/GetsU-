@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GetsU - Made For You | Clean, Healthy, Delicious Food</title>
+    <title>GetsU — Made For You</title>
     <meta name="description" content="GetsU creates clean-label, nutrient-dense foods that are delicious, convenient, and affordable. Healthy eating made easy.">
     <meta name="keywords" content="healthy food, protein snacks, functional beverages, clean ingredients, nutrition">
     <style>
@@ -14,24 +14,135 @@
         }
 
         :root {
-            --primary-color: #2d5016;
-            --primary-dark: #1f3810;
-            --primary-light: #f5faf0;
-            --text-dark: #1a1a1a;
-            --text-gray: #666666;
-            --text-light: #999999;
-            --border-light: #e8e8e8;
-            --bg-light: #f9f9f9;
-            --accent-red: #d32f2f;
-            --accent-green: #4caf50;
+            --ink: #1B2118;
+            --ink-soft: #4F5A46;
+            --ink-faint: #7C8672;
+            --paper: #F4F6EF;
+            --paper-raised: #EAEEDF;
+            --paper-tin: #E3E8D6;
+            --line: #D3DAC3;
+            --moss: #2F4A2A;
+            --moss-deep: #1E301B;
+            --turmeric: #C97A1F;
+            --turmeric-deep: #A6650F;
+            --turmeric-ink: #4A3410;
+            --beet: #8F3542;
+            --beet-deep: #732733;
+            --focus: #2F4A2A;
+
+            /* Fixed tokens: deliberately committed dark surfaces that do not invert with theme */
+            --surface-dark: #14170F;
+            --surface-dark-text: #F4F6EF;
+            --surface-dark-text-soft: #9AA68E;
+            --surface-dark-line: #333B27;
+            --brand-moss-fixed: #2F4A2A;
+            --brand-turmeric-fixed: #E3A44C;
+            --brand-moss-soft-fixed: #DCE4D3;
+            --badge-bg: #732733;
+            --badge-text: #FBEEEF;
+
+            --font-display: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', 'Book Antiqua', Georgia, 'Noto Serif', serif;
+            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --ink: #ECEFE2;
+                --ink-soft: #B9C1A9;
+                --ink-faint: #838F73;
+                --paper: #14170F;
+                --paper-raised: #1C2116;
+                --paper-tin: #232A1B;
+                --line: #333C27;
+                --moss: #7FBF74;
+                --moss-deep: #9FDA95;
+                --turmeric: #E3A44C;
+                --turmeric-deep: #F0BD75;
+                --turmeric-ink: #2A1F0D;
+                --beet: #D98A93;
+                --beet-deep: #E7ADB4;
+                --focus: #7FBF74;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --ink: #ECEFE2;
+            --ink-soft: #B9C1A9;
+            --ink-faint: #838F73;
+            --paper: #14170F;
+            --paper-raised: #1C2116;
+            --paper-tin: #232A1B;
+            --line: #333C27;
+            --moss: #7FBF74;
+            --moss-deep: #9FDA95;
+            --turmeric: #E3A44C;
+            --turmeric-deep: #F0BD75;
+            --turmeric-ink: #2A1F0D;
+            --beet: #D98A93;
+            --beet-deep: #E7ADB4;
+            --focus: #7FBF74;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-family: var(--font-body);
             line-height: 1.6;
-            color: var(--text-dark);
-            background: #ffffff;
-            overflow-x: hidden;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        img, svg { display: block; max-width: 100%; }
+
+        a { color: inherit; }
+
+        :focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 3px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            text-wrap: balance;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .icon {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .eyebrow {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--moss);
+        }
+
+        .num {
+            font-variant-numeric: tabular-nums;
+            font-family: var(--font-mono);
         }
 
         /* ==================== HEADER & NAV ==================== */
@@ -39,63 +150,76 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 4rem;
-            background: #ffffff;
-            border-bottom: 1px solid var(--border-light);
+            padding: 1.25rem 4rem;
+            background: var(--paper);
+            border-bottom: 1px solid var(--line);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 3rem;
+            gap: 3.5rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: inherit;
+            font: inherit;
+            padding: 0;
         }
 
         .logo {
-            font-size: 28px;
+            font-family: var(--font-display);
+            font-size: 26px;
             font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: -0.5px;
-            cursor: pointer;
+            color: var(--ink);
+            letter-spacing: -0.01em;
         }
 
         .tagline {
-            font-size: 11px;
-            color: var(--text-light);
-            margin-top: 2px;
-            letter-spacing: 1px;
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
         nav {
             display: flex;
-            gap: 2.5rem;
+            gap: 2.25rem;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--text-gray);
+            color: var(--ink-soft);
             font-size: 14px;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
             position: relative;
-        }
-
-        nav a:hover {
-            color: var(--primary-color);
+            padding-bottom: 2px;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 2px;
-            bottom: -4px;
+            height: 1px;
+            bottom: -3px;
             left: 0;
-            background: var(--primary-color);
-            transition: width 0.3s ease;
+            background: var(--moss);
+            transition: width 0.25s ease;
+        }
+
+        nav a:hover {
+            color: var(--ink);
         }
 
         nav a:hover::after {
@@ -105,31 +229,34 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
 
-        .search-btn, .cart-btn {
+        .icon-btn {
             background: none;
             border: none;
-            font-size: 20px;
             cursor: pointer;
-            color: var(--text-gray);
-            transition: color 0.3s;
+            color: var(--ink-soft);
+            transition: color 0.2s ease;
+            position: relative;
+            padding: 0.4rem;
+            display: flex;
         }
 
-        .search-btn:hover, .cart-btn:hover {
-            color: var(--primary-color);
+        .icon-btn:hover {
+            color: var(--moss);
         }
 
         .cart-count {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--accent-red);
-            color: white;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
+            top: 0;
+            right: 0;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -137,236 +264,336 @@
             font-weight: 700;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
+            border-radius: 3px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
-            transition: background 0.3s ease;
+            font-family: var(--font-body);
+            border: 1px solid transparent;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--moss);
+            color: #F4F6EF;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: var(--moss-deep);
+        }
+
+        .btn-accent {
+            background: var(--turmeric);
+            color: var(--turmeric-ink);
+        }
+
+        .btn-accent:hover {
+            background: var(--turmeric-deep);
         }
 
         .btn-secondary {
-            background: white;
-            color: var(--primary-color);
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--ink);
+            border-color: var(--line);
         }
 
         .btn-secondary:hover {
-            background: var(--primary-light);
+            border-color: var(--moss);
+            color: var(--moss);
         }
+
+        .btn-block { width: 100%; }
 
         /* ==================== HERO SECTION ==================== */
         .hero {
-            padding: 5rem 4rem;
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 5.5rem 4rem 4rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 4rem;
             align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-eyebrow .rule {
+            width: 28px;
+            height: 1px;
+            background: var(--turmeric);
         }
 
         .hero h1 {
-            font-size: 52px;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-            font-weight: 700;
-            max-width: 800px;
+            font-size: clamp(2.4rem, 4vw + 0.5rem, 3.6rem);
+            line-height: 1.08;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
         }
 
         .hero .highlight {
-            color: var(--primary-color);
-            background: linear-gradient(120deg, var(--primary-light), rgba(45, 80, 22, 0.1));
-            padding: 0 8px;
-            border-radius: 4px;
+            color: var(--moss);
+            font-style: italic;
         }
 
         .hero p {
             font-size: 18px;
-            color: var(--text-gray);
+            color: var(--ink-soft);
             margin-bottom: 2rem;
-            max-width: 600px;
-            line-height: 1.8;
+            max-width: 46ch;
+            line-height: 1.75;
         }
 
         .cta-buttons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            margin-bottom: 3rem;
             flex-wrap: wrap;
+            margin-bottom: 2.5rem;
         }
 
-        .hero-image {
-            max-width: 500px;
-            height: 280px;
-            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
-            border-radius: 12px;
+        .hero-proof {
+            display: flex;
+            gap: 2rem;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--ink-faint);
+        }
+
+        .hero-proof strong {
+            color: var(--ink);
+            font-size: 15px;
+            display: block;
+        }
+
+        .hero-art {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            background: var(--paper-tin);
+            border: 1px solid var(--line);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 120px;
-            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-art svg { width: 60%; height: 60%; }
+
+        .hero-art::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--line) 1px, transparent 1px);
+            background-size: 14px 14px;
+            opacity: 0.5;
+        }
+
+        .hero-art .label-tag {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .hero-art .label-tag strong {
+            display: block;
+            color: var(--ink);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .hero-art .badge-accent {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--turmeric);
+            color: var(--turmeric-ink);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            padding: 0.35rem 0.7rem;
+            border-radius: 2px;
+            font-weight: 700;
         }
 
         /* ==================== SECTIONS ==================== */
         .section {
-            padding: 4rem;
-            max-width: 1200px;
+            padding: 5rem 4rem;
+            max-width: 1280px;
             margin: 0 auto;
+            border-top: 1px solid var(--line);
+        }
+
+        .section-head {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-head .tag {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--turmeric);
+            letter-spacing: 0.08em;
         }
 
         .section h2 {
-            font-size: 36px;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-            font-weight: 700;
+            font-size: clamp(1.6rem, 2vw + 0.9rem, 2.2rem);
+            margin-bottom: 0.75rem;
         }
 
         .section-subtitle {
             font-size: 16px;
-            color: var(--text-gray);
-            margin-bottom: 3rem;
+            color: var(--ink-soft);
             line-height: 1.8;
-            max-width: 700px;
-        }
-
-        /* ==================== CARDS ==================== */
-        .card {
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 8px 24px rgba(45, 80, 22, 0.1);
-        }
-
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .card p {
-            color: var(--text-gray);
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        .card.problem {
-            border-left: 4px solid var(--accent-red);
-        }
-
-        .card.solution {
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .card.product {
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card.product:hover {
-            transform: translateY(-4px);
+            max-width: 58ch;
         }
 
         /* ==================== PROBLEM & SOLUTION ==================== */
         .problem-solution {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 4rem;
+            gap: 2px;
+            background: var(--line);
+            border: 1px solid var(--line);
+            margin-bottom: 3.5rem;
         }
 
-        /* ==================== STATS ==================== */
+        .ps-card {
+            background: var(--paper);
+            padding: 2.25rem;
+        }
+
+        .ps-card .ps-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .ps-card.problem .ps-label { color: var(--beet); }
+        .ps-card.solution .ps-label { color: var(--moss); }
+
+        .ps-card h3 {
+            font-size: 21px;
+            margin-bottom: 0.75rem;
+        }
+
+        .ps-card p {
+            color: var(--ink-soft);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* ==================== STATS (nutrition-facts strip) ==================== */
+        .facts-panel {
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .facts-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--ink);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin: 4rem 0;
         }
 
         .stat-card {
-            text-align: center;
-            padding: 2rem;
-            background: var(--primary-light);
-            border-radius: 12px;
-            border: 1px solid rgba(45, 80, 22, 0.1);
+            text-align: left;
+            padding: 1.75rem 1.5rem;
+            border-left: 1px solid var(--line);
         }
 
+        .stat-card:first-child { border-left: none; }
+
         .stat-number {
-            font-size: 36px;
+            font-family: var(--font-mono);
+            font-size: 30px;
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            color: var(--moss);
+            margin-bottom: 0.35rem;
         }
 
         .stat-label {
-            font-size: 14px;
-            color: var(--text-gray);
+            font-size: 13px;
+            color: var(--ink-soft);
             font-weight: 500;
         }
 
-        /* ==================== PRODUCTS GRID ==================== */
+        /* ==================== PRODUCTS GRID (catalog index) ==================== */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
         }
 
         .product-category {
-            background: linear-gradient(135deg, var(--primary-light) 0%, #eeF5E9 100%);
+            background: var(--paper);
             padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid rgba(45, 80, 22, 0.1);
-            text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease;
         }
 
         .product-category:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-color);
+            background: var(--paper-raised);
         }
 
-        .product-icon {
-            font-size: 48px;
+        .cat-code {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--turmeric);
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .product-category .icon {
+            width: 30px;
+            height: 30px;
+            color: var(--moss);
             margin-bottom: 1rem;
         }
 
         .product-category h4 {
-            font-size: 18px;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-size: 17px;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            font-family: var(--font-display);
         }
 
         .product-category p {
             font-size: 14px;
-            color: var(--text-gray);
+            color: var(--ink-soft);
             line-height: 1.6;
         }
 
@@ -374,84 +601,113 @@
         .featured-products {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 1.5rem;
         }
 
         .product-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--paper);
+            border-radius: 4px;
             overflow: hidden;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
+            border: 1px solid var(--line);
+            transition: border-color 0.2s ease, transform 0.2s ease;
             display: flex;
             flex-direction: column;
         }
 
         .product-card:hover {
-            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
-            border-color: var(--primary-color);
-            transform: translateY(-4px);
+            border-color: var(--moss);
+            transform: translateY(-3px);
         }
 
         .product-image {
             width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            aspect-ratio: 1 / 1;
+            background: var(--paper-tin);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 64px;
             position: relative;
             overflow: hidden;
         }
 
+        .product-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--line) 1px, transparent 1px);
+            background-size: 12px 12px;
+            opacity: 0.6;
+        }
+
+        .product-image .icon {
+            width: 38%;
+            height: 38%;
+            color: var(--moss);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sku {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--ink-faint);
+            letter-spacing: 0.06em;
+            z-index: 1;
+        }
+
         .product-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--accent-red);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            top: 10px;
+            right: 10px;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 3px 10px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            z-index: 1;
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 1.25rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .product-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: var(--ink);
+            margin-bottom: 0.35rem;
         }
 
         .product-description {
             font-size: 13px;
-            color: var(--text-gray);
-            margin-bottom: 1rem;
+            color: var(--ink-soft);
+            margin-bottom: 0.85rem;
             line-height: 1.5;
         }
 
         .product-features {
-            font-size: 12px;
-            color: var(--primary-color);
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--moss);
             margin-bottom: 1rem;
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
         }
 
         .product-features span {
-            background: var(--primary-light);
-            padding: 2px 8px;
-            border-radius: 4px;
+            background: var(--paper-raised);
+            padding: 2px 7px;
+            border-radius: 2px;
         }
 
         .product-footer {
@@ -459,162 +715,195 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--border-light);
-            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            padding-top: 0.85rem;
         }
 
         .product-price {
-            font-size: 18px;
+            font-family: var(--font-mono);
+            font-size: 17px;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--ink);
         }
 
         .product-price-original {
-            font-size: 13px;
-            color: var(--text-light);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--ink-faint);
             text-decoration: line-through;
-            margin-right: 0.5rem;
+            margin-right: 0.4rem;
         }
 
         .add-to-cart {
-            background: var(--primary-color);
-            color: white;
+            background: var(--ink);
+            color: var(--paper);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.5rem 0.9rem;
+            border-radius: 2px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: background 0.3s;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            transition: background 0.2s ease;
         }
 
         .add-to-cart:hover {
-            background: var(--primary-dark);
+            background: var(--moss);
         }
 
         /* ==================== VALUES ==================== */
         .values-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 2.5rem 2rem;
         }
 
         .value-card {
-            text-align: center;
-            padding: 2rem;
+            display: flex;
+            gap: 1rem;
         }
 
-        .value-icon {
-            font-size: 48px;
-            margin-bottom: 1rem;
+        .value-card .icon {
+            width: 26px;
+            height: 26px;
+            color: var(--moss);
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .value-card h4 {
-            font-size: 18px;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-size: 16px;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+            font-weight: 700;
         }
 
         .value-card p {
-            color: var(--text-gray);
+            color: var(--ink-soft);
             font-size: 14px;
             line-height: 1.7;
         }
 
         /* ==================== VISION SECTION ==================== */
         .vision {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
+            background: var(--brand-moss-fixed);
+            color: var(--surface-dark-text);
             padding: 4rem;
-            border-radius: 12px;
-            text-align: center;
+            border-radius: 4px;
             margin-top: 4rem;
+            position: relative;
+        }
+
+        .vision .quote-mark {
+            font-family: var(--font-display);
+            font-size: 64px;
+            line-height: 1;
+            color: var(--brand-turmeric-fixed);
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
         .vision h3 {
-            font-size: 32px;
-            margin-bottom: 1.5rem;
+            font-size: 28px;
+            margin-bottom: 1.25rem;
             font-weight: 700;
+            color: var(--surface-dark-text);
+            max-width: 46ch;
         }
 
         .vision p {
             font-size: 16px;
             line-height: 1.8;
-            max-width: 700px;
-            margin: 0 auto;
+            max-width: 60ch;
+            color: var(--brand-moss-soft-fixed);
         }
 
         /* ==================== NEWSLETTER ==================== */
         .newsletter {
-            background: var(--primary-light);
-            padding: 4rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 4rem;
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            padding: 3rem 3.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
-        .newsletter h3 {
-            font-size: 28px;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
+        .newsletter-copy h3 {
+            font-size: 24px;
+            color: var(--ink);
+            margin-bottom: 0.35rem;
             font-weight: 700;
         }
 
-        .newsletter p {
-            color: var(--text-gray);
-            margin-bottom: 2rem;
-            font-size: 15px;
+        .newsletter-copy p {
+            color: var(--ink-soft);
+            font-size: 14.5px;
         }
 
         .newsletter-form {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            max-width: 500px;
-            margin: 0 auto;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
         .newsletter-form input {
-            flex: 1;
-            min-width: 200px;
+            min-width: 220px;
             padding: 0.75rem 1rem;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
             font-size: 14px;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
         }
 
         .newsletter-form input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--moss);
         }
 
         /* ==================== FOOTER ==================== */
         footer {
-            background: var(--text-dark);
-            color: white;
+            background: var(--surface-dark);
+            color: var(--surface-dark-text);
             padding: 4rem;
             margin-top: 4rem;
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1.4fr repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-brand .logo {
+            color: var(--surface-dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand p {
+            color: var(--surface-dark-text-soft);
+            font-size: 13px;
+            max-width: 32ch;
+            line-height: 1.7;
         }
 
         .footer-section h4 {
-            font-size: 14px;
+            font-family: var(--font-mono);
+            font-size: 12px;
             font-weight: 700;
             margin-bottom: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #ffffff;
+            letter-spacing: 0.08em;
+            color: var(--surface-dark-text-soft);
         }
 
         .footer-section ul {
@@ -622,29 +911,39 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.7rem;
         }
 
         .footer-section ul a {
-            color: #cccccc;
+            color: var(--surface-dark-text-soft);
             text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s;
+            font-size: 13.5px;
+            transition: color 0.2s;
         }
 
         .footer-section ul a:hover {
-            color: white;
+            color: var(--brand-turmeric-fixed);
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--surface-dark-line);
             padding-top: 2rem;
-            text-align: center;
-            color: #999999;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--surface-dark-text-soft);
             font-size: 13px;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
+
+        .footer-bottom a {
+            color: var(--surface-dark-text-soft);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover { color: var(--surface-dark-text); }
 
         /* ==================== MODAL ==================== */
         .modal {
@@ -655,54 +954,48 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s;
+            background-color: rgba(20, 23, 15, 0.55);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .modal.open { display: block; }
 
         .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 12px;
+            background-color: var(--paper);
+            margin: 8% auto;
+            padding: 2.25rem;
+            border-radius: 6px;
             width: 90%;
-            max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: slideUp 0.3s;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            max-width: 460px;
+            border: 1px solid var(--line);
         }
 
         .close {
-            color: var(--text-light);
+            color: var(--ink-faint);
             float: right;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 24px;
+            font-weight: 400;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: color 0.2s;
+            line-height: 1;
+            background: none;
+            border: none;
         }
 
         .close:hover {
-            color: var(--text-dark);
+            color: var(--ink);
         }
 
         .modal h2 {
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-            font-size: 24px;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+            font-size: 22px;
         }
 
-        .modal p {
-            color: var(--text-gray);
-            margin-bottom: 1rem;
+        .modal > .modal-content > p {
+            color: var(--ink-soft);
+            margin-bottom: 1.5rem;
             line-height: 1.6;
+            font-size: 14.5px;
         }
 
         .form-group {
@@ -711,20 +1004,22 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-            font-weight: 500;
-            font-size: 13px;
+            margin-bottom: 0.4rem;
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 12.5px;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
+            padding: 0.7rem 0.85rem;
+            border: 1px solid var(--line);
+            border-radius: 3px;
             font-size: 14px;
             font-family: inherit;
+            background: var(--paper);
+            color: var(--ink);
         }
 
         .form-group textarea {
@@ -735,8 +1030,7 @@
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+            border-color: var(--moss);
         }
 
         /* ==================== CART SIDEBAR ==================== */
@@ -744,15 +1038,15 @@
             position: fixed;
             right: -450px;
             top: 0;
-            width: 450px;
+            width: 440px;
             height: 100vh;
-            background: white;
-            box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+            background: var(--paper);
+            border-left: 1px solid var(--line);
+            box-shadow: -8px 0 24px rgba(0,0,0,0.08);
             z-index: 150;
             transition: right 0.3s ease;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
         }
 
         .cart-sidebar.open {
@@ -761,41 +1055,46 @@
 
         .cart-header {
             padding: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .cart-header h2 {
-            font-size: 20px;
-            color: var(--text-dark);
+            font-size: 19px;
+            color: var(--ink);
         }
 
         .cart-items {
             flex-grow: 1;
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem;
             overflow-y: auto;
         }
 
         .cart-item {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--line);
         }
 
         .cart-item-image {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-light);
-            border-radius: 8px;
+            width: 64px;
+            height: 64px;
+            background: var(--paper-tin);
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
             flex-shrink: 0;
+        }
+
+        .cart-item-image .icon {
+            width: 26px;
+            height: 26px;
+            color: var(--moss);
         }
 
         .cart-item-details {
@@ -803,214 +1102,149 @@
         }
 
         .cart-item-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.25rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 0.2rem;
             font-size: 14px;
         }
 
         .cart-item-price {
-            color: var(--primary-color);
+            color: var(--ink-soft);
+            font-family: var(--font-mono);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 0.5rem;
         }
 
         .cart-item-qty {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
             font-size: 13px;
+            font-family: var(--font-mono);
         }
 
         .qty-btn {
-            background: var(--border-light);
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            width: 22px;
+            height: 22px;
+            border-radius: 3px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: background 0.2s, color 0.2s;
+            color: var(--ink);
         }
 
         .qty-btn:hover {
-            background: var(--primary-color);
-            color: white;
+            background: var(--moss);
+            color: #fff;
+            border-color: var(--moss);
         }
 
         .remove-btn {
             background: none;
             border: none;
-            color: var(--accent-red);
+            color: var(--beet);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
             margin-top: 0.5rem;
-            transition: color 0.3s;
+            transition: color 0.2s;
+            font-family: var(--font-mono);
+            padding: 0;
         }
 
         .remove-btn:hover {
-            color: darkred;
+            color: var(--beet-deep);
         }
 
         .cart-empty {
             text-align: center;
-            padding: 2rem;
-            color: var(--text-gray);
+            padding: 3rem 1rem;
+            color: var(--ink-faint);
+            font-size: 14px;
         }
 
         .cart-summary {
             padding: 1.5rem;
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid var(--line);
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.65rem;
             font-size: 14px;
+            color: var(--ink-soft);
+        }
+
+        .summary-row span:last-child {
+            font-family: var(--font-mono);
         }
 
         .summary-total {
             font-size: 16px;
             font-weight: 700;
-            color: var(--primary-color);
-            border-top: 1px solid var(--border-light);
+            color: var(--ink);
+            border-top: 1px solid var(--line);
             padding-top: 1rem;
-            margin-top: 1rem;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: background 0.3s;
-        }
-
-        .checkout-btn:hover {
-            background: var(--primary-dark);
+            margin-top: 0.5rem;
         }
 
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 1024px) {
-            .featured-products {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .values-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .hero { grid-template-columns: 1fr; }
+            .hero-art { max-width: 420px; margin: 0 auto; }
+            .featured-products { grid-template-columns: repeat(2, 1fr); }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .values-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
             header {
-                padding: 1rem 2rem;
+                padding: 1rem 1.5rem;
                 flex-wrap: wrap;
                 gap: 1rem;
             }
 
-            .header-left {
-                gap: 1rem;
-            }
+            .header-left { gap: 1rem; }
 
             nav {
                 order: 3;
                 width: 100%;
                 flex-direction: column;
-                gap: 1rem;
-                border-top: 1px solid var(--border-light);
+                gap: 0.85rem;
+                border-top: 1px solid var(--line);
                 padding-top: 1rem;
             }
 
-            .header-right {
-                order: 2;
-            }
+            .header-right { order: 2; }
 
-            .hero {
-                padding: 2rem;
-                min-height: auto;
-            }
+            .hero { padding: 2.5rem 1.5rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 16px; }
+            .cta-buttons { flex-direction: column; align-items: stretch; }
 
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .cta-buttons button {
-                width: 100%;
-            }
-
-            .section {
-                padding: 2rem;
-            }
+            .section { padding: 3rem 1.5rem; }
+            .section-head { grid-template-columns: 1fr; gap: 0.5rem; }
 
             .featured-products,
             .products-grid,
             .values-grid,
             .stats,
-            .problem-solution,
             .footer-content {
                 grid-template-columns: 1fr;
             }
 
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
-            }
+            .problem-solution { grid-template-columns: 1fr; }
+            .stat-card { border-left: none; border-top: 1px solid var(--line); }
+            .stat-card:first-child { border-top: none; }
 
-            .modal-content {
-                width: 95%;
-                margin: 20% auto;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                padding: 0.75rem 1rem;
-            }
-
-            .hero h1 {
-                font-size: 24px;
-            }
-
-            .section h2 {
-                font-size: 24px;
-            }
-
-            .product-icon {
-                font-size: 32px;
-            }
-
-            .value-icon {
-                font-size: 36px;
-            }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .modal-content { width: 95%; margin: 18% auto; }
+            .newsletter { flex-direction: column; align-items: stretch; text-align: left; }
         }
 
         .search-modal {
@@ -1020,7 +1254,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(20, 23, 15, 0.55);
             z-index: 180;
             padding: 2rem;
         }
@@ -1033,21 +1267,29 @@
         }
 
         .search-modal-content {
-            background: white;
-            border-radius: 12px;
+            background: var(--paper);
+            border-radius: 6px;
             width: 100%;
-            max-width: 600px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 560px;
+            padding: 1.75rem;
+            border: 1px solid var(--line);
         }
 
         .search-modal-content input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--border-light);
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 15px;
             margin-bottom: 1rem;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: inherit;
+        }
+
+        .search-modal-content input:focus {
+            outline: none;
+            border-color: var(--moss);
         }
 
         .search-results {
@@ -1056,31 +1298,43 @@
         }
 
         .search-result-item {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-light);
+            padding: 0.85rem 0.25rem;
+            border-bottom: 1px solid var(--line);
             cursor: pointer;
-            transition: background 0.3s;
+            transition: color 0.2s;
+            font-size: 14px;
+            color: var(--ink-soft);
         }
 
+        .search-result-item strong { color: var(--ink); }
+
         .search-result-item:hover {
-            background: var(--primary-light);
+            color: var(--moss);
+        }
+
+        .search-empty {
+            padding: 1rem 0.25rem;
+            color: var(--ink-faint);
+            font-size: 13.5px;
         }
 
         .success-message {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: var(--accent-green);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.9rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
             animation: slideInUp 0.3s ease;
             z-index: 300;
+            font-size: 14px;
+            border-left: 3px solid var(--moss);
         }
 
         @keyframes slideInUp {
-            from { transform: translateY(100px); opacity: 0; }
+            from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
     </style>
@@ -1089,10 +1343,12 @@
     <!-- HEADER -->
     <header>
         <div class="header-left">
-            <div>
-                <div class="logo" onclick="scrollToTop()">GetsU</div>
-                <div class="tagline">Made For You</div>
-            </div>
+            <button class="brand" onclick="scrollToTop()" aria-label="GetsU home">
+                <div>
+                    <div class="logo">GetsU</div>
+                    <div class="tagline">Made For You</div>
+                </div>
+            </button>
             <nav>
                 <a href="#why">Why GetsU</a>
                 <a href="#products">Products</a>
@@ -1101,111 +1357,164 @@
             </nav>
         </div>
         <div class="header-right">
-            <button class="search-btn" onclick="openSearch()">🔍</button>
-            <button class="cart-btn" onclick="toggleCart()" style="position: relative;">
-                🛒
+            <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <button class="icon-btn" onclick="toggleCart()" aria-label="Cart" style="position: relative;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
                 <span class="cart-count" id="cartCount" style="display: none;">0</span>
             </button>
-            <button class="btn-primary" onclick="openShop()">Shop Now</button>
+            <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
         </div>
     </header>
 
     <!-- SEARCH MODAL -->
     <div class="search-modal" id="searchModal">
         <div class="search-modal-content">
-            <input type="text" placeholder="Search products..." id="searchInput" onkeyup="searchProducts()">
+            <input type="text" placeholder="Search products…" id="searchInput" onkeyup="searchProducts()">
             <div class="search-results" id="searchResults"></div>
         </div>
     </div>
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <h1>Healthy Eating Should Be <span class="highlight">Delicious</span></h1>
-        <p>Clean ingredients. Great taste. Affordable prices. We're bridging the gap between junk food and boring health food.</p>
-        <div class="cta-buttons">
-            <button class="btn-primary" onclick="openShop()">Start Shopping</button>
-            <button class="btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
+        <div>
+            <div class="hero-eyebrow">
+                <span class="rule"></span>
+                <span class="eyebrow">Clean-label nutrition</span>
+            </div>
+            <h1>Healthy eating should be <span class="highlight">delicious</span>, not a compromise.</h1>
+            <p>Clean ingredients. Great taste. Fair prices. We're closing the gap between junk food and boring health food — one label you can actually read.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="openShop()">Start Shopping</button>
+                <button class="btn btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
+            </div>
+            <div class="hero-proof">
+                <div><strong>100%</strong>clean ingredients</div>
+                <div><strong>25%</strong>more protein</div>
+                <div><strong>60%</strong>less sugar</div>
+            </div>
         </div>
-        <div class="hero-image">🥗</div>
+        <div class="hero-art">
+            <span class="label-tag">GetsU No. 01<strong>High-Protein Oats</strong></span>
+            <svg viewBox="0 0 24 24" class="icon" style="stroke-width:1.1;">
+                <path d="M6 3h12l1 5a7 7 0 0 1-14 0z"/>
+                <path d="M6 8h12"/>
+                <path d="M9 3v-1h6v1"/>
+            </svg>
+            <span class="badge-accent">Sugar −60%</span>
+        </div>
     </section>
 
     <!-- PROBLEM & SOLUTION -->
     <section id="why" class="section">
-        <h2>The Problem We're Solving</h2>
-        <p class="section-subtitle">Today, people face a difficult choice: tasty food that's unhealthy, or healthy food that's boring and expensive.</p>
-        
-        <div class="problem-solution">
-            <div class="card problem">
-                <h3>The Status Quo</h3>
-                <p>Most people choose between junk food that tastes good but destroys health, or expensive, difficult-to-prepare health foods that feel like medicine.</p>
-            </div>
-            <div class="card solution">
-                <h3>Our Solution</h3>
-                <p>GetsU creates clean-label, nutrient-dense foods that are delicious, convenient, and affordable—so healthy choices become the easy choice.</p>
+        <div class="section-head">
+            <span class="tag">§ 01</span>
+            <div>
+                <h2>The problem we're solving</h2>
+                <p class="section-subtitle">Today, people face a difficult choice: tasty food that's unhealthy, or healthy food that's boring, expensive, and hard to prepare.</p>
             </div>
         </div>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">100%</div>
-                <div class="stat-label">Clean Ingredients</div>
+        <div class="problem-solution">
+            <div class="ps-card problem">
+                <div class="ps-label">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                    The status quo
+                </div>
+                <h3>Pick your compromise</h3>
+                <p>Most people choose between junk food that tastes good but wears down long-term health, or expensive, difficult-to-prepare health foods that feel like medicine.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">↑25%</div>
-                <div class="stat-label">More Protein</div>
+            <div class="ps-card solution">
+                <div class="ps-label">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;"><path d="M20 6 9 17l-5-5"/></svg>
+                    Our solution
+                </div>
+                <h3>No compromise needed</h3>
+                <p>GetsU makes clean-label, nutrient-dense food that's delicious, convenient, and affordable — so the healthy choice becomes the easy one.</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">↓60%</div>
-                <div class="stat-label">Less Sugar</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">₹ Affordable</div>
-                <div class="stat-label">Fair Pricing</div>
+        </div>
+
+        <div class="facts-panel">
+            <div class="facts-header">Nutrition facts, by the numbers</div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number num">100%</div>
+                    <div class="stat-label">Clean ingredients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number num">+25%</div>
+                    <div class="stat-label">More protein</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number num">−60%</div>
+                    <div class="stat-label">Less sugar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number num">₹</div>
+                    <div class="stat-label">Fair, everyday pricing</div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- FEATURED PRODUCTS -->
     <section id="products" class="section">
-        <h2>Featured Products</h2>
-        <p class="section-subtitle">Handpicked products designed to fit seamlessly into your daily routine.</p>
-        
+        <div class="section-head">
+            <span class="tag">§ 02</span>
+            <div>
+                <h2>Featured products</h2>
+                <p class="section-subtitle">Handpicked to fit seamlessly into your daily routine — from the first bite of breakfast to your last snack.</p>
+            </div>
+        </div>
+
         <div class="featured-products" id="featuredProducts"></div>
     </section>
 
     <!-- PRODUCT CATEGORIES -->
     <section class="section">
-        <h2>Our Product Categories</h2>
-        <p class="section-subtitle">From breakfast to sports nutrition, we have you covered every step of the day.</p>
-        
+        <div class="section-head">
+            <span class="tag">§ 03</span>
+            <div>
+                <h2>The full catalog</h2>
+                <p class="section-subtitle">From breakfast to sports nutrition, we've got every part of your day covered.</p>
+            </div>
+        </div>
+
         <div class="products-grid">
             <div class="product-category">
-                <div class="product-icon">🥣</div>
+                <span class="cat-code">CAT. 01</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/><line x1="9" y1="4" x2="8" y2="7"/><line x1="15" y1="4" x2="16" y2="7"/></svg>
                 <h4>Breakfast Foods</h4>
                 <p>High-protein oats, pancake premix, and millet mixes to start your day right.</p>
             </div>
             <div class="product-category">
-                <div class="product-icon">🍫</div>
+                <span class="cat-code">CAT. 02</span>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/></svg>
                 <h4>Healthy Snacks</h4>
                 <p>Protein bars, energy bars, roasted snacks, cookies, and biscuits.</p>
             </div>
             <div class="product-category">
-                <div class="product-icon">🥛</div>
+                <span class="cat-code">CAT. 03</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/><path d="M15 8l3 1v3l-3 -1"/></svg>
                 <h4>Functional Beverages</h4>
                 <p>Protein cold coffee, nutrition drinks, and ready-to-drink beverages.</p>
             </div>
             <div class="product-category">
-                <div class="product-icon">🍲</div>
+                <span class="cat-code">CAT. 04</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M5 11a7 7 0 0 1 14 0v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><line x1="5" y1="14" x2="19" y2="14"/></svg>
                 <h4>Ready-to-Eat</h4>
                 <p>Instant porridges, snack cups, and nutrition bowls for busy days.</p>
             </div>
             <div class="product-category">
-                <div class="product-icon">🥜</div>
+                <span class="cat-code">CAT. 05</span>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/></svg>
                 <h4>Healthy Spreads</h4>
                 <p>Chocolate and nut spreads with better ingredients and less sugar.</p>
             </div>
             <div class="product-category">
-                <div class="product-icon">👨‍👩‍👧</div>
+                <span class="cat-code">CAT. 06</span>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>
                 <h4>Specialized Nutrition</h4>
                 <p>Women's health, kids nutrition, and sports nutrition products.</p>
             </div>
@@ -1214,74 +1523,101 @@
 
     <!-- VALUES SECTION -->
     <section id="values" class="section">
-        <h2>Our Brand Values</h2>
-        <p class="section-subtitle">Everything we do is guided by these core principles.</p>
-        
+        <div class="section-head">
+            <span class="tag">§ 04</span>
+            <div>
+                <h2>Our brand values</h2>
+                <p class="section-subtitle">Everything we do is guided by these six principles.</p>
+            </div>
+        </div>
+
         <div class="values-grid">
             <div class="value-card">
-                <div class="value-icon">🛡️</div>
-                <h4>Trust</h4>
-                <p>Every ingredient on our label is real, honest, and backed by our commitment to you.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg>
+                <div>
+                    <h4>Trust</h4>
+                    <p>Every ingredient on our label is real, honest, and backed by our commitment to you.</p>
+                </div>
             </div>
             <div class="value-card">
-                <div class="value-icon">👁️</div>
-                <h4>Transparency</h4>
-                <p>No misleading claims. Clear ingredients. Clear nutrition. You deserve to know exactly what you're eating.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <div>
+                    <h4>Transparency</h4>
+                    <p>No misleading claims. Clear ingredients, clear nutrition. You deserve to know exactly what you're eating.</p>
+                </div>
             </div>
             <div class="value-card">
-                <div class="value-icon">✨</div>
-                <h4>Simplicity</h4>
-                <p>Healthy eating should never feel complicated. We make it easy, enjoyable, and accessible.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M5 12H3m18 0h-2M6.3 6.3 4.9 4.9m14.2 1.4-1.4-1.4M6.3 17.7l-1.4 1.4m14.2-1.4 1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+                <div>
+                    <h4>Simplicity</h4>
+                    <p>Healthy eating should never feel complicated. We make it easy, enjoyable, and accessible.</p>
+                </div>
             </div>
             <div class="value-card">
-                <div class="value-icon">🚀</div>
-                <h4>Innovation</h4>
-                <p>We continuously develop products people actually enjoy eating, not products they feel obligated to eat.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+                <div>
+                    <h4>Innovation</h4>
+                    <p>We continuously develop products people actually enjoy eating, not products they feel obligated to eat.</p>
+                </div>
             </div>
             <div class="value-card">
-                <div class="value-icon">🔬</div>
-                <h4>Science</h4>
-                <p>Evidence-based nutrition, not trends. Every product is built on solid nutritional science.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+                <div>
+                    <h4>Science</h4>
+                    <p>Evidence-based nutrition, not trends. Every product is built on solid nutritional science.</p>
+                </div>
             </div>
             <div class="value-card">
-                <div class="value-icon">❤️</div>
-                <h4>Prevention</h4>
-                <p>We believe in preventing disease through everyday nutrition, not just treating it after the fact.</p>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.5 1 4.5 2.5C11.5 6 13 5 15 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+                <div>
+                    <h4>Prevention</h4>
+                    <p>We believe in preventing disease through everyday nutrition, not just treating it after the fact.</p>
+                </div>
             </div>
         </div>
 
         <div class="vision">
-            <h3>Our Vision</h3>
-            <p>To make healthy eating simple, enjoyable, affordable, and accessible for everyone, every single day. We're building a future where healthy food becomes the first choice, not the difficult choice.</p>
+            <span class="quote-mark">"</span>
+            <h3>To make healthy eating simple, enjoyable, affordable, and accessible for everyone, every single day.</h3>
+            <p>We're building a future where healthy food becomes the first choice, not the difficult choice.</p>
         </div>
     </section>
 
     <!-- NEWSLETTER -->
-    <section class="section">
+    <section class="section" style="border-top: none; padding-top: 0;">
         <div class="newsletter">
-            <h3>Get 10% Off Your First Order</h3>
-            <p>Subscribe to our newsletter and stay updated on new products, special offers, and nutrition tips.</p>
+            <div class="newsletter-copy">
+                <h3>Get 10% off your first order</h3>
+                <p>Subscribe for new products, special offers, and nutrition tips.</p>
+            </div>
             <div class="newsletter-form">
                 <input type="email" placeholder="Enter your email" id="newsletterEmail">
-                <button class="btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+                <button class="btn btn-accent" onclick="subscribeNewsletter()">Subscribe</button>
             </div>
         </div>
     </section>
 
     <!-- CONTACT SECTION -->
     <section id="contact" class="section">
-        <h2>Get In Touch</h2>
-        <p class="section-subtitle">Have questions? We'd love to hear from you. Reach out anytime.</p>
-        <div style="text-align: center;">
-            <button class="btn-primary" onclick="openContact()" style="padding: 1rem 2rem; font-size: 16px;">Send Us a Message</button>
+        <div class="section-head">
+            <span class="tag">§ 05</span>
+            <div>
+                <h2>Get in touch</h2>
+                <p class="section-subtitle">Have questions? We'd love to hear from you — reach out anytime.</p>
+            </div>
         </div>
+        <button class="btn btn-primary" onclick="openContact()" style="padding: 0.9rem 2rem; font-size: 15px;">Send Us a Message</button>
     </section>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">GetsU</div>
+                <p>Clean-label, nutrient-dense food that's delicious, convenient, and affordable. Made for you.</p>
+            </div>
             <div class="footer-section">
-                <h4>About GetsU</h4>
+                <h4>About</h4>
                 <ul>
                     <li><a href="#about">Our Story</a></li>
                     <li><a href="#team">Our Team</a></li>
@@ -1307,26 +1643,18 @@
                     <li><a href="#contact">Contact Us</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <ul>
-                    <li><a href="https://instagram.com/getsuofficial" target="_blank">Instagram</a></li>
-                    <li><a href="https://facebook.com/getsuofficial" target="_blank">Facebook</a></li>
-                    <li><a href="https://twitter.com/getsuofficial" target="_blank">Twitter</a></li>
-                    <li><a href="https://youtube.com/getsuofficial" target="_blank">YouTube</a></li>
-                </ul>
-            </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 GetsU. Made For You. All rights reserved. | <a href="#privacy" style="color: #999999; text-decoration: none;">Privacy Policy</a> | <a href="#terms" style="color: #999999; text-decoration: none;">Terms of Service</a></p>
+            <p>&copy; 2026 GetsU. Made For You. All rights reserved.</p>
+            <p><a href="#privacy">Privacy Policy</a> &nbsp;·&nbsp; <a href="#terms">Terms of Service</a></p>
         </div>
     </footer>
 
     <!-- CONTACT MODAL -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeContact()">&times;</span>
-            <h2>Contact Us</h2>
+            <button class="close" onclick="closeContact()" aria-label="Close">&times;</button>
+            <h2>Contact us</h2>
             <p>We'd love to hear from you. Fill out the form below and we'll get back to you within 24 hours.</p>
             <form onsubmit="submitContact(event)">
                 <div class="form-group">
@@ -1338,14 +1666,14 @@
                     <input type="email" id="contactEmail" required>
                 </div>
                 <div class="form-group">
-                    <label for="contactPhone">Phone (Optional)</label>
+                    <label for="contactPhone">Phone (optional)</label>
                     <input type="tel" id="contactPhone">
                 </div>
                 <div class="form-group">
                     <label for="contactMessage">Message</label>
                     <textarea id="contactMessage" required></textarea>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; padding: 0.75rem;">Send Message</button>
+                <button type="submit" class="btn btn-primary btn-block">Send Message</button>
             </form>
         </div>
     </div>
@@ -1353,8 +1681,8 @@
     <!-- CART SIDEBAR -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h2>Your Cart</h2>
-            <span class="close" onclick="toggleCart()">&times;</span>
+            <h2>Your cart</h2>
+            <button class="close" onclick="toggleCart()" aria-label="Close cart">&times;</button>
         </div>
         <div class="cart-items" id="cartItemsContainer">
             <div class="cart-empty">Your cart is empty</div>
@@ -1376,22 +1704,39 @@
                 <span>Total</span>
                 <span id="total">₹0</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+            <button class="btn btn-primary btn-block" onclick="checkout()" style="margin-top: 1rem;">Proceed to Checkout</button>
         </div>
     </div>
 
     <script>
         // PRODUCTS DATABASE
         const products = [
-            { id: 1, name: 'High-Protein Oats', category: 'breakfast', price: 349, original: 449, icon: '🥣', features: ['25g Protein', 'No Sugar'], badge: 'Popular' },
-            { id: 2, name: 'Protein Energy Bar', category: 'snacks', price: 99, original: 129, icon: '🍫', features: ['20g Protein', 'Clean Label'], badge: 'Best Seller' },
-            { id: 3, name: 'Protein Cold Coffee', category: 'beverages', price: 199, original: 249, icon: '☕', features: ['Instant Mix', 'Ready to Drink'], badge: '' },
-            { id: 4, name: 'Millet Breakfast Mix', category: 'breakfast', price: 299, original: 399, icon: '🌾', features: ['Gluten Free', 'High Fiber'], badge: '' },
-            { id: 5, name: 'Chocolate Nut Spread', category: 'spreads', price: 449, original: 599, icon: '🥜', features: ['80% Less Sugar', 'All Natural'], badge: 'New' },
-            { id: 6, name: 'PCOS Nutrition Pack', category: 'women', price: 999, original: 1299, icon: '👩', features: ['Doctor Approved', 'Science Backed'], badge: 'New' },
-            { id: 7, name: 'Roasted Chickpea Snack', category: 'snacks', price: 149, original: 199, icon: '🌰', features: ['15g Protein', 'Crunchy'], badge: '' },
-            { id: 8, name: 'Kids Nutrition Bites', category: 'kids', price: 249, original: 349, icon: '🍪', features: ['Zero Junk', 'Kid Approved'], badge: 'Popular' },
+            { id: 1, name: 'High-Protein Oats', category: 'breakfast', price: 349, original: 449, features: ['25g Protein', 'No Sugar'], badge: 'Popular' },
+            { id: 2, name: 'Protein Energy Bar', category: 'snacks', price: 99, original: 129, features: ['20g Protein', 'Clean Label'], badge: 'Best Seller' },
+            { id: 3, name: 'Protein Cold Coffee', category: 'beverages', price: 199, original: 249, features: ['Instant Mix', 'Ready to Drink'], badge: '' },
+            { id: 4, name: 'Millet Breakfast Mix', category: 'breakfast', price: 299, original: 399, features: ['Gluten Free', 'High Fiber'], badge: '' },
+            { id: 5, name: 'Chocolate Nut Spread', category: 'spreads', price: 449, original: 599, features: ['80% Less Sugar', 'All Natural'], badge: 'New' },
+            { id: 6, name: 'PCOS Nutrition Pack', category: 'women', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: 'New' },
+            { id: 7, name: 'Roasted Chickpea Snack', category: 'snacks', price: 149, original: 199, features: ['15g Protein', 'Crunchy'], badge: '' },
+            { id: 8, name: 'Kids Nutrition Bites', category: 'kids', price: 249, original: 349, features: ['Zero Junk', 'Kid Approved'], badge: 'Popular' },
         ];
+
+        const categoryIcons = {
+            breakfast: '<path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/>',
+            snacks: '<rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
+            beverages: '<path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/>',
+            spreads: '<rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/>',
+            women: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
+            kids: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
+        };
+
+        function categoryIcon(category) {
+            return categoryIcons[category] || categoryIcons.snacks;
+        }
+
+        function skuFor(id) {
+            return 'GU-' + String(id).padStart(2, '0');
+        }
 
         let cart = JSON.parse(localStorage.getItem('getsuCart')) || [];
 
@@ -1407,8 +1752,9 @@
             container.innerHTML = featured.map(product => `
                 <div class="product-card">
                     <div class="product-image">
-                        ${product.icon}
+                        <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                        <svg class="icon" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
                     </div>
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
@@ -1431,16 +1777,16 @@
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             const existingItem = cart.find(item => item.id === productId);
-            
+
             if (existingItem) {
                 existingItem.qty++;
             } else {
                 cart.push({ ...product, qty: 1 });
             }
-            
+
             saveCart();
             updateCartUI();
-            showNotification(`${product.name} added to cart!`);
+            showNotification(`${product.name} added to cart`);
         }
 
         function removeFromCart(productId) {
@@ -1469,7 +1815,7 @@
         function updateCartUI() {
             const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
             const countElement = document.getElementById('cartCount');
-            
+
             if (cartCount > 0) {
                 countElement.textContent = cartCount;
                 countElement.style.display = 'flex';
@@ -1491,14 +1837,14 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image">${item.icon}</div>
+                        <div class="cart-item-image"><svg class="icon" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg></div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
                             <div class="cart-item-qty">
-                                <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
-                                <span>${item.qty}</span>
-                                <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                                <button class="qty-btn" onclick="updateQty(${item.id}, -1)" aria-label="Decrease quantity">−</button>
+                                <span class="num">${item.qty}</span>
+                                <button class="qty-btn" onclick="updateQty(${item.id}, 1)" aria-label="Increase quantity">+</button>
                             </div>
                             <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
                         </div>
@@ -1520,9 +1866,9 @@
         }
 
         function checkout() {
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const tax = Math.round(total * 0.05);
-            alert(`Order Total: ₹${total + tax}\n\nIn a real website, this would redirect to payment gateway.\n\nContact: hello@getsu.com\nWhatsApp: +91-XXXXXXXXXX`);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const tax = Math.round(subtotal * 0.05);
+            alert(`Order total: ₹${subtotal + tax}\n\nIn a live store, this would continue to payment.\n\nContact: hello@getsu.com`);
             cart = [];
             saveCart();
             updateCartUI();
@@ -1534,23 +1880,21 @@
         }
 
         function openContact() {
-            document.getElementById('contactModal').style.display = 'block';
+            document.getElementById('contactModal').classList.add('open');
         }
 
         function closeContact() {
-            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactModal').classList.remove('open');
         }
 
         function submitContact(event) {
             event.preventDefault();
             const name = document.getElementById('contactName').value;
             const email = document.getElementById('contactEmail').value;
-            const phone = document.getElementById('contactPhone').value;
-            const message = document.getElementById('contactMessage').value;
-            
-            alert(`Thank you ${name}!\n\nWe've received your message and will get back to you soon.\n\nEmail: ${email}`);
+
+            alert(`Thank you, ${name}!\n\nWe've received your message and will get back to you soon.\n\nEmail: ${email}`);
             closeContact();
-            document.querySelector('form').reset();
+            event.target.reset();
         }
 
         function openSearch() {
@@ -1562,15 +1906,20 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             const results = products.filter(p => p.name.toLowerCase().includes(query) || p.category.includes(query));
             const resultsDiv = document.getElementById('searchResults');
-            
+
             if (query.length === 0) {
                 resultsDiv.innerHTML = '';
                 return;
             }
 
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div class="search-empty">No products match your search.</div>';
+                return;
+            }
+
             resultsDiv.innerHTML = results.map(p => `
                 <div class="search-result-item" onclick="addToCart(${p.id}); closeSearch()">
-                    <strong>${p.name}</strong> - ₹${p.price}
+                    <strong>${p.name}</strong> — ₹${p.price}
                 </div>
             `).join('');
         }
@@ -1586,7 +1935,7 @@
         function subscribeNewsletter() {
             const email = document.getElementById('newsletterEmail').value;
             if (email) {
-                alert(`Thanks for subscribing ${email}!\n\nCheck your inbox for a 10% discount code.`);
+                alert(`Thanks for subscribing, ${email}!\n\nCheck your inbox for a 10% discount code.`);
                 document.getElementById('newsletterEmail').value = '';
             }
         }
@@ -1607,14 +1956,12 @@
             setTimeout(() => notification.remove(), 3000);
         }
 
-        // Close search when clicking outside
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-modal') && !e.target.closest('.search-btn')) {
+            if (!e.target.closest('.search-modal') && !e.target.closest('[aria-label="Search"]')) {
                 closeSearch();
             }
         });
 
-        // Close cart when pressing Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.getElementById('cartSidebar').classList.remove('open');
