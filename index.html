@@ -29,6 +29,7 @@
             --beet: #8F3542;
             --beet-deep: #732733;
             --focus: #2D5016;
+            --on-moss: #F7F5F2;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
@@ -66,6 +67,7 @@
                 --beet: #E399A3;
                 --beet-deep: #EDB0B9;
                 --focus: #8ACC73;
+                --on-moss: #12140F;
                 --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
                 --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
                 --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
@@ -88,6 +90,7 @@
             --beet: #E399A3;
             --beet-deep: #EDB0B9;
             --focus: #8ACC73;
+            --on-moss: #12140F;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
             --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
@@ -95,6 +98,15 @@
 
         html {
             scroll-behavior: smooth;
+            /* keeps anchored sections clear of the sticky header */
+            scroll-padding-top: 108px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* locks the page behind an open overlay so touch scrolling stays in the panel */
+        body.overlay-open {
+            overflow: hidden;
+            touch-action: none;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -171,6 +183,15 @@
             top: 0;
             z-index: 100;
             box-shadow: var(--shadow-sm);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--ink);
+            padding: 0.4rem;
         }
 
         .header-left {
@@ -301,7 +322,7 @@
 
         .btn-primary {
             background: var(--moss);
-            color: #F7F5F2;
+            color: var(--on-moss);
             box-shadow: var(--shadow-sm);
         }
 
@@ -603,16 +624,40 @@
             background: var(--paper-raised);
             padding: 2.5rem;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             border: 1px solid var(--line);
             border-radius: 8px;
             box-shadow: var(--shadow-sm);
+            display: block;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+        }
+
+        .cat-count {
+            display: inline-block;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--moss);
+        }
+
+        .product-cat {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 0.4rem;
         }
 
         .product-category:hover {
-            background: var(--paper-raised);
             transform: translateY(-4px);
             box-shadow: var(--shadow-md);
+            border-color: var(--moss);
         }
 
         .cat-code {
@@ -643,6 +688,58 @@
             font-size: 14px;
             color: var(--ink-soft);
             line-height: 1.6;
+        }
+
+        /* ==================== CATEGORY FILTER ==================== */
+        .filter-bar {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.75rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--paper-raised);
+            border: 1.5px solid var(--line);
+            color: var(--ink-soft);
+            padding: 0.6rem 1.1rem;
+            border-radius: 100px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--moss);
+            color: var(--moss);
+        }
+
+        .filter-chip[aria-pressed="true"] {
+            background: var(--moss);
+            border-color: var(--moss);
+            color: var(--on-moss);
+        }
+
+        .filter-chip .count {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .shop-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--ink-faint);
+            font-size: 15px;
         }
 
         /* ==================== FEATURED PRODUCTS ==================== */
@@ -791,7 +888,7 @@
 
         .add-to-cart {
             background: var(--moss);
-            color: #F7F5F2;
+            color: var(--on-moss);
             border: none;
             padding: 0.6rem 1.1rem;
             border-radius: 5px;
@@ -1038,16 +1135,19 @@
             height: 100%;
             background-color: rgba(13, 13, 11, 0.5);
             backdrop-filter: blur(2px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 2rem 1rem;
         }
 
         .modal.open { display: block; }
 
         .modal-content {
             background-color: var(--paper);
-            margin: 8% auto;
+            margin: 0 auto;
             padding: 2.75rem;
             border-radius: 12px;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             border: 1.5px solid var(--line);
             box-shadow: var(--shadow-lg);
@@ -1154,12 +1254,18 @@
             max-width: 640px;
         }
 
+        /* the whole overlay scrolls on small screens, so the form is never trapped */
         .modal-scroll {
-            max-height: 65vh;
-            overflow-y: auto;
             padding-right: 0.5rem;
             margin: 0 -0.5rem;
             padding-left: 0.5rem;
+        }
+
+        @media (min-height: 720px) and (min-width: 769px) {
+            .modal-scroll {
+                max-height: 62vh;
+                overflow-y: auto;
+            }
         }
 
         .field-row {
@@ -1269,21 +1375,42 @@
         /* ==================== CART SIDEBAR ==================== */
         .cart-sidebar {
             position: fixed;
-            right: -450px;
+            right: 0;
             top: 0;
             width: 440px;
+            max-width: 100%;
             height: 100vh;
+            height: 100dvh;
             background: var(--paper);
             border-left: 1px solid var(--line);
             box-shadow: -8px 0 24px rgba(0,0,0,0.08);
             z-index: 150;
-            transition: right 0.3s ease;
+            /* translate instead of a negative offset: no phantom horizontal scroll */
+            transform: translateX(100%);
+            visibility: hidden;
+            transition: transform 0.3s ease, visibility 0.3s;
             display: flex;
             flex-direction: column;
         }
 
         .cart-sidebar.open {
-            right: 0;
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .cart-scrim {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 13, 11, 0.45);
+            z-index: 140;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .cart-scrim.open {
+            opacity: 1;
+            visibility: visible;
         }
 
         .cart-header {
@@ -1371,7 +1498,7 @@
 
         .qty-btn:hover {
             background: var(--moss);
-            color: #fff;
+            color: var(--on-moss);
             border-color: var(--moss);
         }
 
@@ -1436,24 +1563,54 @@
         }
 
         @media (max-width: 768px) {
+            html { scroll-padding-top: 84px; }
+
             header {
-                padding: 1rem 1.5rem;
-                flex-wrap: wrap;
-                gap: 1rem;
+                padding: 0.85rem 1.25rem;
+                gap: 0.75rem;
             }
 
-            .header-left { gap: 1rem; }
+            .header-left { gap: 0.75rem; }
+            .logo { font-size: 22px; }
+            .tagline { font-size: 9.5px; }
 
+            .menu-toggle { display: flex; }
+
+            /* nav leaves the header's flow entirely, so the sticky bar stays short */
             nav {
-                order: 3;
-                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
                 flex-direction: column;
-                gap: 0.85rem;
-                border-top: 1px solid var(--line);
-                padding-top: 1rem;
+                gap: 0;
+                background: var(--paper);
+                border-bottom: 1px solid var(--line);
+                box-shadow: var(--shadow-md);
+                padding: 0.5rem 1.25rem 1rem;
+                transform: translateY(-8px);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
             }
 
-            .header-right { order: 2; }
+            nav.open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            nav a {
+                padding: 0.9rem 0;
+                font-size: 15px;
+                border-bottom: 1px solid var(--line);
+            }
+
+            nav a:last-child { border-bottom: none; }
+            nav a::after { display: none; }
+
+            .header-right { gap: 0.5rem; }
+            .header-right .btn { padding: 0.65rem 1rem; font-size: 13px; }
 
             .hero { padding: 2.5rem 1.5rem; }
             .hero h1 { font-size: 2rem; }
@@ -1463,7 +1620,23 @@
             .section { padding: 3rem 1.5rem; }
             .section-head { grid-template-columns: 1fr; gap: 0.5rem; }
 
-            .featured-products,
+            /* two-up keeps the shop feeling like a shop on a phone */
+            .featured-products { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .product-info { padding: 1rem; }
+            .product-name { font-size: 15px; }
+            .product-description { display: none; }
+            .product-features {
+                margin-bottom: 0.9rem;
+                gap: 0.3rem;
+                font-size: 10px;
+            }
+
+            .product-features span { padding: 3px 7px; }
+            .product-image .icon { width: 30%; height: 30%; }
+            .product-price { font-size: 16px; }
+            .product-footer { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+            .add-to-cart { width: 100%; padding: 0.6rem; }
+
             .products-grid,
             .values-grid,
             .stats,
@@ -1471,13 +1644,26 @@
                 grid-template-columns: 1fr;
             }
 
+            /* chips scroll sideways instead of stacking into a wall */
+            .filter-bar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                margin-left: -1.5rem;
+                margin-right: -1.5rem;
+                padding: 0 1.5rem 1.25rem;
+            }
+
+            .filter-bar::-webkit-scrollbar { display: none; }
+
             .problem-solution { grid-template-columns: 1fr; }
             .stat-card { border-left: none; border-top: 1px solid var(--line); }
             .stat-card:first-child { border-top: none; }
 
-            .cart-sidebar { width: 100%; right: -100%; }
-            .modal-content { width: 95%; margin: 18% auto; }
-            .modal-content.wide { margin: 10% auto; }
+            .cart-sidebar { width: 100%; }
+            .modal { padding: 1rem 0.75rem 2rem; }
+            .modal-content { padding: 1.75rem 1.5rem; border-radius: 14px; }
             .newsletter { flex-direction: column; align-items: stretch; text-align: left; }
             .field-row, .field-row.three { grid-template-columns: 1fr; }
         }
@@ -1561,7 +1747,7 @@
             bottom: 2rem;
             right: 2rem;
             background: var(--moss);
-            color: #F7F5F2;
+            color: var(--on-moss);
             padding: 1rem 1.75rem;
             border-radius: 8px;
             box-shadow: var(--shadow-lg);
@@ -1588,11 +1774,11 @@
                     <div class="tagline">Made For You</div>
                 </div>
             </button>
-            <nav>
-                <a href="#why">Why GetsU</a>
-                <a href="#products">Products</a>
-                <a href="#values">Values</a>
-                <a href="#contact">Contact</a>
+            <nav id="mainNav">
+                <a href="#why" onclick="closeMenu()">Why GetsU</a>
+                <a href="#products" onclick="closeMenu()">Shop</a>
+                <a href="#values" onclick="closeMenu()">Values</a>
+                <a href="#contact" onclick="closeMenu()">Contact</a>
             </nav>
         </div>
         <div class="header-right">
@@ -1604,6 +1790,9 @@
                 <span class="cart-count" id="cartCount" style="display: none;">0</span>
             </button>
             <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
         </div>
     </header>
 
@@ -1702,11 +1891,12 @@
         <div class="section-head">
             <span class="tag">§ 02</span>
             <div>
-                <h2>Featured products</h2>
-                <p class="section-subtitle">Handpicked to fit seamlessly into your daily routine — from the first bite of breakfast to your last snack.</p>
+                <h2>Shop the range</h2>
+                <p class="section-subtitle">Every product we make, in one place. Filter by what you're after — breakfast, snacks, drinks, or nutrition built for a specific need.</p>
             </div>
         </div>
 
+        <div class="filter-bar" id="filterBar" role="group" aria-label="Filter products by category"></div>
         <div class="featured-products" id="featuredProducts"></div>
     </section>
 
@@ -1720,44 +1910,7 @@
             </div>
         </div>
 
-        <div class="products-grid">
-            <div class="product-category">
-                <span class="cat-code">CAT. 01</span>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/><line x1="9" y1="4" x2="8" y2="7"/><line x1="15" y1="4" x2="16" y2="7"/></svg>
-                <h4>Breakfast Foods</h4>
-                <p>High-protein oats, pancake premix, and millet mixes to start your day right.</p>
-            </div>
-            <div class="product-category">
-                <span class="cat-code">CAT. 02</span>
-                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/></svg>
-                <h4>Healthy Snacks</h4>
-                <p>Protein bars, energy bars, roasted snacks, cookies, and biscuits.</p>
-            </div>
-            <div class="product-category">
-                <span class="cat-code">CAT. 03</span>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/><path d="M15 8l3 1v3l-3 -1"/></svg>
-                <h4>Functional Beverages</h4>
-                <p>Protein cold coffee, nutrition drinks, and ready-to-drink beverages.</p>
-            </div>
-            <div class="product-category">
-                <span class="cat-code">CAT. 04</span>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M5 11a7 7 0 0 1 14 0v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><line x1="5" y1="14" x2="19" y2="14"/></svg>
-                <h4>Ready-to-Eat</h4>
-                <p>Instant porridges, snack cups, and nutrition bowls for busy days.</p>
-            </div>
-            <div class="product-category">
-                <span class="cat-code">CAT. 05</span>
-                <svg class="icon" viewBox="0 0 24 24"><rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/></svg>
-                <h4>Healthy Spreads</h4>
-                <p>Chocolate and nut spreads with better ingredients and less sugar.</p>
-            </div>
-            <div class="product-category">
-                <span class="cat-code">CAT. 06</span>
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>
-                <h4>Specialized Nutrition</h4>
-                <p>Women's health, kids nutrition, and sports nutrition products.</p>
-            </div>
-        </div>
+        <div class="products-grid" id="categoryGrid"></div>
     </section>
 
     <!-- VALUES SECTION -->
@@ -1830,7 +1983,7 @@
                 <p>Subscribe for new products, special offers, and nutrition tips.</p>
             </div>
             <div class="newsletter-form">
-                <input type="email" placeholder="Enter your email" id="newsletterEmail">
+                <input type="email" inputmode="email" autocapitalize="off" placeholder="Enter your email" id="newsletterEmail">
                 <button class="btn btn-accent" onclick="subscribeNewsletter()">Subscribe</button>
             </div>
         </div>
@@ -1908,11 +2061,11 @@
                 </div>
                 <div class="form-group">
                     <label for="contactEmail">Email</label>
-                    <input type="email" id="contactEmail" required>
+                    <input type="email" id="contactEmail" inputmode="email" autocapitalize="off" required>
                 </div>
                 <div class="form-group">
                     <label for="contactPhone">Phone (optional)</label>
-                    <input type="tel" id="contactPhone">
+                    <input type="tel" id="contactPhone" inputmode="numeric" autocomplete="tel">
                 </div>
                 <div class="form-group">
                     <label for="contactMessage">Message</label>
@@ -1936,40 +2089,40 @@
                 <form id="checkoutForm" onsubmit="submitCheckout(event)" novalidate>
                     <div class="form-group" id="fld-ckName">
                         <label for="ckName">Full name</label>
-                        <input type="text" id="ckName" required>
+                        <input type="text" id="ckName" autocomplete="name" required>
                         <div class="form-error">Please enter your name.</div>
                     </div>
                     <div class="field-row">
                         <div class="form-group" id="fld-ckPhone">
                             <label for="ckPhone">Phone number</label>
-                            <input type="tel" id="ckPhone" placeholder="10-digit mobile number" required>
+                            <input type="tel" id="ckPhone" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="10-digit mobile number" required>
                             <div class="form-error">Enter a valid 10-digit phone number.</div>
                         </div>
                         <div class="form-group" id="fld-ckEmail">
                             <label for="ckEmail">Email</label>
-                            <input type="email" id="ckEmail" required>
+                            <input type="email" id="ckEmail" inputmode="email" autocomplete="email" autocapitalize="off" required>
                             <div class="form-error">Enter a valid email address.</div>
                         </div>
                     </div>
                     <div class="form-group" id="fld-ckAddress">
                         <label for="ckAddress">Delivery address</label>
-                        <input type="text" id="ckAddress" placeholder="House no., street, area" required>
+                        <input type="text" id="ckAddress" autocomplete="street-address" placeholder="House no., street, area" required>
                         <div class="form-error">Please enter your delivery address.</div>
                     </div>
                     <div class="field-row three">
                         <div class="form-group" id="fld-ckCity">
                             <label for="ckCity">City</label>
-                            <input type="text" id="ckCity" required>
+                            <input type="text" id="ckCity" autocomplete="address-level2" required>
                             <div class="form-error">Required.</div>
                         </div>
                         <div class="form-group" id="fld-ckState">
                             <label for="ckState">State</label>
-                            <input type="text" id="ckState" required>
+                            <input type="text" id="ckState" autocomplete="address-level1" required>
                             <div class="form-error">Required.</div>
                         </div>
                         <div class="form-group" id="fld-ckPincode">
                             <label for="ckPincode">Pincode</label>
-                            <input type="text" id="ckPincode" placeholder="6-digit" required>
+                            <input type="text" id="ckPincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" placeholder="6-digit" required>
                             <div class="form-error">Enter a valid 6-digit pincode.</div>
                         </div>
                     </div>
@@ -2015,6 +2168,7 @@
     </div>
 
     <!-- CART SIDEBAR -->
+    <div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2>Your cart</h2>
@@ -2050,30 +2204,81 @@
         const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
 
-        // PRODUCTS DATABASE
-        const products = [
-            { id: 1, name: 'High-Protein Oats', category: 'breakfast', price: 349, original: 449, features: ['25g Protein', 'No Sugar'], badge: 'Popular' },
-            { id: 2, name: 'Protein Energy Bar', category: 'snacks', price: 99, original: 129, features: ['20g Protein', 'Clean Label'], badge: 'Best Seller' },
-            { id: 3, name: 'Protein Cold Coffee', category: 'beverages', price: 199, original: 249, features: ['Instant Mix', 'Ready to Drink'], badge: '' },
-            { id: 4, name: 'Millet Breakfast Mix', category: 'breakfast', price: 299, original: 399, features: ['Gluten Free', 'High Fiber'], badge: '' },
-            { id: 5, name: 'Chocolate Nut Spread', category: 'spreads', price: 449, original: 599, features: ['80% Less Sugar', 'All Natural'], badge: 'New' },
-            { id: 6, name: 'PCOS Nutrition Pack', category: 'women', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: 'New' },
-            { id: 7, name: 'Roasted Chickpea Snack', category: 'snacks', price: 149, original: 199, features: ['15g Protein', 'Crunchy'], badge: '' },
-            { id: 8, name: 'Kids Nutrition Bites', category: 'kids', price: 249, original: 349, features: ['Zero Junk', 'Kid Approved'], badge: 'Popular' },
+        // CATEGORIES — order here drives the filter bar and the catalog grid
+        const CATEGORIES = [
+            {
+                key: 'breakfast',
+                label: 'Breakfast',
+                blurb: 'High-protein oats, millet mixes, and pancake premix to start the day right.',
+                icon: '<path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/><line x1="9" y1="4" x2="8" y2="7"/><line x1="15" y1="4" x2="16" y2="7"/>',
+            },
+            {
+                key: 'snacks',
+                label: 'Snacks',
+                blurb: 'Protein bars, roasted crunchies, and cookies that hold up between meals.',
+                icon: '<rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
+            },
+            {
+                key: 'beverages',
+                label: 'Drinks',
+                blurb: 'Protein cold coffee and functional mixes — shake, sip, done.',
+                icon: '<path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/><path d="M15 8l3 1v3l-3-1"/>',
+            },
+            {
+                key: 'ready',
+                label: 'Ready-to-Eat',
+                blurb: 'Instant porridges and nutrition bowls for days with no time to cook.',
+                icon: '<path d="M5 11a7 7 0 0 1 14 0v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><line x1="5" y1="14" x2="19" y2="14"/>',
+            },
+            {
+                key: 'spreads',
+                label: 'Spreads',
+                blurb: 'Chocolate and nut spreads with a fraction of the sugar.',
+                icon: '<rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/>',
+            },
+            {
+                key: 'specialized',
+                label: 'Specialized',
+                blurb: "Women's health, kids' nutrition, and sports formulations.",
+                icon: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
+            },
         ];
 
-        const categoryIcons = {
-            breakfast: '<path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/>',
-            snacks: '<rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
-            beverages: '<path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/>',
-            spreads: '<rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/>',
-            women: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
-            kids: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
-        };
+        // PRODUCTS DATABASE
+        const products = [
+            { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' },
+            { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' },
+            { id: 9,  name: 'Protein Pancake Premix', category: 'breakfast',   price: 379, original: 479,  features: ['18g Protein', 'Just Add Water'],  badge: '',            desc: 'Fluffy pancakes without the sugar crash. Just add water and cook.' },
+
+            { id: 2,  name: 'Protein Energy Bar',     category: 'snacks',      price: 99,  original: 129,  features: ['20g Protein', 'Clean Label'],     badge: 'Best Seller', desc: 'Dates, whey, and roasted nuts. Six ingredients, nothing hidden.' },
+            { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' },
+            { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' },
+
+            { id: 3,  name: 'Protein Cold Coffee',    category: 'beverages',   price: 199, original: 249,  features: ['Instant Mix', '15g Protein'],     badge: '',            desc: 'Real coffee and whey in one shaker. Cold, smooth, not chalky.' },
+            { id: 11, name: 'Berry Recovery Shake',   category: 'beverages',   price: 279, original: 349,  features: ['Post-Workout', 'No Additives'],   badge: 'New',         desc: 'Freeze-dried berries and protein for the half hour after training.' },
+
+            { id: 12, name: 'Instant Protein Porridge', category: 'ready',     price: 229, original: 299,  features: ['3-Min Prep', '16g Protein'],      badge: '',            desc: 'Hot, savoury porridge in one cup. Pour water, wait, eat.' },
+            { id: 13, name: 'Quinoa Nutrition Bowl',  category: 'ready',       price: 299, original: 379,  features: ['Complete Meal', 'High Fiber'],    badge: 'New',         desc: 'Quinoa, lentils, and vegetables in a single-serve bowl.' },
+
+            { id: 5,  name: 'Chocolate Nut Spread',   category: 'spreads',     price: 449, original: 599,  features: ['80% Less Sugar', 'All Natural'],  badge: 'Popular',     desc: 'Cocoa and hazelnut, sweetened lightly. Nothing artificial.' },
+            { id: 14, name: 'Peanut Protein Spread',  category: 'spreads',     price: 349, original: 449,  features: ['30g Protein', 'No Palm Oil'],     badge: '',            desc: 'Stone-ground peanuts with added whey. No palm oil, no sugar.' },
+
+            { id: 6,  name: 'PCOS Nutrition Pack',    category: 'specialized', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: '',         desc: 'A 30-day pack formulated with nutritionists for PCOS support.' },
+            { id: 8,  name: 'Kids Nutrition Bites',   category: 'specialized', price: 249, original: 349,  features: ['Zero Junk', 'Kid Approved'],      badge: 'Popular',     desc: 'Bite-sized, lunchbox-safe, and genuinely liked by children.' },
+            { id: 15, name: 'Sports Protein Blend',   category: 'specialized', price: 1499, original: 1899, features: ['27g Protein', 'No Fillers'],     badge: '',            desc: 'Unflavoured whey isolate. One ingredient, third-party tested.' },
+        ];
 
         function categoryIcon(category) {
-            return categoryIcons[category] || categoryIcons.snacks;
+            const cat = CATEGORIES.find(c => c.key === category);
+            return cat ? cat.icon : CATEGORIES[1].icon;
         }
+
+        function categoryLabel(category) {
+            const cat = CATEGORIES.find(c => c.key === category);
+            return cat ? cat.label : '';
+        }
+
+        let activeCategory = 'all';
 
         function skuFor(id) {
             return 'GU-' + String(id).padStart(2, '0');
@@ -2083,14 +2288,65 @@
 
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
-            renderFeaturedProducts();
+            renderFilterBar();
+            renderCategoryGrid();
+            renderProducts();
             updateCartUI();
         });
 
-        function renderFeaturedProducts() {
-            const featured = products.slice(0, 4);
+        function countIn(key) {
+            return key === 'all' ? products.length : products.filter(p => p.category === key).length;
+        }
+
+        function renderFilterBar() {
+            const chips = [{ key: 'all', label: 'Everything' }].concat(CATEGORIES);
+            document.getElementById('filterBar').innerHTML = chips.map(c => `
+                <button class="filter-chip" role="button" aria-pressed="${c.key === activeCategory}"
+                        onclick="setCategory('${c.key}')">
+                    ${c.label}<span class="count">${countIn(c.key)}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderCategoryGrid() {
+            document.getElementById('categoryGrid').innerHTML = CATEGORIES.map((c, i) => `
+                <button class="product-category" onclick="setCategory('${c.key}', true)"
+                        aria-label="Show ${c.label} products">
+                    <span class="cat-code">CAT. ${String(i + 1).padStart(2, '0')}</span>
+                    <svg class="icon" viewBox="0 0 24 24">${c.icon}</svg>
+                    <h4>${c.label}</h4>
+                    <p>${c.blurb}</p>
+                    <span class="cat-count">${countIn(c.key)} product${countIn(c.key) === 1 ? '' : 's'}</span>
+                </button>
+            `).join('');
+        }
+
+        function setCategory(key, scroll) {
+            activeCategory = key;
+            renderFilterBar();
+            renderProducts();
+
+            // keep the selected chip in view when the bar scrolls sideways on a phone
+            const active = document.querySelector('.filter-chip[aria-pressed="true"]');
+            if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+
+            if (scroll) {
+                document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function renderProducts() {
+            const list = activeCategory === 'all'
+                ? products
+                : products.filter(p => p.category === activeCategory);
             const container = document.getElementById('featuredProducts');
-            container.innerHTML = featured.map(product => `
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="shop-empty">Nothing in this category yet — check back soon.</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(product => `
                 <div class="product-card">
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
@@ -2098,8 +2354,9 @@
                         <svg class="icon" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
                     </div>
                     <div class="product-info">
+                        <div class="product-cat">${categoryLabel(product.category)}</div>
                         <div class="product-name">${product.name}</div>
-                        <div class="product-description">Delicious, nutritious, and designed for everyday use.</div>
+                        <div class="product-description">${product.desc}</div>
                         <div class="product-features">
                             ${product.features.map(f => `<span>${f}</span>`).join('')}
                         </div>
@@ -2202,8 +2459,54 @@
             cartSummary.style.display = 'block';
         }
 
+        // ==================== OVERLAY / SCROLL LOCK ====================
+        // Any open panel locks the page behind it, so a swipe scrolls the panel, not the site.
+        function syncScrollLock() {
+            const open = document.querySelector('.modal.open')
+                || document.getElementById('cartSidebar').classList.contains('open')
+                || document.getElementById('searchModal').classList.contains('open');
+            document.body.classList.toggle('overlay-open', !!open);
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+            syncScrollLock();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+            syncScrollLock();
+        }
+
+        function openCart() {
+            document.getElementById('cartSidebar').classList.add('open');
+            document.getElementById('cartScrim').classList.add('open');
+            syncScrollLock();
+        }
+
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.remove('open');
+            document.getElementById('cartScrim').classList.remove('open');
+            syncScrollLock();
+        }
+
         function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('open');
+            if (document.getElementById('cartSidebar').classList.contains('open')) {
+                closeCart();
+            } else {
+                openCart();
+            }
+        }
+
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            const isOpen = nav.classList.toggle('open');
+            document.getElementById('menuToggle').setAttribute('aria-expanded', String(isOpen));
+        }
+
+        function closeMenu() {
+            document.getElementById('mainNav').classList.remove('open');
+            document.getElementById('menuToggle').setAttribute('aria-expanded', 'false');
         }
 
         // ==================== CHECKOUT ====================
@@ -2227,12 +2530,12 @@
                 <div class="order-mini-item"><span>Shipping</span><span>Free</span></div>
                 <div class="order-mini-total"><span>Total</span><span>₹${total}</span></div>
             `;
-            document.getElementById('cartSidebar').classList.remove('open');
-            document.getElementById('checkoutModal').classList.add('open');
+            closeCart();
+            openModal('checkoutModal');
         }
 
         function closeCheckout() {
-            document.getElementById('checkoutModal').classList.remove('open');
+            closeModal('checkoutModal');
         }
 
         function setFieldError(fieldId, isInvalid) {
@@ -2303,23 +2606,23 @@
             const subject = `GetsU Order ${order.id}`;
             document.getElementById('confirmEmailBtn').href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-            document.getElementById('confirmationModal').classList.add('open');
+            openModal('confirmationModal');
         }
 
         function closeConfirmation() {
-            document.getElementById('confirmationModal').classList.remove('open');
+            closeModal('confirmationModal');
         }
 
         function openShop() {
-            document.getElementById('cartSidebar').classList.add('open');
+            openCart();
         }
 
         function openContact() {
-            document.getElementById('contactModal').classList.add('open');
+            openModal('contactModal');
         }
 
         function closeContact() {
-            document.getElementById('contactModal').classList.remove('open');
+            closeModal('contactModal');
         }
 
         function submitContact(event) {
@@ -2401,15 +2704,16 @@
             if (!policy) return;
             document.getElementById('policyTitle').textContent = policy.title;
             document.getElementById('policyBody').innerHTML = policy.body;
-            document.getElementById('policyModal').classList.add('open');
+            openModal('policyModal');
         }
 
         function closePolicy() {
-            document.getElementById('policyModal').classList.remove('open');
+            closeModal('policyModal');
         }
 
         function openSearch() {
             document.getElementById('searchModal').classList.add('open');
+            syncScrollLock();
             document.getElementById('searchInput').focus();
         }
 
@@ -2437,6 +2741,7 @@
 
         function closeSearch() {
             document.getElementById('searchModal').classList.remove('open');
+            syncScrollLock();
         }
 
         document.getElementById('searchModal').addEventListener('click', function(e) {
@@ -2444,11 +2749,15 @@
         });
 
         function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value;
-            if (email) {
-                alert(`Thanks for subscribing, ${email}!\n\nCheck your inbox for a 10% discount code.`);
-                document.getElementById('newsletterEmail').value = '';
+            const input = document.getElementById('newsletterEmail');
+            const email = input.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('Enter a valid email address to subscribe.');
+                input.focus();
+                return;
             }
+            showNotification("You're on the list — we'll send your 10% code shortly.");
+            input.value = '';
         }
 
         function scrollToSection(id) {
@@ -2471,17 +2780,21 @@
             if (!e.target.closest('.search-modal') && !e.target.closest('[aria-label="Search"]')) {
                 closeSearch();
             }
+            if (!e.target.closest('#mainNav') && !e.target.closest('#menuToggle')) {
+                closeMenu();
+            }
         });
 
         document.querySelectorAll('.modal').forEach(function(modal) {
             modal.addEventListener('click', function(e) {
-                if (e.target === modal) modal.classList.remove('open');
+                if (e.target === modal) { modal.classList.remove('open'); syncScrollLock(); }
             });
         });
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                document.getElementById('cartSidebar').classList.remove('open');
+                closeCart();
+                closeMenu();
                 document.querySelectorAll('.modal.open').forEach(m => m.classList.remove('open'));
                 closeSearch();
             }
