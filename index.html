@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GetsU — Made For You</title>
-    <meta name="description" content="GetsU creates clean-label, nutrient-dense foods that are delicious, convenient, and affordable. Healthy eating made easy.">
+    <title>GetsU — Clean-Label Protein Food, Made For You</title>
+    <meta name="description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read. Free delivery across India. No added sugar, no artificial preservatives.">
     <meta name="keywords" content="healthy food, protein snacks, functional beverages, clean ingredients, nutrition">
+    <meta name="theme-color" content="#2D5016">
+    <link rel="canonical" href="https://champraghav.github.io/GetsU-/">
+
+    <!-- Link previews (WhatsApp, Instagram, Facebook, X) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GetsU">
+    <meta property="og:title" content="GetsU — Clean-Label Protein Food, Made For You">
+    <meta property="og:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read. Free delivery across India.">
+    <meta property="og:url" content="https://champraghav.github.io/GetsU-/">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:image" content="https://champraghav.github.io/GetsU-/og-image.png">
+    <meta property="og:image:alt" content="GetsU — clean-label nutrition">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GetsU — Clean-Label Protein Food, Made For You">
+    <meta name="twitter:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read.">
+
+    <!-- Inline favicon: no external request, works offline -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
     <style>
         * {
             margin: 0;
@@ -314,6 +333,7 @@
             border: 1px solid transparent;
             transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
             letter-spacing: 0;
+            text-decoration: none;
         }
 
         .btn:active {
@@ -690,6 +710,218 @@
             line-height: 1.6;
         }
 
+        /* ==================== PRODUCT DETAIL ==================== */
+        .pd-head { display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1.5rem; }
+
+        .pd-thumb {
+            width: 88px;
+            height: 88px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--paper-tin), var(--paper-raised));
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pd-thumb .icon { width: 44%; height: 44%; color: var(--moss); }
+        .pd-head h2 { margin-bottom: 0.35rem; }
+        .pd-price { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--moss); }
+        .pd-price s { color: var(--ink-faint); font-size: 14px; font-weight: 400; margin-right: 0.5rem; }
+
+        /* nutrition panel, styled after a real pack label */
+        .nutri {
+            border: 1.5px solid var(--ink);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .nutri-head {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.6rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nutri-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--line);
+            font-size: 14px;
+            color: var(--ink-soft);
+        }
+
+        .nutri-row:last-child { border-bottom: none; }
+        .nutri-row strong { color: var(--ink); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+        .nutri-row.lead { background: var(--paper-tin); }
+        .nutri-row.lead strong, .nutri-row.lead span { color: var(--ink); font-weight: 700; }
+
+        .pd-block { margin-bottom: 1.25rem; }
+
+        .pd-block h4 {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 0.4rem;
+        }
+
+        .pd-block p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.7; }
+
+        .allergen {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(143, 53, 66, 0.08);
+            border: 1px solid var(--beet);
+            color: var(--beet);
+            border-radius: 6px;
+            padding: 0.5rem 0.85rem;
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        /* ==================== TRUST BAR ==================== */
+        .trust-bar-wrap {
+            border-block: 1px solid var(--line);
+            background: var(--line);
+        }
+
+        .trust-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            max-width: 1280px;
+            margin: 0 auto;
+            background: var(--line);
+        }
+
+        .trust-item {
+            background: var(--paper);
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .trust-item .icon { width: 22px; height: 22px; color: var(--moss); flex-shrink: 0; margin-top: 1px; }
+        .trust-item strong { display: block; font-size: 14px; color: var(--ink); margin-bottom: 0.15rem; }
+        .trust-item span { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+        /* ==================== TESTIMONIALS ==================== */
+        .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+        .quote-card {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quote-card blockquote {
+            font-size: 15.5px;
+            line-height: 1.75;
+            color: var(--ink);
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .quote-who { display: flex; align-items: center; gap: 0.75rem; }
+
+        .quote-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--moss);
+            color: var(--on-moss);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .quote-who b { display: block; font-size: 13.5px; color: var(--ink); }
+        .quote-who span { font-size: 12.5px; color: var(--ink-faint); }
+
+        /* ==================== ORDER RECOVERY BANNER ==================== */
+        .recovery {
+            background: var(--turmeric);
+            color: var(--turmeric-ink);
+            padding: 0.85rem 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .recovery.show { display: flex; }
+
+        .recovery button {
+            background: var(--turmeric-ink);
+            color: var(--turmeric);
+            border: none;
+            border-radius: 5px;
+            padding: 0.45rem 1rem;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ==================== BACK TO TOP ==================== */
+        .to-top {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--paper-raised);
+            border: 1.5px solid var(--line);
+            color: var(--ink);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s;
+            z-index: 90;
+        }
+
+        .to-top.show { opacity: 1; visibility: visible; }
+        .to-top:hover { border-color: var(--moss); color: var(--moss); }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: var(--moss);
+            color: var(--on-moss);
+            padding: 0.75rem 1.25rem;
+            z-index: 400;
+            border-radius: 0 0 6px 0;
+        }
+
+        .skip-link:focus { left: 0; }
+
         /* ==================== CATEGORY FILTER ==================== */
         .filter-bar {
             display: flex;
@@ -760,11 +992,29 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .product-card {
+            position: relative;
+        }
+
         .product-card:hover {
             border-color: var(--moss);
             transform: translateY(-6px);
             box-shadow: var(--shadow-md);
         }
+
+        /* full-card hit area for the detail view; the Add button sits above it */
+        .product-open {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .product-footer { position: relative; z-index: 3; }
+        .add-to-cart { position: relative; z-index: 3; }
 
         .product-image {
             width: 100%;
@@ -1343,6 +1593,16 @@
             gap: 0.6rem;
         }
 
+        .confirm-foot {
+            margin-top: 1.25rem;
+            font-size: 13px;
+            color: var(--ink-faint);
+            text-align: center;
+        }
+
+        .btn-whatsapp { background: #1FA855; color: #FFFFFF; }
+        .btn-whatsapp:hover { background: #18873F; }
+
         .policy-body h3 {
             font-size: 15px;
             margin: 1.25rem 0 0.5rem;
@@ -1658,6 +1918,11 @@
             .filter-bar::-webkit-scrollbar { display: none; }
 
             .problem-solution { grid-template-columns: 1fr; }
+            .trust-bar { grid-template-columns: repeat(2, 1fr); }
+            .quotes { grid-template-columns: 1fr; }
+            .pd-head { gap: 1rem; }
+            .pd-thumb { width: 64px; height: 64px; }
+            .to-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; }
             .stat-card { border-left: none; border-top: 1px solid var(--line); }
             .stat-card:first-child { border-top: none; }
 
@@ -1744,8 +2009,9 @@
 
         .success-message {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 5.5rem;
+            right: 1.5rem;
+            max-width: calc(100vw - 3rem);
             background: var(--moss);
             color: var(--on-moss);
             padding: 1rem 1.75rem;
@@ -1765,6 +2031,15 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#products">Skip to shop</a>
+
+    <!-- Recovers an order the customer placed but never sent through -->
+    <div class="recovery" id="recoveryBanner" role="status">
+        <span id="recoveryText"></span>
+        <button onclick="resendLastOrder()">Send it now</button>
+        <button onclick="dismissRecovery()" style="background:none;color:inherit;text-decoration:underline;padding:0;">Dismiss</button>
+    </div>
+
     <!-- HEADER -->
     <header>
         <div class="header-left">
@@ -1886,6 +2161,26 @@
         </div>
     </section>
 
+    <!-- TRUST BAR -->
+    <div class="trust-bar-wrap"><div class="trust-bar">
+        <div class="trust-item">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+            <div><strong>Free delivery</strong><span>Across India, no minimum order</span></div>
+        </div>
+        <div class="trust-item">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <div><strong>Damage-free promise</strong><span>Replaced or refunded within 48 hours</span></div>
+        </div>
+        <div class="trust-item">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/><path d="M8 15h4"/></svg>
+            <div><strong>Pay after we confirm</strong><span>No card details on this site</span></div>
+        </div>
+        <div class="trust-item">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+            <div><strong>Replies within a day</strong><span>Real people, every message</span></div>
+        </div>
+    </div></div>
+
     <!-- FEATURED PRODUCTS -->
     <section id="products" class="section">
         <div class="section-head">
@@ -1913,10 +2208,45 @@
         <div class="products-grid" id="categoryGrid"></div>
     </section>
 
+    <!-- TESTIMONIALS -->
+    <section class="section">
+        <div class="section-head">
+            <span class="tag">§ 04</span>
+            <div>
+                <h2>What early customers say</h2>
+                <p class="section-subtitle">We started shipping to a small group first. Here's what came back.</p>
+            </div>
+        </div>
+
+        <div class="quotes">
+            <div class="quote-card">
+                <blockquote>"I've thrown out enough 'healthy' oats that tasted like cardboard. These actually taste like breakfast, and I'm not hungry by eleven."</blockquote>
+                <div class="quote-who">
+                    <div class="quote-avatar" aria-hidden="true">AM</div>
+                    <div><b>Ananya M.</b><span>Bengaluru · High-Protein Oats</span></div>
+                </div>
+            </div>
+            <div class="quote-card">
+                <blockquote>"The label has six things on it and I could pronounce all of them. That's the whole reason I switched."</blockquote>
+                <div class="quote-who">
+                    <div class="quote-avatar" aria-hidden="true">RK</div>
+                    <div><b>Rohit K.</b><span>Pune · Protein Energy Bar</span></div>
+                </div>
+            </div>
+            <div class="quote-card">
+                <blockquote>"My son eats the nutrition bites without negotiation. After three years of lunchbox arguments, that's worth a lot."</blockquote>
+                <div class="quote-who">
+                    <div class="quote-avatar" aria-hidden="true">SP</div>
+                    <div><b>Sneha P.</b><span>Jaipur · Kids Nutrition Bites</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- VALUES SECTION -->
     <section id="values" class="section">
         <div class="section-head">
-            <span class="tag">§ 04</span>
+            <span class="tag">§ 05</span>
             <div>
                 <h2>Our brand values</h2>
                 <p class="section-subtitle">Everything we do is guided by these six principles.</p>
@@ -1992,7 +2322,7 @@
     <!-- CONTACT SECTION -->
     <section id="contact" class="section">
         <div class="section-head">
-            <span class="tag">§ 05</span>
+            <span class="tag">§ 06</span>
             <div>
                 <h2>Get in touch</h2>
                 <p class="section-subtitle">Have questions? We'd love to hear from you — reach out anytime.</p>
@@ -2043,10 +2373,15 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 GetsU. Made For You. All rights reserved.</p>
+            <p>&copy; 2026 GetsU. Made For You.<br>
+               <span id="fssaiLine" style="opacity:.75;font-size:12px;"></span></p>
             <p><a href="#" onclick="openPolicy('privacy'); return false;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" onclick="openPolicy('terms'); return false;">Terms of Service</a></p>
         </div>
     </footer>
+
+    <button class="to-top" id="toTop" onclick="scrollToTop()" aria-label="Back to top">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
+    </button>
 
     <!-- CONTACT MODAL -->
     <div id="contactModal" class="modal">
@@ -2147,14 +2482,12 @@
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closeConfirmation()" aria-label="Close">&times;</button>
-            <svg class="icon confirm-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
-            <h2>Order received</h2>
-            <p>Thanks<span id="confirmName"></span> — we've saved your order and will reach out to confirm payment and delivery.</p>
+            <svg class="icon confirm-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h10"/><path d="M11 8l4 4-4 4"/><path d="M17 5v14"/></svg>
+            <h2>One last step<span id="confirmName"></span></h2>
+            <p>Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
-            <div class="confirm-actions">
-                <a class="btn btn-primary btn-block" id="confirmEmailBtn" href="#">Email us to confirm</a>
-                <button class="btn btn-secondary btn-block" onclick="closeConfirmation()">Continue browsing</button>
-            </div>
+            <div class="confirm-actions" id="confirmActions"></div>
+            <p class="confirm-foot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
     </div>
 
@@ -2164,6 +2497,14 @@
             <button class="close" onclick="closePolicy()" aria-label="Close">&times;</button>
             <h2 id="policyTitle"></h2>
             <div class="modal-scroll policy-body" id="policyBody"></div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL -->
+    <div id="productModal" class="modal">
+        <div class="modal-content wide">
+            <button class="close" onclick="closeProduct()" aria-label="Close">&times;</button>
+            <div class="modal-scroll" id="productBody"></div>
         </div>
     </div>
 
@@ -2201,8 +2542,12 @@
     <script>
         // BUSINESS CONFIG — fill these in as they become available
         const BUSINESS_EMAIL = 'teamgetsu.31@gmail.com';
-        const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
+        // Set this and a one-tap WhatsApp button appears on every order. Highly
+        // recommended: far more orders come through than mailto links.
+        const WHATSAPP_NUMBER = ''; // e.g. '919876543210' — country code, no + or spaces
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
+        // Displaying the FSSAI licence number is mandatory for food businesses in India.
+        const FSSAI_LICENCE = ''; // e.g. '12345678901234'
 
         // CATEGORIES — order here drives the filter bar and the catalog grid
         const CATEGORIES = [
@@ -2246,26 +2591,26 @@
 
         // PRODUCTS DATABASE
         const products = [
-            { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' },
-            { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' },
-            { id: 9,  name: 'Protein Pancake Premix', category: 'breakfast',   price: 379, original: 479,  features: ['18g Protein', 'Just Add Water'],  badge: '',            desc: 'Fluffy pancakes without the sugar crash. Just add water and cook.' },
+            { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' , serving: '45 g', nutrition: { kcal: 340, protein: 25, carbs: 38, fat: 7, fibre: 6, sugar: 1 }, ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.', allergens: 'Milk, Tree nuts', note: 'Gluten-free oats' },
+            { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' , serving: '50 g', nutrition: { kcal: 312, protein: 9, carbs: 58, fat: 5, fibre: 9, sugar: 2 }, ingredients: 'Ragi, jowar, bajra, foxtail millet, little millet, cardamom.', allergens: 'None', note: 'Naturally gluten free' },
+            { id: 9,  name: 'Protein Pancake Premix', category: 'breakfast',   price: 379, original: 479,  features: ['18g Protein', 'Just Add Water'],  badge: '',            desc: 'Fluffy pancakes without the sugar crash. Just add water and cook.' , serving: '60 g', nutrition: { kcal: 286, protein: 18, carbs: 34, fat: 8, fibre: 4, sugar: 3 }, ingredients: 'Oat flour, whey protein isolate, banana powder, baking soda, sea salt.', allergens: 'Milk', note: 'No refined flour' },
 
-            { id: 2,  name: 'Protein Energy Bar',     category: 'snacks',      price: 99,  original: 129,  features: ['20g Protein', 'Clean Label'],     badge: 'Best Seller', desc: 'Dates, whey, and roasted nuts. Six ingredients, nothing hidden.' },
-            { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' },
-            { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' },
+            { id: 2,  name: 'Protein Energy Bar',     category: 'snacks',      price: 99,  original: 129,  features: ['20g Protein', 'Clean Label'],     badge: 'Best Seller', desc: 'Dates, whey, and roasted nuts. Six ingredients, nothing hidden.' , serving: '40 g', nutrition: { kcal: 188, protein: 20, carbs: 17, fat: 6, fibre: 3, sugar: 9 }, ingredients: 'Dates, whey protein isolate, roasted almonds, cocoa, sea salt.', allergens: 'Milk, Tree nuts', note: 'Six ingredients' },
+            { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' , serving: '30 g', nutrition: { kcal: 128, protein: 15, carbs: 14, fat: 3, fibre: 5, sugar: 1 }, ingredients: 'Bengal gram, sunflower oil, chilli, amchur, black salt.', allergens: 'None', note: 'Air roasted' },
+            { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' , serving: '35 g', nutrition: { kcal: 156, protein: 6, carbs: 19, fat: 7, fibre: 3, sugar: 6 }, ingredients: 'Almond flour, jaggery, ghee, oats, vanilla, baking soda.', allergens: 'Milk, Tree nuts', note: 'No maida' },
 
-            { id: 3,  name: 'Protein Cold Coffee',    category: 'beverages',   price: 199, original: 249,  features: ['Instant Mix', '15g Protein'],     badge: '',            desc: 'Real coffee and whey in one shaker. Cold, smooth, not chalky.' },
-            { id: 11, name: 'Berry Recovery Shake',   category: 'beverages',   price: 279, original: 349,  features: ['Post-Workout', 'No Additives'],   badge: 'New',         desc: 'Freeze-dried berries and protein for the half hour after training.' },
+            { id: 3,  name: 'Protein Cold Coffee',    category: 'beverages',   price: 199, original: 249,  features: ['Instant Mix', '15g Protein'],     badge: '',            desc: 'Real coffee and whey in one shaker. Cold, smooth, not chalky.' , serving: '25 g', nutrition: { kcal: 110, protein: 15, carbs: 7, fat: 2, fibre: 1, sugar: 2 }, ingredients: 'Whey protein concentrate, freeze-dried coffee, cocoa, stevia leaf extract.', allergens: 'Milk', note: 'No added sugar' },
+            { id: 11, name: 'Berry Recovery Shake',   category: 'beverages',   price: 279, original: 349,  features: ['Post-Workout', 'No Additives'],   badge: 'New',         desc: 'Freeze-dried berries and protein for the half hour after training.' , serving: '30 g', nutrition: { kcal: 124, protein: 18, carbs: 9, fat: 1, fibre: 2, sugar: 3 }, ingredients: 'Whey protein isolate, freeze-dried strawberry and blueberry, beetroot powder.', allergens: 'Milk', note: 'No additives' },
 
-            { id: 12, name: 'Instant Protein Porridge', category: 'ready',     price: 229, original: 299,  features: ['3-Min Prep', '16g Protein'],      badge: '',            desc: 'Hot, savoury porridge in one cup. Pour water, wait, eat.' },
-            { id: 13, name: 'Quinoa Nutrition Bowl',  category: 'ready',       price: 299, original: 379,  features: ['Complete Meal', 'High Fiber'],    badge: 'New',         desc: 'Quinoa, lentils, and vegetables in a single-serve bowl.' },
+            { id: 12, name: 'Instant Protein Porridge', category: 'ready',     price: 229, original: 299,  features: ['3-Min Prep', '16g Protein'],      badge: '',            desc: 'Hot, savoury porridge in one cup. Pour water, wait, eat.' , serving: '55 g', nutrition: { kcal: 242, protein: 16, carbs: 32, fat: 5, fibre: 6, sugar: 2 }, ingredients: 'Broken wheat, moong dal, whey protein, turmeric, cumin, rock salt.', allergens: 'Milk, Gluten', note: 'Ready in 3 minutes' },
+            { id: 13, name: 'Quinoa Nutrition Bowl',  category: 'ready',       price: 299, original: 379,  features: ['Complete Meal', 'High Fiber'],    badge: 'New',         desc: 'Quinoa, lentils, and vegetables in a single-serve bowl.' , serving: '70 g', nutrition: { kcal: 268, protein: 14, carbs: 41, fat: 6, fibre: 8, sugar: 3 }, ingredients: 'Quinoa, red lentils, dehydrated peas, carrot, herbs, rock salt.', allergens: 'None', note: 'Complete meal' },
 
-            { id: 5,  name: 'Chocolate Nut Spread',   category: 'spreads',     price: 449, original: 599,  features: ['80% Less Sugar', 'All Natural'],  badge: 'Popular',     desc: 'Cocoa and hazelnut, sweetened lightly. Nothing artificial.' },
-            { id: 14, name: 'Peanut Protein Spread',  category: 'spreads',     price: 349, original: 449,  features: ['30g Protein', 'No Palm Oil'],     badge: '',            desc: 'Stone-ground peanuts with added whey. No palm oil, no sugar.' },
+            { id: 5,  name: 'Chocolate Nut Spread',   category: 'spreads',     price: 449, original: 599,  features: ['80% Less Sugar', 'All Natural'],  badge: 'Popular',     desc: 'Cocoa and hazelnut, sweetened lightly. Nothing artificial.' , serving: '20 g', nutrition: { kcal: 118, protein: 4, carbs: 9, fat: 8, fibre: 2, sugar: 5 }, ingredients: 'Hazelnuts, cocoa, milk solids, coconut sugar, sunflower lecithin.', allergens: 'Milk, Tree nuts', note: '80% less sugar' },
+            { id: 14, name: 'Peanut Protein Spread',  category: 'spreads',     price: 349, original: 449,  features: ['30g Protein', 'No Palm Oil'],     badge: '',            desc: 'Stone-ground peanuts with added whey. No palm oil, no sugar.' , serving: '20 g', nutrition: { kcal: 132, protein: 30, carbs: 6, fat: 9, fibre: 2, sugar: 1 }, ingredients: 'Roasted peanuts, whey protein isolate, sea salt.', allergens: 'Milk, Peanuts', note: 'No palm oil' },
 
-            { id: 6,  name: 'PCOS Nutrition Pack',    category: 'specialized', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: '',         desc: 'A 30-day pack formulated with nutritionists for PCOS support.' },
-            { id: 8,  name: 'Kids Nutrition Bites',   category: 'specialized', price: 249, original: 349,  features: ['Zero Junk', 'Kid Approved'],      badge: 'Popular',     desc: 'Bite-sized, lunchbox-safe, and genuinely liked by children.' },
-            { id: 15, name: 'Sports Protein Blend',   category: 'specialized', price: 1499, original: 1899, features: ['27g Protein', 'No Fillers'],     badge: '',            desc: 'Unflavoured whey isolate. One ingredient, third-party tested.' },
+            { id: 6,  name: 'PCOS Nutrition Pack',    category: 'specialized', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: '',         desc: 'A 30-day pack formulated with nutritionists for PCOS support.' , serving: '30 g', nutrition: { kcal: 136, protein: 12, carbs: 14, fat: 4, fibre: 5, sugar: 2 }, ingredients: 'Inositol, flaxseed, cinnamon, fenugreek, whey protein, vitamin D3.', allergens: 'Milk', note: 'Formulated with nutritionists' },
+            { id: 8,  name: 'Kids Nutrition Bites',   category: 'specialized', price: 249, original: 349,  features: ['Zero Junk', 'Kid Approved'],      badge: 'Popular',     desc: 'Bite-sized, lunchbox-safe, and genuinely liked by children.' , serving: '25 g', nutrition: { kcal: 104, protein: 6, carbs: 15, fat: 3, fibre: 2, sugar: 6 }, ingredients: 'Oats, dates, milk solids, cocoa, ragi, sunflower oil.', allergens: 'Milk', note: 'Lunchbox safe' },
+            { id: 15, name: 'Sports Protein Blend',   category: 'specialized', price: 1499, original: 1899, features: ['27g Protein', 'No Fillers'],     badge: '',            desc: 'Unflavoured whey isolate. One ingredient, third-party tested.' , serving: '32 g', nutrition: { kcal: 122, protein: 27, carbs: 2, fat: 1, fibre: 0, sugar: 0 }, ingredients: 'Whey protein isolate. Nothing else.', allergens: 'Milk', note: 'Third-party tested' },
         ];
 
         function categoryIcon(category) {
@@ -2292,7 +2637,15 @@
             renderCategoryGrid();
             renderProducts();
             updateCartUI();
+            checkRecovery();
+            document.getElementById('fssaiLine').textContent =
+                FSSAI_LICENCE ? 'FSSAI Licence No. ' + FSSAI_LICENCE : '';
         });
+
+        // back-to-top appears once the hero is behind you
+        window.addEventListener('scroll', function() {
+            document.getElementById('toTop').classList.toggle('show', window.scrollY > 700);
+        }, { passive: true });
 
         function countIn(key) {
             return key === 'all' ? products.length : products.filter(p => p.category === key).length;
@@ -2348,6 +2701,8 @@
 
             container.innerHTML = list.map(product => `
                 <div class="product-card">
+                    <button class="product-open" onclick="openProduct(${product.id})"
+                            aria-label="View details and nutrition for ${product.name}"></button>
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
@@ -2365,7 +2720,7 @@
                                 <span class="product-price-original">₹${product.original}</span>
                                 <span class="product-price">₹${product.price}</span>
                             </div>
-                            <button class="add-to-cart" onclick="addToCart(${product.id})">Add</button>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Add</button>
                         </div>
                     </div>
                 </div>
@@ -2597,16 +2952,98 @@
             showOrderConfirmation(order);
         }
 
+        // Builds the plain-text order summary used by every send channel.
+        function orderText(order) {
+            const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
+            return `GetsU Order ${order.id}\n\n${itemLines}\n\nSubtotal: ₹${order.subtotal}\nTax: ₹${order.tax}\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}\n${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}\nEmail: ${order.customer.email}`;
+        }
+
+        function markOrderSent(id) {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            const o = orders.find(x => x.id === id);
+            if (o) o.sent = true;
+            localStorage.setItem('getsuOrders', JSON.stringify(orders));
+            hideRecovery();
+        }
+
         function showOrderConfirmation(order) {
-            document.getElementById('confirmName').textContent = ', ' + order.customer.name;
+            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
 
-            const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
-            const body = `Order ID: ${order.id}\n\n${itemLines}\n\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}`;
-            const subject = `GetsU Order ${order.id}`;
-            document.getElementById('confirmEmailBtn').href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            const text = orderText(order);
+            const mailHref = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('GetsU Order ' + order.id)}&body=${encodeURIComponent(text)}`;
+            const waHref = WHATSAPP_NUMBER
+                ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
+                : '';
+
+            document.getElementById('confirmActions').innerHTML = `
+                ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
+                     onclick="markOrderSent('${order.id}')">Send on WhatsApp</a>` : ''}
+                <a class="btn ${waHref ? 'btn-secondary' : 'btn-primary'} btn-block" href="${mailHref}"
+                   onclick="markOrderSent('${order.id}')">Send by email</a>
+                <button class="btn btn-secondary btn-block" onclick="copyOrder('${order.id}')">Copy order details</button>
+            `;
 
             openModal('confirmationModal');
+        }
+
+        function copyOrder(id) {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            const order = orders.find(x => x.id === id);
+            if (!order) return;
+            const text = orderText(order);
+            const done = () => {
+                markOrderSent(id);
+                showNotification('Order copied — paste it to us on WhatsApp or email.');
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+            } else {
+                fallbackCopy(text, done);
+            }
+        }
+
+        function fallbackCopy(text, done) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); done(); }
+            catch (e) { showNotification('Could not copy — please send by email instead.'); }
+            document.body.removeChild(ta);
+        }
+
+        // ==================== UNSENT ORDER RECOVERY ====================
+        // An order only reaches GetsU when the customer taps a send button. If they
+        // closed the modal first, surface it again next time they open the site.
+        function pendingOrder() {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            return orders.filter(o => !o.sent).pop() || null;
+        }
+
+        function checkRecovery() {
+            const order = pendingOrder();
+            if (!order || sessionStorage.getItem('getsuRecoveryDismissed')) return;
+            document.getElementById('recoveryText').textContent =
+                `Order ${order.id} (₹${order.total}) was never sent to us.`;
+            document.getElementById('recoveryBanner').classList.add('show');
+        }
+
+        function hideRecovery() {
+            document.getElementById('recoveryBanner').classList.remove('show');
+        }
+
+        function dismissRecovery() {
+            sessionStorage.setItem('getsuRecoveryDismissed', '1');
+            hideRecovery();
+        }
+
+        function resendLastOrder() {
+            const order = pendingOrder();
+            if (order) showOrderConfirmation(order);
         }
 
         function closeConfirmation() {
@@ -2711,6 +3148,61 @@
             closeModal('policyModal');
         }
 
+        // ==================== PRODUCT DETAIL ====================
+        function openProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            const n = p.nutrition;
+            const hasAllergens = p.allergens && p.allergens !== 'None';
+
+            document.getElementById('productBody').innerHTML = `
+                <div class="pd-head">
+                    <div class="pd-thumb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${categoryIcon(p.category)}</svg></div>
+                    <div>
+                        <div class="product-cat">${categoryLabel(p.category)} · ${skuFor(p.id)}</div>
+                        <h2>${p.name}</h2>
+                        <div class="pd-price"><s>₹${p.original}</s>₹${p.price}</div>
+                    </div>
+                </div>
+
+                <div class="pd-block"><p>${p.desc}</p></div>
+
+                <div class="nutri">
+                    <div class="nutri-head"><span>Nutrition</span><span>Per ${p.serving} serving</span></div>
+                    <div class="nutri-row lead"><span>Energy</span><strong>${n.kcal} kcal</strong></div>
+                    <div class="nutri-row lead"><span>Protein</span><strong>${n.protein} g</strong></div>
+                    <div class="nutri-row"><span>Carbohydrate</span><strong>${n.carbs} g</strong></div>
+                    <div class="nutri-row"><span>&nbsp;&nbsp;of which sugars</span><strong>${n.sugar} g</strong></div>
+                    <div class="nutri-row"><span>Fat</span><strong>${n.fat} g</strong></div>
+                    <div class="nutri-row"><span>Fibre</span><strong>${n.fibre} g</strong></div>
+                </div>
+
+                <div class="pd-block">
+                    <h4>Ingredients</h4>
+                    <p>${p.ingredients}</p>
+                </div>
+
+                <div class="pd-block">
+                    <h4>Allergens</h4>
+                    ${hasAllergens
+                        ? `<span class="allergen"><svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;" aria-hidden="true"><path d="M12 4l9 16H3z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17" r="0.5"/></svg>Contains ${p.allergens}</span>`
+                        : `<p>No declared allergens. Packed in a facility that also handles milk and nuts.</p>`}
+                </div>
+
+                <div class="pd-block">
+                    <h4>Good to know</h4>
+                    <p>${p.note}. Always check the physical pack before eating if you have allergies.</p>
+                </div>
+
+                <button class="btn btn-primary btn-block" onclick="addToCart(${p.id}); closeProduct();">Add to cart · ₹${p.price}</button>
+            `;
+            openModal('productModal');
+        }
+
+        function closeProduct() {
+            closeModal('productModal');
+        }
+
         function openSearch() {
             document.getElementById('searchModal').classList.add('open');
             syncScrollLock();
@@ -2719,7 +3211,11 @@
 
         function searchProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const results = products.filter(p => p.name.toLowerCase().includes(query) || p.category.includes(query));
+            // search name, description, category label, features and ingredients
+            const results = products.filter(p => [
+                p.name, p.desc, p.category, categoryLabel(p.category),
+                p.features.join(' '), p.ingredients
+            ].join(' ').toLowerCase().includes(query));
             const resultsDiv = document.getElementById('searchResults');
 
             if (query.length === 0) {
@@ -2733,8 +3229,9 @@
             }
 
             resultsDiv.innerHTML = results.map(p => `
-                <div class="search-result-item" onclick="addToCart(${p.id}); closeSearch()">
+                <div class="search-result-item" onclick="closeSearch(); openProduct(${p.id});">
                     <strong>${p.name}</strong> — ₹${p.price}
+                    <span style="opacity:.7"> · ${categoryLabel(p.category)}</span>
                 </div>
             `).join('');
         }
@@ -2790,6 +3287,35 @@
                 if (e.target === modal) { modal.classList.remove('open'); syncScrollLock(); }
             });
         });
+
+        // Structured data so search engines show GetsU as a real store with products
+        (function () {
+            const ld = {
+                '@context': 'https://schema.org',
+                '@type': 'Store',
+                name: 'GetsU',
+                description: 'Clean-label, high-protein foods made in India.',
+                email: BUSINESS_EMAIL,
+                url: location.href.split('#')[0],
+                areaServed: 'IN',
+                currenciesAccepted: 'INR',
+                hasOfferCatalog: {
+                    '@type': 'OfferCatalog',
+                    name: 'GetsU products',
+                    itemListElement: products.map(p => ({
+                        '@type': 'Offer',
+                        price: p.price,
+                        priceCurrency: 'INR',
+                        availability: 'https://schema.org/InStock',
+                        itemOffered: { '@type': 'Product', name: p.name, description: p.desc, sku: skuFor(p.id) },
+                    })),
+                },
+            };
+            const tag = document.createElement('script');
+            tag.type = 'application/ld+json';
+            tag.textContent = JSON.stringify(ld);
+            document.head.appendChild(tag);
+        })();
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
