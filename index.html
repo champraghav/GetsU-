@@ -17,7 +17,10 @@
     <meta property="og:url" content="https://champraghav.github.io/GetsU-/">
     <meta property="og:locale" content="en_IN">
     <meta property="og:image" content="https://champraghav.github.io/GetsU-/og-image.png">
-    <meta property="og:image:alt" content="GetsU — clean-label nutrition">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GetsU — healthy eating should be delicious">
+    <meta name="twitter:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GetsU — Clean-Label Protein Food, Made For You">
     <meta name="twitter:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read.">
@@ -766,6 +769,25 @@
 
         .pd-block { margin-bottom: 1.25rem; }
 
+        .pd-buy {
+            display: flex;
+            gap: 0.75rem;
+            align-items: stretch;
+            margin-top: 1.5rem;
+        }
+
+        .pd-qty {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1.5px solid var(--line);
+            border-radius: 5px;
+            padding: 0 0.85rem;
+            background: var(--paper-raised);
+        }
+
+        .pd-qty .num { min-width: 1.5ch; text-align: center; font-size: 15px; }
+
         .pd-block h3 {
             font-family: var(--font-mono);
             font-size: 11px;
@@ -970,6 +992,27 @@
 
         .quote-who b { display: block; font-size: 13.5px; color: var(--ink); }
         .quote-who span { font-size: 12.5px; color: var(--ink-faint); }
+
+        .pledge-mark {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--turmeric);
+            margin-bottom: 1rem;
+        }
+
+        .quote-card h3 {
+            font-size: 18px;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+
+        .quote-card > p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--ink-soft);
+        }
 
         /* ==================== ORDER RECOVERY BANNER ==================== */
         .recovery {
@@ -2376,37 +2419,36 @@
         <div class="products-grid" id="categoryGrid"></div>
     </section>
 
-    <!-- TESTIMONIALS -->
+    <!-- STANDARDS -->
+    <!--
+      NOTE FOR GETSU: when you have real customer quotes, this is where they go.
+      Use the .quotes / .quote-card markup kept in the template comment at the
+      bottom of this file. Only publish words a real customer actually wrote.
+    -->
     <section class="section">
         <div class="section-head">
             <span class="tag">§ 04</span>
             <div>
-                <h2>What early customers say</h2>
-                <p class="section-subtitle">We started shipping to a small group first. Here's what came back.</p>
+                <h2>What we will and won't do</h2>
+                <p class="section-subtitle">We're new, so we haven't earned your trust yet. Here's what we're committing to in writing instead.</p>
             </div>
         </div>
 
         <div class="quotes">
             <div class="quote-card">
-                <blockquote>"I've thrown out enough 'healthy' oats that tasted like cardboard. These actually taste like breakfast, and I'm not hungry by eleven."</blockquote>
-                <div class="quote-who">
-                    <div class="quote-avatar" aria-hidden="true">AM</div>
-                    <div><b>Ananya M.</b><span>Bengaluru · High-Protein Oats</span></div>
-                </div>
+                <div class="pledge-mark" aria-hidden="true">01</div>
+                <h3>Every ingredient, on the page</h3>
+                <p>Full ingredient lists and allergen declarations are on this site before you buy, not hidden until the box arrives. Tap any product to read them.</p>
             </div>
             <div class="quote-card">
-                <blockquote>"The label has six things on it and I could pronounce all of them. That's the whole reason I switched."</blockquote>
-                <div class="quote-who">
-                    <div class="quote-avatar" aria-hidden="true">RK</div>
-                    <div><b>Rohit K.</b><span>Pune · Protein Energy Bar</span></div>
-                </div>
+                <div class="pledge-mark" aria-hidden="true">02</div>
+                <h3>No invented reviews</h3>
+                <p>You won't find testimonials on this site until real customers write them. When they do, they'll appear here with their words unedited.</p>
             </div>
             <div class="quote-card">
-                <blockquote>"My son eats the nutrition bites without negotiation. After three years of lunchbox arguments, that's worth a lot."</blockquote>
-                <div class="quote-who">
-                    <div class="quote-avatar" aria-hidden="true">SP</div>
-                    <div><b>Sneha P.</b><span>Jaipur · Kids Nutrition Bites</span></div>
-                </div>
+                <div class="pledge-mark" aria-hidden="true">03</div>
+                <h3>Wrong or damaged, we fix it</h3>
+                <p>Send a photo within 48 hours and we replace it or refund you in full. No arguing, no restocking fee, no return shipping to pay.</p>
             </div>
         </div>
     </section>
@@ -2565,7 +2607,7 @@
                 <ul>
                     <li><a href="#products" onclick="scrollToSection('products')">Featured</a></li>
                     <li><a href="#" onclick="openSearch(); return false;">Search products</a></li>
-                    <li><a href="#" onclick="openShop(); return false;">View cart</a></li>
+                    <li><a href="#" onclick="openCart(); return false;">View cart</a></li>
                     <li><a href="#" onclick="openOrders(); return false;">Your orders</a></li>
                 </ul>
             </div>
@@ -2948,7 +2990,7 @@
             `).join('');
         }
 
-        function addToCart(productId) {
+        function addToCart(productId, silent) {
             const product = products.find(p => p.id === productId);
             const existingItem = cart.find(item => item.id === productId);
 
@@ -2960,7 +3002,7 @@
 
             saveCart();
             updateCartUI();
-            showNotification(`${product.name} added to cart`);
+            if (!silent) showNotification(`${product.name} added to cart`);
         }
 
         function removeFromCart(productId) {
@@ -3315,8 +3357,10 @@
             closeModal('confirmationModal');
         }
 
+        // The primary CTA should land people on the products, not an empty cart.
         function openShop() {
-            openCart();
+            closeMenu();
+            scrollToSection('products');
         }
 
         function openContact() {
@@ -3503,9 +3547,30 @@
                     <p>${p.note}. Always check the physical pack before eating if you have allergies.</p>
                 </div>
 
-                <button class="btn btn-primary btn-block" onclick="addToCart(${p.id}); closeProduct();">Add to cart · ₹${p.price}</button>
+                <div class="pd-buy">
+                    <div class="pd-qty">
+                        <button class="qty-btn" onclick="stepQty(-1)" aria-label="Decrease quantity">−</button>
+                        <span class="num" id="pdQty">1</span>
+                        <button class="qty-btn" onclick="stepQty(1)" aria-label="Increase quantity">+</button>
+                    </div>
+                    <button class="btn btn-primary" style="flex-grow:1;" onclick="addFromDetail(${p.id})">Add to cart · ₹${p.price}</button>
+                </div>
             `;
             openModal('productModal');
+        }
+
+        function stepQty(delta) {
+            const el = document.getElementById('pdQty');
+            const next = Math.min(20, Math.max(1, parseInt(el.textContent, 10) + delta));
+            el.textContent = next;
+        }
+
+        function addFromDetail(id) {
+            const qty = parseInt(document.getElementById('pdQty').textContent, 10) || 1;
+            for (let i = 0; i < qty; i++) addToCart(id, true);
+            const product = products.find(p => p.id === id);
+            showNotification(`${product.name} ×${qty} added to cart`);
+            closeProduct();
         }
 
         function closeProduct() {
@@ -3653,5 +3718,27 @@
             }
         });
     </script>
+    <!--
+    ============================================================
+    TESTIMONIAL TEMPLATE — paste real customer quotes only
+    ============================================================
+    Drop this inside the "What we will and won't do" section (or a new
+    section) once you have permission to publish someone's words.
+    Replace ONLY the quote text, initials, name and location line.
+
+    <div class="quote-card">
+        <blockquote>"Their exact words, unedited."</blockquote>
+        <div class="quote-who">
+            <div class="quote-avatar" aria-hidden="true">AB</div>
+            <div><b>First name L.</b><span>City &middot; Product they bought</span></div>
+        </div>
+    </div>
+
+    Do not publish a quote nobody actually said. Fabricated reviews are
+    illegal under Indian consumer protection rules (and every marketplace's
+    terms), and they are the fastest way to lose the trust this page is
+    built to earn.
+    ============================================================
+    -->
 </body>
 </html>
