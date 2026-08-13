@@ -696,7 +696,7 @@
             margin-bottom: 1rem;
         }
 
-        .product-category h4 {
+        .product-category h3 {
             font-size: 17px;
             color: var(--ink);
             margin-bottom: 0.4rem;
@@ -766,7 +766,7 @@
 
         .pd-block { margin-bottom: 1.25rem; }
 
-        .pd-block h4 {
+        .pd-block h3 {
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.12em;
@@ -788,6 +788,121 @@
             padding: 0.5rem 0.85rem;
             font-size: 13.5px;
             font-weight: 600;
+        }
+
+        /* ==================== ORDER HISTORY ==================== */
+        .order-row {
+            border: 1.5px solid var(--line);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--paper-raised);
+        }
+
+        .order-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-row-id {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        .order-row-date { font-size: 13px; color: var(--ink-faint); }
+
+        .order-status {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 9px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .order-status.sent { background: rgba(45, 80, 22, 0.12); color: var(--moss); }
+        .order-status.unsent { background: rgba(143, 53, 66, 0.1); color: var(--beet); }
+
+        .order-row-items { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+
+        .order-row-total {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+        .order-row-total span:last-child { font-family: var(--font-mono); }
+        .order-row .btn { margin-top: 0.85rem; }
+
+        /* ==================== FAQ ==================== */
+        .faq-list {
+            border-top: 1px solid var(--line);
+            max-width: 780px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .faq-item summary {
+            cursor: pointer;
+            padding: 1.35rem 2.5rem 1.35rem 0;
+            font-size: 16.5px;
+            font-weight: 600;
+            color: var(--ink);
+            position: relative;
+            list-style: none;
+            transition: color 0.2s ease;
+        }
+
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary:hover { color: var(--moss); }
+
+        /* plus that becomes a minus when the answer is open */
+        .faq-item summary::after,
+        .faq-item summary::before {
+            content: '';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            background: var(--moss);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .faq-item summary::before {
+            width: 14px;
+            height: 2px;
+            margin-top: -1px;
+        }
+
+        .faq-item summary::after {
+            width: 2px;
+            height: 14px;
+            margin-top: -7px;
+            right: 10px;
+        }
+
+        .faq-item[open] summary::after { transform: rotate(90deg); opacity: 0; }
+
+        .faq-item p {
+            padding: 0 2.5rem 1.5rem 0;
+            margin-top: -0.35rem;
+            color: var(--ink-soft);
+            font-size: 15.5px;
+            line-height: 1.8;
+            max-width: 68ch;
         }
 
         /* ==================== TRUST BAR ==================== */
@@ -1016,6 +1131,12 @@
         .product-footer { position: relative; z-index: 3; }
         .add-to-cart { position: relative; z-index: 3; }
 
+        .product-open:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: -3px;
+            border-radius: 9px;
+        }
+
         .product-image {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -1188,7 +1309,7 @@
             margin-top: 2px;
         }
 
-        .value-card h4 {
+        .value-card h3 {
             font-size: 17px;
             color: var(--ink);
             margin-bottom: 0.5rem;
@@ -1324,7 +1445,7 @@
             line-height: 1.8;
         }
 
-        .footer-section h4 {
+        .footer-section h3 {
             font-family: var(--font-mono);
             font-size: 11px;
             font-weight: 700;
@@ -1598,6 +1719,21 @@
             font-size: 13px;
             color: var(--ink-faint);
             text-align: center;
+        }
+
+        .contact-fallback {
+            display: none;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .contact-fallback.show { display: block; }
+
+        .contact-fallback p {
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            margin-bottom: 0.75rem;
         }
 
         .btn-whatsapp { background: #1FA855; color: #FFFFFF; }
@@ -2028,6 +2164,38 @@
             from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        /* ==================== PRINT ==================== */
+        @media print {
+            header, footer, .cart-sidebar, .cart-scrim, .to-top, .recovery,
+            .trust-bar-wrap, .newsletter, .search-modal, .success-message,
+            .filter-bar, .skip-link, .close, .btn {
+                display: none !important;
+            }
+
+            .modal, .modal.open {
+                display: block !important;
+                position: static !important;
+                background: none !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            .modal:not(.open) { display: none !important; }
+
+            .modal-content {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .modal-scroll { max-height: none !important; overflow: visible !important; }
+
+            body { background: #fff !important; color: #000 !important; }
+            .faq-item[open] p, .faq-item p { display: block !important; }
+            a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 11px; }
+        }
     </style>
 </head>
 <body>
@@ -2058,15 +2226,15 @@
         </div>
         <div class="header-right">
             <button class="icon-btn" onclick="openSearch()" aria-label="Search">
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <button class="icon-btn" onclick="toggleCart()" aria-label="Cart" style="position: relative;">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
                 <span class="cart-count" id="cartCount" style="display: none;">0</span>
             </button>
             <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
             <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
-                <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
             </button>
         </div>
     </header>
@@ -2122,7 +2290,7 @@
         <div class="problem-solution">
             <div class="ps-card problem">
                 <div class="ps-label">
-                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" style="width:16px;height:16px;"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
                     The status quo
                 </div>
                 <h3>Pick your compromise</h3>
@@ -2130,7 +2298,7 @@
             </div>
             <div class="ps-card solution">
                 <div class="ps-label">
-                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;"><path d="M20 6 9 17l-5-5"/></svg>
+                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" style="width:16px;height:16px;"><path d="M20 6 9 17l-5-5"/></svg>
                     Our solution
                 </div>
                 <h3>No compromise needed</h3>
@@ -2255,44 +2423,44 @@
 
         <div class="values-grid">
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg>
                 <div>
-                    <h4>Trust</h4>
+                    <h3>Trust</h3>
                     <p>Every ingredient on our label is real, honest, and backed by our commitment to you.</p>
                 </div>
             </div>
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
                 <div>
-                    <h4>Transparency</h4>
+                    <h3>Transparency</h3>
                     <p>No misleading claims. Clear ingredients, clear nutrition. You deserve to know exactly what you're eating.</p>
                 </div>
             </div>
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M5 12H3m18 0h-2M6.3 6.3 4.9 4.9m14.2 1.4-1.4-1.4M6.3 17.7l-1.4 1.4m14.2-1.4 1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M5 12H3m18 0h-2M6.3 6.3 4.9 4.9m14.2 1.4-1.4-1.4M6.3 17.7l-1.4 1.4m14.2-1.4 1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
                 <div>
-                    <h4>Simplicity</h4>
+                    <h3>Simplicity</h3>
                     <p>Healthy eating should never feel complicated. We make it easy, enjoyable, and accessible.</p>
                 </div>
             </div>
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
                 <div>
-                    <h4>Innovation</h4>
+                    <h3>Innovation</h3>
                     <p>We continuously develop products people actually enjoy eating, not products they feel obligated to eat.</p>
                 </div>
             </div>
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
                 <div>
-                    <h4>Science</h4>
+                    <h3>Science</h3>
                     <p>Evidence-based nutrition, not trends. Every product is built on solid nutritional science.</p>
                 </div>
             </div>
             <div class="value-card">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.5 1 4.5 2.5C11.5 6 13 5 15 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C1 8.5 2.5 5 6 5c2 0 3.5 1 4.5 2.5C11.5 6 13 5 15 5c3.5 0 5 3.5 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
                 <div>
-                    <h4>Prevention</h4>
+                    <h3>Prevention</h3>
                     <p>We believe in preventing disease through everyday nutrition, not just treating it after the fact.</p>
                 </div>
             </div>
@@ -2305,12 +2473,50 @@
         </div>
     </section>
 
+    <!-- FAQ -->
+    <section id="faq" class="section">
+        <div class="section-head">
+            <span class="tag">§ 06</span>
+            <div>
+                <h2>Questions, answered</h2>
+                <p class="section-subtitle">The things people ask before their first order.</p>
+            </div>
+        </div>
+
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary>How do I pay?</summary>
+                <p>You don't pay on this site — we never ask for card details here. Place your order, we reply within a day to confirm stock and delivery, and collect payment by UPI or bank transfer at that point. Card payments are coming once our payment provider finishes verification.</p>
+            </details>
+            <details class="faq-item">
+                <summary>What does "clean label" actually mean?</summary>
+                <p>Every ingredient on the pack is a real food you can recognise. No artificial preservatives, no hidden fillers, no proprietary blends that hide how little of something is in there. Tap any product to see its full ingredient list before you buy.</p>
+            </details>
+            <details class="faq-item">
+                <summary>How long does delivery take?</summary>
+                <p>We dispatch within 1–2 business days and delivery usually takes 3–6 business days anywhere in India. Shipping is free with no minimum order. You'll get tracking details on the phone number and email you give at checkout.</p>
+            </details>
+            <details class="faq-item">
+                <summary>I have a food allergy — is this safe for me?</summary>
+                <p>Every product page lists its allergens. Most of our range contains milk, and several contain tree nuts or peanuts. Everything is packed in a facility that also handles milk and nuts, so we can't guarantee against trace cross-contact. Always check the physical pack before eating.</p>
+            </details>
+            <details class="faq-item">
+                <summary>What if my order arrives damaged?</summary>
+                <p>Send us a photo within 48 hours of delivery and we'll replace it or refund you in full, at no cost to you. Because these are food products we can't accept returns on opened packs otherwise.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Can I change or cancel after ordering?</summary>
+                <p>Yes — email us your order ID as soon as you can. We can change or cancel anything right up until it ships.</p>
+            </details>
+        </div>
+    </section>
+
     <!-- NEWSLETTER -->
     <section class="section" style="border-top: none; padding-top: 0;">
         <div class="newsletter">
             <div class="newsletter-copy">
                 <h3>Get 10% off your first order</h3>
-                <p>Subscribe for new products, special offers, and nutrition tips.</p>
+                <p>Send us your email and we'll reply with a code, plus a note when new products land.</p>
             </div>
             <div class="newsletter-form">
                 <input type="email" inputmode="email" autocapitalize="off" placeholder="Enter your email" id="newsletterEmail">
@@ -2322,7 +2528,7 @@
     <!-- CONTACT SECTION -->
     <section id="contact" class="section">
         <div class="section-head">
-            <span class="tag">§ 06</span>
+            <span class="tag">§ 07</span>
             <div>
                 <h2>Get in touch</h2>
                 <p class="section-subtitle">Have questions? We'd love to hear from you — reach out anytime.</p>
@@ -2331,7 +2537,7 @@
         <button class="btn btn-primary" onclick="openContact()" style="padding: 0.9rem 2rem; font-size: 15px;">Send Us a Message</button>
         <div>
             <a class="contact-email" href="mailto:teamgetsu.31@gmail.com">
-                <svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M3 6l9 7 9-7"/></svg>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M3 6l9 7 9-7"/></svg>
                 teamgetsu.31@gmail.com
             </a>
         </div>
@@ -2346,7 +2552,7 @@
                 <p style="margin-top:0.75rem;"><a href="mailto:teamgetsu.31@gmail.com" style="color:inherit;">teamgetsu.31@gmail.com</a></p>
             </div>
             <div class="footer-section">
-                <h4>About</h4>
+                <h3>About</h3>
                 <ul>
                     <li><a href="#why">Our Story</a></li>
                     <li><a href="#values">Our Values</a></li>
@@ -2355,19 +2561,20 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Shop</h4>
+                <h3>Shop</h3>
                 <ul>
                     <li><a href="#products" onclick="scrollToSection('products')">Featured</a></li>
                     <li><a href="#" onclick="openSearch(); return false;">Search products</a></li>
                     <li><a href="#" onclick="openShop(); return false;">View cart</a></li>
+                    <li><a href="#" onclick="openOrders(); return false;">Your orders</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Support</h4>
+                <h3>Support</h3>
                 <ul>
                     <li><a href="#" onclick="openPolicy('shipping'); return false;">Shipping Info</a></li>
                     <li><a href="#" onclick="openPolicy('returns'); return false;">Returns</a></li>
-                    <li><a href="#" onclick="openPolicy('faq'); return false;">FAQ</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                     <li><a href="#" onclick="openContact(); return false;">Contact Us</a></li>
                 </ul>
             </div>
@@ -2408,6 +2615,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Send Message</button>
             </form>
+            <div class="contact-fallback" id="contactFallback">
+                <p>Email app didn't open? Copy your message and send it to us any way you like.</p>
+                <button class="btn btn-secondary btn-block" onclick="copyContact()">Copy message</button>
+            </div>
         </div>
     </div>
 
@@ -2497,6 +2708,16 @@
             <button class="close" onclick="closePolicy()" aria-label="Close">&times;</button>
             <h2 id="policyTitle"></h2>
             <div class="modal-scroll policy-body" id="policyBody"></div>
+        </div>
+    </div>
+
+    <!-- ORDER HISTORY -->
+    <div id="ordersModal" class="modal">
+        <div class="modal-content wide">
+            <button class="close" onclick="closeOrders()" aria-label="Close">&times;</button>
+            <h2>Your orders</h2>
+            <p>Saved on this device. Clearing your browser data will remove them.</p>
+            <div class="modal-scroll" id="ordersBody"></div>
         </div>
     </div>
 
@@ -2666,8 +2887,8 @@
                 <button class="product-category" onclick="setCategory('${c.key}', true)"
                         aria-label="Show ${c.label} products">
                     <span class="cat-code">CAT. ${String(i + 1).padStart(2, '0')}</span>
-                    <svg class="icon" viewBox="0 0 24 24">${c.icon}</svg>
-                    <h4>${c.label}</h4>
+                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${c.icon}</svg>
+                    <h3>${c.label}</h3>
                     <p>${c.blurb}</p>
                     <span class="cat-count">${countIn(c.key)} product${countIn(c.key) === 1 ? '' : 's'}</span>
                 </button>
@@ -2706,7 +2927,7 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        <svg class="icon" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
+                        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${categoryLabel(product.category)}</div>
@@ -2780,7 +3001,11 @@
             const cartSummary = document.getElementById('cartSummary');
 
             if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <p style="margin-bottom:1.25rem;">Your cart is empty.</p>
+                        <button class="btn btn-primary" onclick="closeCart(); scrollToSection('products');">Browse products</button>
+                    </div>`;
                 cartSummary.style.display = 'none';
                 return;
             }
@@ -2790,7 +3015,7 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image"><svg class="icon" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg></div>
+                        <div class="cart-item-image"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg></div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
@@ -2823,26 +3048,66 @@
             document.body.classList.toggle('overlay-open', !!open);
         }
 
+        // Remembers what the user was on so focus can go back when the modal closes.
+        let lastFocused = null;
+        const FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
+
         function openModal(id) {
-            document.getElementById(id).classList.add('open');
+            lastFocused = document.activeElement;
+            const modal = document.getElementById(id);
+            modal.classList.add('open');
             syncScrollLock();
+            const first = modal.querySelector(FOCUSABLE);
+            if (first) first.focus();
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.remove('open');
             syncScrollLock();
+            if (lastFocused && document.contains(lastFocused)) lastFocused.focus();
+            lastFocused = null;
         }
 
+        // Keeps Tab inside an open dialog instead of wandering into the page behind it.
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Tab') return;
+            const modal = document.querySelector('.modal.open');
+            const panel = modal || (document.getElementById('cartSidebar').classList.contains('open')
+                ? document.getElementById('cartSidebar') : null);
+            if (!panel) return;
+
+            const items = Array.from(panel.querySelectorAll(FOCUSABLE))
+                .filter(el => el.offsetParent !== null);
+            if (items.length === 0) return;
+
+            const first = items[0], last = items[items.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+
         function openCart() {
+            lastFocused = document.activeElement;
             document.getElementById('cartSidebar').classList.add('open');
             document.getElementById('cartScrim').classList.add('open');
             syncScrollLock();
+            const first = document.querySelector('#cartSidebar ' + FOCUSABLE);
+            if (first) first.focus();
         }
 
         function closeCart() {
+            const wasOpen = document.getElementById('cartSidebar').classList.contains('open');
             document.getElementById('cartSidebar').classList.remove('open');
             document.getElementById('cartScrim').classList.remove('open');
             syncScrollLock();
+            if (wasOpen && lastFocused && document.contains(lastFocused)) {
+                lastFocused.focus();
+                lastFocused = null;
+            }
         }
 
         function toggleCart() {
@@ -3060,6 +3325,9 @@
 
         function closeContact() {
             closeModal('contactModal');
+            document.getElementById('contactFallback').classList.remove('show');
+            document.querySelector('#contactModal form').reset();
+            lastContactBody = '';
         }
 
         function submitContact(event) {
@@ -3072,9 +3340,22 @@
             const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\n\n${message}`;
             window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('Message from ' + name + ' via GetsU site')}&body=${encodeURIComponent(body)}`;
 
-            showNotification('Opening your email app to send this to us…');
-            closeContact();
-            event.target.reset();
+            // If the mail app never opens, the message would vanish — keep a copy route open.
+            lastContactBody = body;
+            document.getElementById('contactFallback').classList.add('show');
+            showNotification('Opening your email app — if nothing happened, use the copy button.');
+        }
+
+        let lastContactBody = '';
+
+        function copyContact() {
+            if (!lastContactBody) return;
+            const done = () => showNotification('Message copied — paste it to us on WhatsApp or email.');
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(lastContactBody).then(done).catch(() => fallbackCopy(lastContactBody, done));
+            } else {
+                fallbackCopy(lastContactBody, done);
+            }
         }
 
         // ==================== POLICY PAGES ====================
@@ -3148,6 +3429,34 @@
             closeModal('policyModal');
         }
 
+        // ==================== ORDER HISTORY ====================
+        function openOrders() {
+            const orders = (JSON.parse(localStorage.getItem('getsuOrders')) || []).slice().reverse();
+            const body = document.getElementById('ordersBody');
+
+            if (orders.length === 0) {
+                body.innerHTML = '<div class="cart-empty">No orders yet. Anything you order will show up here.</div>';
+            } else {
+                body.innerHTML = orders.map(o => `
+                    <div class="order-row">
+                        <div class="order-row-top">
+                            <div>
+                                <div class="order-row-id">${o.id}</div>
+                                <div class="order-row-date">${new Date(o.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                            </div>
+                            <span class="order-status ${o.sent ? 'sent' : 'unsent'}">${o.sent ? 'Sent to GetsU' : 'Not sent yet'}</span>
+                        </div>
+                        <div class="order-row-items">${o.items.map(i => `${i.name} × ${i.qty}`).join('<br>')}</div>
+                        <div class="order-row-total"><span>Total</span><span>₹${o.total}</span></div>
+                        ${o.sent ? '' : `<button class="btn btn-primary btn-block" onclick="closeOrders(); showOrderConfirmation(${JSON.stringify(o).replace(/"/g, '&quot;')})">Send this order</button>`}
+                    </div>
+                `).join('');
+            }
+            openModal('ordersModal');
+        }
+
+        function closeOrders() { closeModal('ordersModal'); }
+
         // ==================== PRODUCT DETAIL ====================
         function openProduct(id) {
             const p = products.find(x => x.id === id);
@@ -3178,19 +3487,19 @@
                 </div>
 
                 <div class="pd-block">
-                    <h4>Ingredients</h4>
+                    <h3>Ingredients</h3>
                     <p>${p.ingredients}</p>
                 </div>
 
                 <div class="pd-block">
-                    <h4>Allergens</h4>
+                    <h3>Allergens</h3>
                     ${hasAllergens
                         ? `<span class="allergen"><svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;" aria-hidden="true"><path d="M12 4l9 16H3z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17" r="0.5"/></svg>Contains ${p.allergens}</span>`
                         : `<p>No declared allergens. Packed in a facility that also handles milk and nuts.</p>`}
                 </div>
 
                 <div class="pd-block">
-                    <h4>Good to know</h4>
+                    <h3>Good to know</h3>
                     <p>${p.note}. Always check the physical pack before eating if you have allergies.</p>
                 </div>
 
@@ -3253,7 +3562,11 @@
                 input.focus();
                 return;
             }
-            showNotification("You're on the list — we'll send your 10% code shortly.");
+            // No backend here, so the signup has to actually leave the device to be real.
+            window.location.href = `mailto:${BUSINESS_EMAIL}`
+                + `?subject=${encodeURIComponent('Newsletter signup')}`
+                + `&body=${encodeURIComponent('Please add me to the GetsU list and send my 10% code.\n\nEmail: ' + email)}`;
+            showNotification('Opening your email app — hit send and your code is on the way.');
             input.value = '';
         }
 
@@ -3284,7 +3597,7 @@
 
         document.querySelectorAll('.modal').forEach(function(modal) {
             modal.addEventListener('click', function(e) {
-                if (e.target === modal) { modal.classList.remove('open'); syncScrollLock(); }
+                if (e.target === modal) closeModal(modal.id);
             });
         });
 
@@ -3311,17 +3624,31 @@
                     })),
                 },
             };
-            const tag = document.createElement('script');
-            tag.type = 'application/ld+json';
-            tag.textContent = JSON.stringify(ld);
-            document.head.appendChild(tag);
+            // FAQ schema is read straight off the rendered section, so the two can't drift apart
+            const faq = {
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: Array.from(document.querySelectorAll('.faq-item')).map(item => ({
+                    '@type': 'Question',
+                    name: item.querySelector('summary').textContent.trim(),
+                    acceptedAnswer: { '@type': 'Answer', text: item.querySelector('p').textContent.trim() },
+                })),
+            };
+
+            [ld, faq].forEach(obj => {
+                const tag = document.createElement('script');
+                tag.type = 'application/ld+json';
+                tag.textContent = JSON.stringify(obj);
+                document.head.appendChild(tag);
+            });
         })();
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeCart();
                 closeMenu();
-                document.querySelectorAll('.modal.open').forEach(m => m.classList.remove('open'));
+                // route through closeModal so focus returns to whatever opened it
+                document.querySelectorAll('.modal.open').forEach(m => closeModal(m.id));
                 closeSearch();
             }
         });
