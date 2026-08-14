@@ -1677,7 +1677,7 @@
                 <svg class="icon" viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
                 <span class="cart-count" id="cartCount" style="display: none;">0</span>
             </button>
-            <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
+            <button class="btn btn-primary" onclick="scrollToSection('products')">Shop Now</button>
         </div>
     </header>
 
@@ -1706,7 +1706,7 @@
             <h1>Healthy eating should be <span class="highlight">delicious</span>, not a compromise.</h1>
             <p>Clean ingredients. Great taste. Fair prices. We're closing the gap between junk food and boring health food — one label you can actually read.</p>
             <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="openShop()">Start Shopping</button>
+                <button class="btn btn-primary" onclick="scrollToSection('products')">Start Shopping</button>
                 <button class="btn btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
             </div>
             <div class="hero-proof">
@@ -2022,7 +2022,7 @@
                 <ul>
                     <li><a href="#products" onclick="scrollToSection('products')">Featured</a></li>
                     <li><a href="#" onclick="openSearch(); return false;">Search products</a></li>
-                    <li><a href="#" onclick="openShop(); return false;">View cart</a></li>
+                    <li><a href="#" onclick="toggleCart(); return false;">View cart</a></li>
                 </ul>
             </div>
             <div class="footer-section">
