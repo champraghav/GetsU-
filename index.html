@@ -2100,6 +2100,17 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="ckLandmark">Landmark (optional)</label>
+                        <input type="text" id="ckLandmark" placeholder="e.g. near XYZ shop, opposite school">
+                        <div class="form-hint" style="font-size:12px;color:var(--ink-faint);margin-top:0.25rem;">Helps our courier find you faster</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ckNotes">Delivery notes (optional)</label>
+                        <input type="text" id="ckNotes" placeholder="e.g. call before delivery, gate is locked">
+                    </div>
+
                     <!--
                         RAZORPAY INTEGRATION SLOT
                         Once your Razorpay KYC is approved, go to Dashboard → Payment Buttons,
@@ -2177,6 +2188,7 @@
         const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
         const FSSAI_LICENCE = ''; // e.g. '14520163000123' — required for food business in India
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
+        const MAX_QTY = 20; // maximum quantity per product in one order
 
         // PRODUCTS DATABASE
         const products = [
@@ -2297,7 +2309,7 @@
         function updateQty(productId, change) {
             const item = cart.find(item => item.id === productId);
             if (item) {
-                item.qty += change;
+                item.qty = Math.max(0, Math.min(item.qty + change, MAX_QTY));
                 if (item.qty <= 0) {
                     removeFromCart(productId);
                 } else {
@@ -2426,6 +2438,8 @@
                 city: document.getElementById('ckCity').value,
                 state: document.getElementById('ckState').value,
                 pincode: document.getElementById('ckPincode').value,
+                landmark: document.getElementById('ckLandmark').value || '',
+                notes: document.getElementById('ckNotes').value || '',
             };
 
             if (!validateCheckoutForm(fields)) return;
@@ -2459,7 +2473,9 @@
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
 
             const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
-            const body = `Order ID: ${order.id}\n\n${itemLines}\n\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}`;
+            let body = `Order ID: ${order.id}\n\n${itemLines}\n\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}`;
+            if (order.customer.landmark) body += `\nLandmark: ${order.customer.landmark}`;
+            if (order.customer.notes) body += `\nNotes: ${order.customer.notes}`;
             const subject = `GetsU Order ${order.id}`;
             window.lastOrderEmailLink = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
@@ -2485,7 +2501,9 @@
 
         function sendViaWhatsApp() {
             const itemLines = window.lastOrder.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('%0A');
-            const message = `Order ID: ${window.lastOrder.id}%0A%0A${itemLines}%0A%0ATotal: ₹${window.lastOrder.total}%0A%0ADeliver to:%0A${window.lastOrder.customer.name}%0A${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}%0APhone: ${window.lastOrder.customer.phone}`;
+            let message = `Order ID: ${window.lastOrder.id}%0A%0A${itemLines}%0A%0ATotal: ₹${window.lastOrder.total}%0A%0ADeliver to:%0A${window.lastOrder.customer.name}%0A${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}%0APhone: ${window.lastOrder.customer.phone}`;
+            if (window.lastOrder.customer.landmark) message += `%0ALandmark: ${window.lastOrder.customer.landmark}`;
+            if (window.lastOrder.customer.notes) message += `%0ANotes: ${window.lastOrder.customer.notes}`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
             markOrderAsSent(window.lastOrder.id);
             closeConfirmation();
@@ -2493,7 +2511,9 @@
 
         function copyOrderToClipboard() {
             const itemLines = window.lastOrder.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
-            const text = `Order ID: ${window.lastOrder.id}\n\n${itemLines}\n\nTotal: ₹${window.lastOrder.total}\n\nDeliver to:\n${window.lastOrder.customer.name}\n${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}\nPhone: ${window.lastOrder.customer.phone}`;
+            let text = `Order ID: ${window.lastOrder.id}\n\n${itemLines}\n\nTotal: ₹${window.lastOrder.total}\n\nDeliver to:\n${window.lastOrder.customer.name}\n${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}\nPhone: ${window.lastOrder.customer.phone}`;
+            if (window.lastOrder.customer.landmark) text += `\nLandmark: ${window.lastOrder.customer.landmark}`;
+            if (window.lastOrder.customer.notes) text += `\nNotes: ${window.lastOrder.customer.notes}`;
             navigator.clipboard.writeText(text);
             showNotification('Order details copied to clipboard');
             markOrderAsSent(window.lastOrder.id);
