@@ -1463,6 +1463,172 @@
             from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        .recovery-banner {
+            background: var(--turmeric);
+            color: var(--turmeric-ink);
+            padding: 1rem;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 80px;
+            display: none;
+            gap: 1rem;
+        }
+
+        .recovery-banner.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .recovery-banner strong {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            font-size: 15px;
+        }
+
+        .recovery-banner button {
+            background: var(--turmeric-ink);
+            color: var(--turmeric);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .recovery-banner button:hover {
+            opacity: 0.9;
+        }
+
+        .trust-bar {
+            background: var(--paper-raised);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trust-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .trust-icon {
+            color: var(--moss);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .trust-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .trust-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .trust-desc {
+            font-size: 13px;
+            color: var(--ink-soft);
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .trust-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 512px) {
+            .trust-bar {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-form-panel,
+        .contact-info-panel {
+            padding: 2rem;
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .contact-form-panel h3,
+        .contact-info-panel h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--ink);
+        }
+
+        .btn-block {
+            width: 100%;
+            text-align: center;
+        }
+
+        .contact-qa-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .contact-qa-item {
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .contact-qa-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .contact-qa-question {
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+        }
+
+        .contact-qa-answer {
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1493,6 +1659,13 @@
             <button class="btn btn-primary" onclick="openShop()">Shop Now</button>
         </div>
     </header>
+
+    <!-- RECOVERY BANNER FOR UNSENT ORDERS -->
+    <div class="recovery-banner" id="recoveryBanner">
+        <strong>You have an unsent order</strong>
+        <button onclick="recoverOrder()">Resume order</button>
+        <button onclick="dismissRecoveryBanner()">Dismiss</button>
+    </div>
 
     <!-- SEARCH MODAL -->
     <div class="search-modal" id="searchModal">
@@ -1583,6 +1756,46 @@
             </div>
         </div>
     </section>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar">
+        <div class="trust-item">
+            <div class="trust-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 20.354V3M15 20.354V3M3 11h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            </div>
+            <div>
+                <div class="trust-label">Free Delivery</div>
+                <div class="trust-desc">All orders, no minimum</div>
+            </div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+                <div class="trust-label">Damage-Free Guarantee</div>
+                <div class="trust-desc">Or we replace it free</div>
+            </div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <div>
+                <div class="trust-label">No Card Data Stored</div>
+                <div class="trust-desc">Your payment info is safe</div>
+            </div>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2.5"/></svg>
+            </div>
+            <div>
+                <div class="trust-label">1-Day Reply Time</div>
+                <div class="trust-desc">Real person, every time</div>
+            </div>
+        </div>
+    </div>
 
     <!-- FEATURED PRODUCTS -->
     <section id="products" class="section">
@@ -1732,12 +1945,37 @@
                 <p class="section-subtitle">Have questions? We'd love to hear from you — reach out anytime.</p>
             </div>
         </div>
-        <button class="btn btn-primary" onclick="openContact()" style="padding: 0.9rem 2rem; font-size: 15px;">Send Us a Message</button>
-        <div>
-            <a class="contact-email" href="mailto:teamgetsu.31@gmail.com">
-                <svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M3 6l9 7 9-7"/></svg>
-                teamgetsu.31@gmail.com
-            </a>
+        <div class="contact-grid">
+            <div class="contact-form-panel">
+                <h3>Send us a message</h3>
+                <p style="font-size: 14px; color: var(--ink-soft); margin-bottom: 1.5rem;">We'll get back to you within 1 business day.</p>
+                <button class="btn btn-primary btn-block" onclick="openContact()" style="margin-bottom: 1rem;">Open contact form</button>
+                <a class="contact-email" href="mailto:teamgetsu.31@gmail.com" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 4px; text-decoration: none; color: var(--ink);">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;color:var(--moss);"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M3 6l9 7 9-7"/></svg>
+                    teamgetsu.31@gmail.com
+                </a>
+            </div>
+            <div class="contact-info-panel">
+                <h3>Quick answers</h3>
+                <div class="contact-qa-group">
+                    <div class="contact-qa-item">
+                        <div class="contact-qa-question">Where's my order?</div>
+                        <div class="contact-qa-answer">Use your order ID (sent in confirmation) to track status. Email us with your ID for details.</div>
+                    </div>
+                    <div class="contact-qa-item">
+                        <div class="contact-qa-question">Allergies & ingredients?</div>
+                        <div class="contact-qa-answer">All ingredients and allergen info are on each product page. Ask us if anything's unclear.</div>
+                    </div>
+                    <div class="contact-qa-item">
+                        <div class="contact-qa-question">Bulk orders?</div>
+                        <div class="contact-qa-answer">Email us for volume pricing and custom quantities. Great for offices and events.</div>
+                    </div>
+                    <div class="contact-qa-item">
+                        <div class="contact-qa-question">How fast do you reply?</div>
+                        <div class="contact-qa-answer">Within 1 business day, always from a real person. We promise.</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1779,6 +2017,7 @@
         <div class="footer-bottom">
             <p>&copy; 2026 GetsU. Made For You. All rights reserved.</p>
             <p><a href="#" onclick="openPolicy('privacy'); return false;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" onclick="openPolicy('terms'); return false;">Terms of Service</a></p>
+            <p id="fssaiDisplay"></p>
         </div>
     </footer>
 
@@ -1882,12 +2121,13 @@
         <div class="modal-content">
             <button class="close" onclick="closeConfirmation()" aria-label="Close">&times;</button>
             <svg class="icon confirm-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
-            <h2>Order received</h2>
-            <p>Thanks<span id="confirmName"></span> — we've saved your order and will reach out to confirm payment and delivery.</p>
+            <h2>One last step</h2>
+            <p>Your order isn't with us yet<span id="confirmName"></span>. Choose your preferred way to send it to us below, and we'll confirm within 1 business day.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
             <div class="confirm-actions">
-                <a class="btn btn-primary btn-block" id="confirmEmailBtn" href="#">Email us to confirm</a>
-                <button class="btn btn-secondary btn-block" onclick="closeConfirmation()">Continue browsing</button>
+                <button class="btn btn-primary btn-block" id="confirmWhatsAppBtn" onclick="sendViaWhatsApp()" style="display:none;">WhatsApp us</button>
+                <button class="btn btn-primary btn-block" id="confirmEmailBtn" onclick="sendViaEmail()">Email us</button>
+                <button class="btn btn-secondary btn-block" onclick="copyOrderToClipboard()">Copy order & close</button>
             </div>
         </div>
     </div>
@@ -1935,6 +2175,7 @@
         // BUSINESS CONFIG — fill these in as they become available
         const BUSINESS_EMAIL = 'teamgetsu.31@gmail.com';
         const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
+        const FSSAI_LICENCE = ''; // e.g. '14520163000123' — required for food business in India
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
 
         // PRODUCTS DATABASE
@@ -1968,10 +2209,40 @@
 
         let cart = JSON.parse(localStorage.getItem('getsuCart')) || [];
 
+        function initializeFSSAI() {
+            const fssaiDisplay = document.getElementById('fssaiDisplay');
+            if (FSSAI_LICENCE) {
+                fssaiDisplay.textContent = `FSSAI Licence: ${FSSAI_LICENCE}`;
+            }
+        }
+
+        function checkUnsentOrders() {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            const unsentOrder = orders.find(o => !o.sent);
+
+            if (unsentOrder) {
+                window.unsentOrder = unsentOrder;
+                document.getElementById('recoveryBanner').classList.add('show');
+            }
+        }
+
+        function recoverOrder() {
+            if (window.unsentOrder) {
+                showOrderConfirmation(window.unsentOrder);
+                document.getElementById('recoveryBanner').classList.remove('show');
+            }
+        }
+
+        function dismissRecoveryBanner() {
+            document.getElementById('recoveryBanner').classList.remove('show');
+        }
+
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
             renderFeaturedProducts();
             updateCartUI();
+            initializeFSSAI();
+            checkUnsentOrders();
         });
 
         function renderFeaturedProducts() {
@@ -2167,6 +2438,7 @@
                 items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
                 subtotal, tax, total,
                 status: RAZORPAY_PAYMENT_BUTTON_ID ? 'paid' : 'pending_payment',
+                sent: false,
             };
 
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
@@ -2182,19 +2454,59 @@
         }
 
         function showOrderConfirmation(order) {
+            window.lastOrder = order;
             document.getElementById('confirmName').textContent = ', ' + order.customer.name;
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
 
             const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
             const body = `Order ID: ${order.id}\n\n${itemLines}\n\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}`;
             const subject = `GetsU Order ${order.id}`;
-            document.getElementById('confirmEmailBtn').href = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.lastOrderEmailLink = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            const whatsappBtn = document.getElementById('confirmWhatsAppBtn');
+            if (WHATSAPP_NUMBER) {
+                whatsappBtn.style.display = '';
+            } else {
+                whatsappBtn.style.display = 'none';
+            }
 
             document.getElementById('confirmationModal').classList.add('open');
         }
 
+        function sendViaEmail() {
+            window.location.href = window.lastOrderEmailLink;
+            markOrderAsSent(window.lastOrder.id);
+            closeConfirmation();
+        }
+
         function closeConfirmation() {
             document.getElementById('confirmationModal').classList.remove('open');
+        }
+
+        function sendViaWhatsApp() {
+            const itemLines = window.lastOrder.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('%0A');
+            const message = `Order ID: ${window.lastOrder.id}%0A%0A${itemLines}%0A%0ATotal: ₹${window.lastOrder.total}%0A%0ADeliver to:%0A${window.lastOrder.customer.name}%0A${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}%0APhone: ${window.lastOrder.customer.phone}`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            markOrderAsSent(window.lastOrder.id);
+            closeConfirmation();
+        }
+
+        function copyOrderToClipboard() {
+            const itemLines = window.lastOrder.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
+            const text = `Order ID: ${window.lastOrder.id}\n\n${itemLines}\n\nTotal: ₹${window.lastOrder.total}\n\nDeliver to:\n${window.lastOrder.customer.name}\n${window.lastOrder.customer.address}, ${window.lastOrder.customer.city}, ${window.lastOrder.customer.state} ${window.lastOrder.customer.pincode}\nPhone: ${window.lastOrder.customer.phone}`;
+            navigator.clipboard.writeText(text);
+            showNotification('Order details copied to clipboard');
+            markOrderAsSent(window.lastOrder.id);
+            closeConfirmation();
+        }
+
+        function markOrderAsSent(orderId) {
+            const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.sent = true;
+                localStorage.setItem('getsuOrders', JSON.stringify(orders));
+            }
         }
 
         function openShop() {
@@ -2302,7 +2614,11 @@
 
         function searchProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const results = products.filter(p => p.name.toLowerCase().includes(query) || p.category.includes(query));
+            const results = products.filter(p =>
+                p.name.toLowerCase().includes(query) ||
+                p.category.includes(query) ||
+                p.features.some(f => f.toLowerCase().includes(query))
+            );
             const resultsDiv = document.getElementById('searchResults');
 
             if (query.length === 0) {
@@ -2331,11 +2647,17 @@
         });
 
         function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value;
-            if (email) {
-                alert(`Thanks for subscribing, ${email}!\n\nCheck your inbox for a 10% discount code.`);
-                document.getElementById('newsletterEmail').value = '';
+            const email = document.getElementById('newsletterEmail').value.trim();
+            if (!email) {
+                showNotification('Please enter your email');
+                return;
             }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('Please enter a valid email');
+                return;
+            }
+            showNotification(`Thanks for subscribing! Check your inbox for 10% off.`);
+            document.getElementById('newsletterEmail').value = '';
         }
 
         function scrollToSection(id) {
