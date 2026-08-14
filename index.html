@@ -27,6 +27,35 @@
         }
     }
     </script>
+
+    <!-- GOOGLE ANALYTICS -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <script>
+      // Replace with your Firebase config from Firebase Console
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "your-project.firebaseapp.com",
+        databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+        projectId: "your-project",
+        storageBucket: "your-project.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const database = firebase.database(app);
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -2270,12 +2299,32 @@
             document.getElementById('recoveryBanner').classList.remove('show');
         }
 
+        // Initialize user tracking ID
+        function initializeTracking() {
+            let userId = localStorage.getItem('getsuUserId');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('getsuUserId', userId);
+            }
+
+            // Track page view in Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('page_views').push({
+                    user_id: userId,
+                    timestamp: new Date().toISOString(),
+                    page: window.location.pathname,
+                    referrer: document.referrer || 'direct'
+                });
+            }
+        }
+
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
             renderFeaturedProducts();
             updateCartUI();
             initializeFSSAI();
             checkUnsentOrders();
+            initializeTracking();
         });
 
         function renderFeaturedProducts() {
@@ -2314,6 +2363,31 @@
                 existingItem.qty++;
             } else {
                 cart.push({ ...product, qty: 1 });
+            }
+
+            // Track add to cart in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'add_to_cart', {
+                    value: product.price,
+                    currency: 'INR',
+                    items: [{
+                        item_id: product.id,
+                        item_name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    }]
+                });
+            }
+
+            // Save to Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('cart_events').push({
+                    product_id: product.id,
+                    product_name: product.name,
+                    price: product.price,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
             }
 
             saveCart();
@@ -2475,6 +2549,42 @@
                 status: RAZORPAY_PAYMENT_BUTTON_ID ? 'paid' : 'pending_payment',
                 sent: false,
             };
+
+            // Track purchase in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    transaction_id: order.id,
+                    value: order.total,
+                    currency: 'INR',
+                    tax: order.tax,
+                    shipping: 0,
+                    items: order.items.map(i => ({
+                        item_id: i.name,
+                        item_name: i.name,
+                        price: i.price,
+                        quantity: i.qty
+                    }))
+                });
+            }
+
+            // Save complete order to Firebase (with customer data)
+            if (typeof database !== 'undefined') {
+                database.ref('orders').push({
+                    order_id: order.id,
+                    date: order.date,
+                    customer_name: order.customer.name,
+                    customer_email: order.customer.email,
+                    customer_phone: order.customer.phone,
+                    customer_city: order.customer.city,
+                    customer_state: order.customer.state,
+                    items_count: order.items.length,
+                    subtotal: order.subtotal,
+                    tax: order.tax,
+                    total: order.total,
+                    status: order.status,
+                    products: order.items
+                });
+            }
 
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
             orders.push(order);
@@ -2665,6 +2775,24 @@
             if (query.length === 0) {
                 resultsDiv.innerHTML = '';
                 return;
+            }
+
+            // Track search in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'search', {
+                    search_term: query,
+                    results_count: results.length
+                });
+            }
+
+            // Save search to Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('searches').push({
+                    query: query,
+                    results_count: results.length,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
             }
 
             if (results.length === 0) {
