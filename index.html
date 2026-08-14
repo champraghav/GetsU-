@@ -1641,6 +1641,13 @@
             box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.08);
         }
 
+        .form-group label .opt {
+            font-weight: 400;
+            color: var(--ink-faint);
+            font-size: 12px;
+            letter-spacing: 0;
+        }
+
         .form-error {
             color: var(--beet);
             font-size: 13px;
@@ -2715,6 +2722,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group" id="fld-ckLandmark">
+                        <label for="ckLandmark">Landmark <span class="opt">optional</span></label>
+                        <input type="text" id="ckLandmark" placeholder="Nearby shop, building or turning">
+                    </div>
+
+                    <div class="form-group" id="fld-ckNotes">
+                        <label for="ckNotes">Delivery notes <span class="opt">optional</span></label>
+                        <input type="text" id="ckNotes" placeholder="Best time to deliver, gate code, anything else">
+                    </div>
+
                     <!--
                         RAZORPAY INTEGRATION SLOT
                         Once your Razorpay KYC is approved, go to Dashboard → Payment Buttons,
@@ -3011,16 +3028,23 @@
             updateCartUI();
         }
 
+        const MAX_QTY = 20;
+
         function updateQty(productId, change) {
             const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.qty += change;
-                if (item.qty <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    saveCart();
-                    updateCartUI();
-                }
+            if (!item) return;
+
+            if (item.qty + change > MAX_QTY) {
+                showNotification(`Max ${MAX_QTY} per item. Email us for a bulk order.`);
+                return;
+            }
+
+            item.qty += change;
+            if (item.qty <= 0) {
+                removeFromCart(productId);
+            } else {
+                saveCart();
+                updateCartUI();
             }
         }
 
@@ -3233,6 +3257,8 @@
                 city: document.getElementById('ckCity').value,
                 state: document.getElementById('ckState').value,
                 pincode: document.getElementById('ckPincode').value,
+                landmark: document.getElementById('ckLandmark').value,
+                notes: document.getElementById('ckNotes').value,
             };
 
             if (!validateCheckoutForm(fields)) return;
@@ -3262,7 +3288,9 @@
         // Builds the plain-text order summary used by every send channel.
         function orderText(order) {
             const itemLines = order.items.map(i => `${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
-            return `GetsU Order ${order.id}\n\n${itemLines}\n\nSubtotal: ₹${order.subtotal}\nTax: ₹${order.tax}\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}\n${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}\nEmail: ${order.customer.email}`;
+            return `GetsU Order ${order.id}\n\n${itemLines}\n\nSubtotal: ₹${order.subtotal}\nTax: ₹${order.tax}\nTotal: ₹${order.total}\n\nDeliver to:\n${order.customer.name}\n${order.customer.address}\n${order.customer.city}, ${order.customer.state} ${order.customer.pincode}\nPhone: ${order.customer.phone}\nEmail: ${order.customer.email}`
+                + (order.customer.landmark ? `\nLandmark: ${order.customer.landmark}` : '')
+                + (order.customer.notes ? `\n\nNotes: ${order.customer.notes}` : '');
         }
 
         function markOrderSent(id) {
