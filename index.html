@@ -51,8 +51,13 @@
         appId: "1:431826507595:web:3f63c64a584b7f3b283ace"
       };
 
-      const app = firebase.initializeApp(firebaseConfig);
-      const database = firebase.database(app);
+      let database;
+      try {
+        const app = firebase.initializeApp(firebaseConfig);
+        database = firebase.database(app);
+      } catch (e) {
+        console.warn('Firebase failed to initialize; analytics/order sync to Firebase will be skipped.', e);
+      }
     </script>
 
     <style>
@@ -711,6 +716,14 @@
             z-index: 1;
         }
 
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
         .sku {
             position: absolute;
             top: 10px;
@@ -1192,6 +1205,31 @@
             gap: 0.6rem;
         }
 
+        .upi-pay-box {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .upi-pay-box img {
+            margin: 0 auto;
+            border-radius: 4px;
+            background: #fff;
+            padding: 8px;
+            border: 1px solid var(--line);
+        }
+
+        .upi-pay-amount {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--moss);
+            margin-top: 0.75rem;
+        }
+
         .policy-body h3 {
             font-size: 15px;
             margin: 1.25rem 0 0.5rem;
@@ -1277,6 +1315,13 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .cart-item-image .icon {
@@ -2185,7 +2230,7 @@
                     <div id="razorpayButtonSlot"></div>
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
-                    <p style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
+                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
                 </form>
             </div>
         </div>
@@ -2199,6 +2244,12 @@
             <h2>One last step</h2>
             <p>Your order isn't with us yet<span id="confirmName"></span>. Choose your preferred way to send it to us below, and we'll confirm within 1 business day.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
+            <div class="upi-pay-box" id="upiPayBox" style="display:none;">
+                <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
+                <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200">
+                <div class="upi-pay-amount" id="upiPayAmount"></div>
+                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
+            </div>
             <div class="confirm-actions">
                 <button class="btn btn-primary btn-block" id="confirmWhatsAppBtn" onclick="sendViaWhatsApp()" style="display:none;">WhatsApp us</button>
                 <button class="btn btn-primary btn-block" id="confirmEmailBtn" onclick="sendViaEmail()">Email us</button>
@@ -2252,6 +2303,8 @@
         const WHATSAPP_NUMBER = ''; // e.g. '91XXXXXXXXXX' — leave blank to hide WhatsApp options
         const FSSAI_LICENCE = ''; // e.g. '14520163000123' — required for food business in India
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
+        const UPI_VPA = ''; // your UPI ID, e.g. 'raghavsoni@okaxis' — leave blank to hide the UPI QR option
+        const UPI_PAYEE_NAME = 'GetsU'; // name shown to the customer in their UPI app
         const MAX_QTY = 20; // maximum quantity per product in one order
 
         // PRODUCTS DATABASE
@@ -2333,6 +2386,16 @@
             }
         }
 
+        function initializePaymentNote() {
+            const note = document.getElementById('checkoutPaymentNote');
+            if (!note) return;
+            if (RAZORPAY_PAYMENT_BUTTON_ID) {
+                note.textContent = 'Pay securely online via Razorpay — cards, UPI, netbanking and wallets accepted.';
+            } else if (UPI_VPA) {
+                note.textContent = "Place your order, then scan the UPI QR code shown next to pay instantly.";
+            }
+        }
+
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
             renderFeaturedProducts();
@@ -2340,6 +2403,7 @@
             initializeFSSAI();
             checkUnsentOrders();
             initializeTracking();
+            initializePaymentNote();
         });
 
         function renderFeaturedProducts() {
@@ -2350,7 +2414,9 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        <svg class="icon" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
+                        ${product.image
+                            ? `<img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(product.category)}</svg>'">`
+                            : `<svg class="icon" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>`}
                     </div>
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
@@ -2458,7 +2524,9 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image"><svg class="icon" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg></div>
+                        <div class="cart-item-image">${item.image
+                            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(item.category)}</svg>'">`
+                            : `<svg class="icon" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg>`}</div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
@@ -2630,6 +2698,16 @@
                 whatsappBtn.style.display = '';
             } else {
                 whatsappBtn.style.display = 'none';
+            }
+
+            const upiBox = document.getElementById('upiPayBox');
+            if (UPI_VPA) {
+                const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${order.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + order.id)}`;
+                document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
+                document.getElementById('upiPayAmount').textContent = '₹' + order.total;
+                upiBox.style.display = '';
+            } else {
+                upiBox.style.display = 'none';
             }
 
             document.getElementById('confirmationModal').classList.add('open');
