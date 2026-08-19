@@ -12,7 +12,7 @@
     <meta property="og:url" content="https://champraghav.github.io/GetsU-/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GetsU — Made For You">
-    <meta name="twitter:description" content="Healthy eating should be delicious"
+    <meta name="twitter:description" content="Healthy eating should be delicious">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org/",
@@ -63,30 +63,30 @@
         }
 
         :root {
-            --ink: #1B2118;
-            --ink-soft: #4F5A46;
-            --ink-faint: #7C8672;
-            --paper: #F4F6EF;
-            --paper-raised: #EAEEDF;
-            --paper-tin: #E3E8D6;
-            --line: #D3DAC3;
-            --moss: #2F4A2A;
-            --moss-deep: #1E301B;
-            --turmeric: #C97A1F;
-            --turmeric-deep: #A6650F;
-            --turmeric-ink: #4A3410;
+            --ink: #191F16;
+            --ink-soft: #4A5540;
+            --ink-faint: #79856C;
+            --paper: #FBF9F2;
+            --paper-raised: #F2EDDD;
+            --paper-tin: #E9E1C8;
+            --line: #DCD3B4;
+            --moss: #1F5C34;
+            --moss-deep: #123D21;
+            --turmeric: #D4A017;
+            --turmeric-deep: #AD8210;
+            --turmeric-ink: #3B2A06;
             --beet: #8F3542;
             --beet-deep: #732733;
-            --focus: #2F4A2A;
+            --focus: #1F5C34;
 
             /* Fixed tokens: deliberately committed dark surfaces that do not invert with theme */
-            --surface-dark: #14170F;
-            --surface-dark-text: #F4F6EF;
-            --surface-dark-text-soft: #9AA68E;
-            --surface-dark-line: #333B27;
-            --brand-moss-fixed: #2F4A2A;
-            --brand-turmeric-fixed: #E3A44C;
-            --brand-moss-soft-fixed: #DCE4D3;
+            --surface-dark: #101408;
+            --surface-dark-text: #FBF9F2;
+            --surface-dark-text-soft: #9CAA8B;
+            --surface-dark-line: #303B24;
+            --brand-moss-fixed: #3FA35E;
+            --brand-turmeric-fixed: #EABD4E;
+            --brand-moss-soft-fixed: #DDE6CC;
             --badge-bg: #732733;
             --badge-text: #FBEEEF;
 
@@ -97,40 +97,40 @@
 
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) {
-                --ink: #ECEFE2;
-                --ink-soft: #B9C1A9;
-                --ink-faint: #838F73;
-                --paper: #14170F;
-                --paper-raised: #1C2116;
-                --paper-tin: #232A1B;
-                --line: #333C27;
-                --moss: #7FBF74;
-                --moss-deep: #9FDA95;
-                --turmeric: #E3A44C;
-                --turmeric-deep: #F0BD75;
-                --turmeric-ink: #2A1F0D;
+                --ink: #EFEDDF;
+                --ink-soft: #BAC5A9;
+                --ink-faint: #829073;
+                --paper: #101408;
+                --paper-raised: #181E10;
+                --paper-tin: #212917;
+                --line: #303B24;
+                --moss: #63C878;
+                --moss-deep: #8FE29E;
+                --turmeric: #EFC15C;
+                --turmeric-deep: #F5D488;
+                --turmeric-ink: #271D07;
                 --beet: #D98A93;
                 --beet-deep: #E7ADB4;
-                --focus: #7FBF74;
+                --focus: #63C878;
             }
         }
 
         :root[data-theme="dark"] {
-            --ink: #ECEFE2;
-            --ink-soft: #B9C1A9;
-            --ink-faint: #838F73;
-            --paper: #14170F;
-            --paper-raised: #1C2116;
-            --paper-tin: #232A1B;
-            --line: #333C27;
-            --moss: #7FBF74;
-            --moss-deep: #9FDA95;
-            --turmeric: #E3A44C;
-            --turmeric-deep: #F0BD75;
-            --turmeric-ink: #2A1F0D;
+            --ink: #EFEDDF;
+            --ink-soft: #BAC5A9;
+            --ink-faint: #829073;
+            --paper: #101408;
+            --paper-raised: #181E10;
+            --paper-tin: #212917;
+            --line: #303B24;
+            --moss: #63C878;
+            --moss-deep: #8FE29E;
+            --turmeric: #EFC15C;
+            --turmeric-deep: #F5D488;
+            --turmeric-ink: #271D07;
             --beet: #D98A93;
             --beet-deep: #E7ADB4;
-            --focus: #7FBF74;
+            --focus: #63C878;
         }
 
         html {
@@ -229,8 +229,20 @@
             font-family: var(--font-display);
             font-size: 26px;
             font-weight: 700;
-            color: var(--ink);
+            color: var(--moss);
             letter-spacing: -0.01em;
+        }
+
+        .logo .logo-u {
+            color: var(--turmeric);
+        }
+
+        footer .logo {
+            color: var(--brand-moss-fixed);
+        }
+
+        footer .logo .logo-u {
+            color: var(--brand-turmeric-fixed);
         }
 
         .tagline {
@@ -325,7 +337,7 @@
             font-size: 14px;
             font-family: var(--font-body);
             border: 1px solid transparent;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .btn-primary {
@@ -335,6 +347,7 @@
 
         .btn-primary:hover {
             background: var(--moss-deep);
+            box-shadow: 0 6px 18px rgba(18, 61, 33, 0.28);
         }
 
         .btn-accent {
@@ -344,6 +357,7 @@
 
         .btn-accent:hover {
             background: var(--turmeric-deep);
+            box-shadow: 0 6px 18px rgba(173, 130, 16, 0.3);
         }
 
         .btn-secondary {
@@ -658,7 +672,7 @@
             border-radius: 4px;
             overflow: hidden;
             border: 1px solid var(--line);
-            transition: border-color 0.2s ease, transform 0.2s ease;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             display: flex;
             flex-direction: column;
         }
@@ -666,6 +680,7 @@
         .product-card:hover {
             border-color: var(--moss);
             transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(18, 61, 33, 0.14);
         }
 
         .product-image {
@@ -1686,7 +1701,7 @@
         <div class="header-left">
             <button class="brand" onclick="scrollToTop()" aria-label="GetsU home">
                 <div>
-                    <div class="logo">GetsU</div>
+                    <div class="logo">Gets<span class="logo-u">U</span></div>
                     <div class="tagline">Made For You</div>
                 </div>
             </button>
@@ -2032,7 +2047,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
-                <div class="logo">GetsU</div>
+                <div class="logo">Gets<span class="logo-u">U</span></div>
                 <p>Clean-label, nutrient-dense food that's delicious, convenient, and affordable. Made for you.</p>
                 <p style="margin-top:0.75rem;"><a href="mailto:teamgetsu.31@gmail.com" style="color:inherit;">teamgetsu.31@gmail.com</a></p>
             </div>
