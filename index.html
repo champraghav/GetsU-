@@ -6,7 +6,7 @@
     <title>GetsU — Clean-Label Protein Food, Made For You</title>
     <meta name="description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read. Free delivery across India. No added sugar, no artificial preservatives.">
     <meta name="keywords" content="healthy food, protein snacks, functional beverages, clean ingredients, nutrition">
-    <meta name="theme-color" content="#2D5016">
+<meta name="theme-color" content="#1F5C34">
     <link rel="canonical" href="https://champraghav.github.io/GetsU-/">
 
     <!-- Link previews (WhatsApp, Instagram, Facebook, X) -->
@@ -26,8 +26,56 @@
     <meta name="twitter:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read.">
 
     <!-- Inline favicon: no external request, works offline -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F5C34'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23FBF9F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F5C34'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23FBF9F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Organization",
+        "name": "GetsU",
+        "url": "https://champraghav.github.io/GetsU-/",
+        "description": "Clean-label, nutrient-dense foods that are delicious, convenient, and affordable",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "email": "teamgetsu.31@gmail.com"
+        }
+    }
+    </script>
+
+    <!-- GOOGLE ANALYTICS -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KJCRL0Z44F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KJCRL0Z44F');
+    </script>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCvRzjv-IEks_gAvCCA70-mDUnLD8wCrjU",
+        authDomain: "getsu-a30a8.firebaseapp.com",
+        databaseURL: "https://getsu-a30a8-default-rtdb.firebaseio.com",
+        projectId: "getsu-a30a8",
+        storageBucket: "getsu-a30a8.firebasestorage.app",
+        messagingSenderId: "431826507595",
+        appId: "1:431826507595:web:3f63c64a584b7f3b283ace"
+      };
+
+      let database;
+      try {
+        const app = firebase.initializeApp(firebaseConfig);
+        database = firebase.database(app);
+      } catch (e) {
+        console.warn('Firebase failed to initialize; analytics/order sync to Firebase will be skipped.', e);
+      }
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -36,34 +84,34 @@
         }
 
         :root {
-            --ink: #0D0D0B;
-            --ink-soft: #5A5A54;
-            --ink-faint: #8C8C82;
-            --paper: #FAFAF8;
-            --paper-raised: #FFFFFF;
-            --paper-tin: #F0F0EC;
-            --line: #E8E4DB;
-            --moss: #2D5016;
-            --moss-deep: #1F3A0E;
-            --turmeric: #D4A373;
-            --turmeric-deep: #C49360;
-            --turmeric-ink: #3D2F1A;
+            --ink: #191F16;
+            --ink-soft: #4A5540;
+            --ink-faint: #79856C;
+            --paper: #FBF9F2;
+            --paper-raised: #F2EDDD;
+            --paper-tin: #E9E1C8;
+            --line: #DCD3B4;
+            --moss: #1F5C34;
+            --moss-deep: #123D21;
+            --turmeric: #D4A017;
+            --turmeric-deep: #AD8210;
+            --turmeric-ink: #3B2A06;
             --beet: #8F3542;
             --beet-deep: #732733;
-            --focus: #2D5016;
-            --on-moss: #F7F5F2;
+            --focus: #1F5C34;
+            --on-moss: #FBF9F2;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
 
             /* Fixed tokens: deliberately committed dark surfaces that do not invert with theme */
-            --surface-dark: #12140F;
-            --surface-dark-text: #F7F5F2;
-            --surface-dark-text-soft: #A8A89F;
-            --surface-dark-line: #2E3229;
-            --brand-moss-fixed: #2D5016;
-            --brand-turmeric-fixed: #E3A44C;
-            --brand-moss-soft-fixed: #DCE4D3;
+            --surface-dark: #101408;
+            --surface-dark-text: #FBF9F2;
+            --surface-dark-text-soft: #9CAA8B;
+            --surface-dark-line: #303B24;
+            --brand-moss-fixed: #3FA35E;
+            --brand-turmeric-fixed: #EABD4E;
+            --brand-moss-soft-fixed: #DDE6CC;
             --badge-bg: #732733;
             --badge-text: #FBEEEF;
 
@@ -74,22 +122,22 @@
 
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) {
-                --ink: #F2F0ED;
-                --ink-soft: #BCBAB4;
-                --ink-faint: #8A8880;
-                --paper: #12140F;
-                --paper-raised: #1D1F1A;
-                --paper-tin: #272B24;
-                --line: #3A3E36;
-                --moss: #8ACC73;
-                --moss-deep: #9FD98C;
-                --turmeric: #E8B968;
-                --turmeric-deep: #F0C980;
-                --turmeric-ink: #2A1F0D;
-                --beet: #E399A3;
-                --beet-deep: #EDB0B9;
-                --focus: #8ACC73;
-                --on-moss: #12140F;
+                --ink: #EFEDDF;
+                --ink-soft: #BAC5A9;
+                --ink-faint: #829073;
+                --paper: #101408;
+                --paper-raised: #181E10;
+                --paper-tin: #212917;
+                --line: #303B24;
+                --moss: #63C878;
+                --moss-deep: #8FE29E;
+                --turmeric: #EFC15C;
+                --turmeric-deep: #F5D488;
+                --turmeric-ink: #271D07;
+                --beet: #D98A93;
+                --beet-deep: #E7ADB4;
+                --focus: #63C878;
+                --on-moss: #101408;
                 --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
                 --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
                 --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
@@ -97,22 +145,22 @@
         }
 
         :root[data-theme="dark"] {
-            --ink: #F2F0ED;
-            --ink-soft: #BCBAB4;
-            --ink-faint: #8A8880;
-            --paper: #12140F;
-            --paper-raised: #1D1F1A;
-            --paper-tin: #272B24;
-            --line: #3A3E36;
-            --moss: #8ACC73;
-            --moss-deep: #9FD98C;
-            --turmeric: #E8B968;
-            --turmeric-deep: #F0C980;
-            --turmeric-ink: #2A1F0D;
-            --beet: #E399A3;
-            --beet-deep: #EDB0B9;
-            --focus: #8ACC73;
-            --on-moss: #12140F;
+            --ink: #EFEDDF;
+            --ink-soft: #BAC5A9;
+            --ink-faint: #829073;
+            --paper: #101408;
+            --paper-raised: #181E10;
+            --paper-tin: #212917;
+            --line: #303B24;
+            --moss: #63C878;
+            --moss-deep: #8FE29E;
+            --turmeric: #EFC15C;
+            --turmeric-deep: #F5D488;
+            --turmeric-ink: #271D07;
+            --beet: #D98A93;
+            --beet-deep: #E7ADB4;
+            --focus: #63C878;
+            --on-moss: #101408;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
             --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
@@ -238,8 +286,20 @@
             font-family: var(--font-display);
             font-size: 26px;
             font-weight: 700;
-            color: var(--ink);
+            color: var(--moss);
             letter-spacing: -0.01em;
+        }
+
+        .logo .logo-u {
+            color: var(--turmeric);
+        }
+
+        footer .logo {
+            color: var(--brand-moss-fixed);
+        }
+
+        footer .logo .logo-u {
+            color: var(--brand-turmeric-fixed);
         }
 
         .tagline {
@@ -1208,6 +1268,14 @@
             z-index: 1;
         }
 
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
         .sku {
             position: absolute;
             top: 12px;
@@ -1764,6 +1832,31 @@
             gap: 0.6rem;
         }
 
+        .upi-pay-box {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .upi-pay-box img {
+            margin: 0 auto;
+            border-radius: 4px;
+            background: #fff;
+            padding: 8px;
+            border: 1px solid var(--line);
+        }
+
+        .upi-pay-amount {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--moss);
+            margin-top: 0.75rem;
+        }
+
         .confirm-foot {
             margin-top: 1.25rem;
             font-size: 13px;
@@ -1946,6 +2039,13 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .cart-item-image .icon {
@@ -2269,6 +2369,34 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
+
+        @media (max-width: 512px) {
+            .trust-bar {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .btn-block {
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
         /* ==================== PRINT ==================== */
         @media print {
             header, footer, .cart-sidebar, .cart-scrim, .to-top, .recovery,
@@ -2317,7 +2445,7 @@
         <div class="header-left">
             <button class="brand" onclick="scrollToTop()" aria-label="GetsU home">
                 <div>
-                    <div class="logo">GetsU</div>
+                    <div class="logo">Gets<span class="logo-u">U</span></div>
                     <div class="tagline">Made For You</div>
                 </div>
             </button>
@@ -2361,7 +2489,7 @@
             <h1>Healthy eating should be <span class="highlight">delicious</span>, not a compromise.</h1>
             <p>Clean ingredients. Great taste. Fair prices. We're closing the gap between junk food and boring health food — one label you can actually read.</p>
             <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="openShop()">Start Shopping</button>
+                <button class="btn btn-primary" onclick="scrollToSection('products')">Start Shopping</button>
                 <button class="btn btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
             </div>
             <div class="hero-proof">
@@ -2674,7 +2802,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
-                <div class="logo">GetsU</div>
+                <div class="logo">Gets<span class="logo-u">U</span></div>
                 <p>Clean-label, nutrient-dense food that's delicious, convenient, and affordable. Made for you.</p>
                 <p style="margin-top:0.75rem;"><a href="mailto:teamgetsu.31@gmail.com" style="color:inherit;">teamgetsu.31@gmail.com</a></p>
             </div>
@@ -2710,6 +2838,7 @@
             <p>&copy; 2026 GetsU. Made For You.<br>
                <span id="fssaiLine" style="opacity:.75;font-size:12px;"></span></p>
             <p><a href="#" onclick="openPolicy('privacy'); return false;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" onclick="openPolicy('terms'); return false;">Terms of Service</a></p>
+            <p id="fssaiDisplay"></p>
         </div>
     </footer>
 
@@ -2820,7 +2949,7 @@
                     <div id="razorpayButtonSlot"></div>
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
-                    <p style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
+                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
                 </form>
             </div>
         </div>
@@ -2834,6 +2963,12 @@
             <h2>One last step<span id="confirmName"></span></h2>
             <p>Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
+            <div class="upi-pay-box" id="upiPayBox" style="display:none;">
+                <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
+                <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200">
+                <div class="upi-pay-amount" id="upiPayAmount"></div>
+                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
+            </div>
             <div class="confirm-actions" id="confirmActions"></div>
             <p class="confirm-foot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
@@ -2906,6 +3041,8 @@
         const RAZORPAY_PAYMENT_BUTTON_ID = ''; // paste the ID from Razorpay Dashboard → Payment Buttons once KYC is approved
         // Displaying the FSSAI licence number is mandatory for food businesses in India.
         const FSSAI_LICENCE = ''; // e.g. '12345678901234'
+        const UPI_VPA = 'soniraghav350-1@oksbi'; // your UPI ID — leave blank to hide the UPI QR option
+        const UPI_PAYEE_NAME = 'GetsU'; // name shown to the customer in their UPI app
 
         // CATEGORIES — order here drives the filter bar and the catalog grid
         const CATEGORIES = [
@@ -2951,9 +3088,9 @@
         const products = [
             { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' , serving: '45 g', nutrition: { kcal: 340, protein: 25, carbs: 38, fat: 7, fibre: 6, sugar: 1 }, ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.', allergens: 'Milk, Tree nuts', note: 'Gluten-free oats' },
             { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' , serving: '50 g', nutrition: { kcal: 312, protein: 9, carbs: 58, fat: 5, fibre: 9, sugar: 2 }, ingredients: 'Ragi, jowar, bajra, foxtail millet, little millet, cardamom.', allergens: 'None', note: 'Naturally gluten free' },
-            { id: 9,  name: 'Protein Pancake Premix', category: 'breakfast',   price: 379, original: 479,  features: ['18g Protein', 'Just Add Water'],  badge: '',            desc: 'Fluffy pancakes without the sugar crash. Just add water and cook.' , serving: '60 g', nutrition: { kcal: 286, protein: 18, carbs: 34, fat: 8, fibre: 4, sugar: 3 }, ingredients: 'Oat flour, whey protein isolate, banana powder, baking soda, sea salt.', allergens: 'Milk', note: 'No refined flour' },
+            { id: 9,  name: 'Pancake Premix',         category: 'breakfast',   price: 379, original: 479,  features: ['20g Protein', '100% Plant Based', 'No Refined Sugar'], badge: 'New', desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.' , serving: '35 g (3 scoops)', nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 }, ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.', allergens: 'None', note: '100% plant based' },
 
-            { id: 2,  name: 'Protein Energy Bar',     category: 'snacks',      price: 99,  original: 129,  features: ['20g Protein', 'Clean Label'],     badge: 'Best Seller', desc: 'Dates, whey, and roasted nuts. Six ingredients, nothing hidden.' , serving: '40 g', nutrition: { kcal: 188, protein: 20, carbs: 17, fat: 6, fibre: 3, sugar: 9 }, ingredients: 'Dates, whey protein isolate, roasted almonds, cocoa, sea salt.', allergens: 'Milk, Tree nuts', note: 'Six ingredients' },
+            { id: 2,  name: 'Protein Bar — Chocolate Delight', category: 'snacks', price: 99,  original: 129,  features: ['20g Protein', 'Plant Powered', 'No Added Sugar', 'Gluten Free'], badge: 'Best Seller', desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.' , serving: '50 g', nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 }, ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.', allergens: 'Nuts, Peanuts', note: 'Gluten free' },
             { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' , serving: '30 g', nutrition: { kcal: 128, protein: 15, carbs: 14, fat: 3, fibre: 5, sugar: 1 }, ingredients: 'Bengal gram, sunflower oil, chilli, amchur, black salt.', allergens: 'None', note: 'Air roasted' },
             { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' , serving: '35 g', nutrition: { kcal: 156, protein: 6, carbs: 19, fat: 7, fibre: 3, sugar: 6 }, ingredients: 'Almond flour, jaggery, ghee, oats, vanilla, baking soda.', allergens: 'Milk, Tree nuts', note: 'No maida' },
 
@@ -2989,6 +3126,35 @@
 
         let cart = JSON.parse(localStorage.getItem('getsuCart')) || [];
 
+        // Initialize user tracking ID
+        function initializeTracking() {
+            let userId = localStorage.getItem('getsuUserId');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('getsuUserId', userId);
+            }
+
+            // Track page view in Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('page_views').push({
+                    user_id: userId,
+                    timestamp: new Date().toISOString(),
+                    page: window.location.pathname,
+                    referrer: document.referrer || 'direct'
+                });
+            }
+        }
+
+        function initializePaymentNote() {
+            const note = document.getElementById('checkoutPaymentNote');
+            if (!note) return;
+            if (RAZORPAY_PAYMENT_BUTTON_ID) {
+                note.textContent = 'Pay securely online via Razorpay — cards, UPI, netbanking and wallets accepted.';
+            } else if (UPI_VPA) {
+                note.textContent = "Place your order, then scan the UPI QR code shown next to pay instantly.";
+            }
+        }
+
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
             renderFilterBar();
@@ -2998,6 +3164,8 @@
             checkRecovery();
             document.getElementById('fssaiLine').textContent =
                 FSSAI_LICENCE ? 'FSSAI Licence No. ' + FSSAI_LICENCE : '';
+            initializeTracking();
+            initializePaymentNote();
         });
 
         // back-to-top appears once the hero is behind you
@@ -3064,7 +3232,9 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>
+                        ${product.image
+                            ? `<img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(product.category)}</svg>'">`
+                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>`}
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${categoryLabel(product.category)}</div>
@@ -3093,6 +3263,31 @@
                 existingItem.qty++;
             } else {
                 cart.push({ ...product, qty: 1 });
+            }
+
+            // Track add to cart in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'add_to_cart', {
+                    value: product.price,
+                    currency: 'INR',
+                    items: [{
+                        item_id: product.id,
+                        item_name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    }]
+                });
+            }
+
+            // Save to Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('cart_events').push({
+                    product_id: product.id,
+                    product_name: product.name,
+                    price: product.price,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
             }
 
             saveCart();
@@ -3159,7 +3354,9 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg></div>
+                        <div class="cart-item-image">${item.image
+                            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(item.category)}</svg>'">`
+                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg>`}</div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
@@ -3349,7 +3546,44 @@
                 items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
                 subtotal, tax, total,
                 status: RAZORPAY_PAYMENT_BUTTON_ID ? 'paid' : 'pending_payment',
+                sent: false,
             };
+
+            // Track purchase in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    transaction_id: order.id,
+                    value: order.total,
+                    currency: 'INR',
+                    tax: order.tax,
+                    shipping: 0,
+                    items: order.items.map(i => ({
+                        item_id: i.name,
+                        item_name: i.name,
+                        price: i.price,
+                        quantity: i.qty
+                    }))
+                });
+            }
+
+            // Save complete order to Firebase (with customer data)
+            if (typeof database !== 'undefined') {
+                database.ref('orders').push({
+                    order_id: order.id,
+                    date: order.date,
+                    customer_name: order.customer.name,
+                    customer_email: order.customer.email,
+                    customer_phone: order.customer.phone,
+                    customer_city: order.customer.city,
+                    customer_state: order.customer.state,
+                    items_count: order.items.length,
+                    subtotal: order.subtotal,
+                    tax: order.tax,
+                    total: order.total,
+                    status: order.status,
+                    products: order.items
+                });
+            }
 
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
             orders.push(order);
@@ -3388,6 +3622,16 @@
             const waHref = WHATSAPP_NUMBER
                 ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
                 : '';
+
+            const upiBox = document.getElementById('upiPayBox');
+            if (UPI_VPA) {
+                const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${order.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + order.id)}`;
+                document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
+                document.getElementById('upiPayAmount').textContent = '₹' + order.total;
+                upiBox.style.display = '';
+            } else {
+                upiBox.style.display = 'none';
+            }
 
             document.getElementById('confirmActions').innerHTML = `
                 ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
@@ -3701,6 +3945,24 @@
             if (query.length === 0) {
                 resultsDiv.innerHTML = '';
                 return;
+            }
+
+            // Track search in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'search', {
+                    search_term: query,
+                    results_count: results.length
+                });
+            }
+
+            // Save search to Firebase
+            if (typeof database !== 'undefined') {
+                database.ref('searches').push({
+                    query: query,
+                    results_count: results.length,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
             }
 
             if (results.length === 0) {
