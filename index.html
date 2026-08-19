@@ -786,9 +786,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .pd-thumb .icon { width: 44%; height: 44%; color: var(--moss); }
+        .pd-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .pd-head h2 { margin-bottom: 0.35rem; }
         .pd-price { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--moss); }
         .pd-price s { color: var(--ink-faint); font-size: 14px; font-weight: 400; margin-right: 0.5rem; }
@@ -3088,9 +3090,9 @@
         const products = [
             { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' , serving: '45 g', nutrition: { kcal: 340, protein: 25, carbs: 38, fat: 7, fibre: 6, sugar: 1 }, ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.', allergens: 'Milk, Tree nuts', note: 'Gluten-free oats' },
             { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' , serving: '50 g', nutrition: { kcal: 312, protein: 9, carbs: 58, fat: 5, fibre: 9, sugar: 2 }, ingredients: 'Ragi, jowar, bajra, foxtail millet, little millet, cardamom.', allergens: 'None', note: 'Naturally gluten free' },
-            { id: 9,  name: 'Pancake Premix',         category: 'breakfast',   price: 379, original: 479,  features: ['20g Protein', '100% Plant Based', 'No Refined Sugar'], badge: 'New', desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.' , serving: '35 g (3 scoops)', nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 }, ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.', allergens: 'None', note: '100% plant based' },
+            { id: 9,  name: 'Pancake Premix',         category: 'breakfast',   price: 379, original: 479,  features: ['20g Protein', '100% Plant Based', 'No Refined Sugar'], badge: 'New', desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.' , serving: '35 g (3 scoops)', nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 }, ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.', allergens: 'None', note: '100% plant based', image: 'images/products/pancake-premix.jpg' },
 
-            { id: 2,  name: 'Protein Bar — Chocolate Delight', category: 'snacks', price: 99,  original: 129,  features: ['20g Protein', 'Plant Powered', 'No Added Sugar', 'Gluten Free'], badge: 'Best Seller', desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.' , serving: '50 g', nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 }, ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.', allergens: 'Nuts, Peanuts', note: 'Gluten free' },
+            { id: 2,  name: 'Protein Bar — Chocolate Delight', category: 'snacks', price: 99,  original: 129,  features: ['20g Protein', 'Plant Powered', 'No Added Sugar', 'Gluten Free'], badge: 'Best Seller', desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.' , serving: '50 g', nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 }, ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.', allergens: 'Nuts, Peanuts', note: 'Gluten free', image: 'images/products/protein-bar-chocolate.jpg' },
             { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' , serving: '30 g', nutrition: { kcal: 128, protein: 15, carbs: 14, fat: 3, fibre: 5, sugar: 1 }, ingredients: 'Bengal gram, sunflower oil, chilli, amchur, black salt.', allergens: 'None', note: 'Air roasted' },
             { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' , serving: '35 g', nutrition: { kcal: 156, protein: 6, carbs: 19, fat: 7, fibre: 3, sugar: 6 }, ingredients: 'Almond flour, jaggery, ghee, oats, vanilla, baking soda.', allergens: 'Milk, Tree nuts', note: 'No maida' },
 
@@ -3860,7 +3862,9 @@
 
             document.getElementById('productBody').innerHTML = `
                 <div class="pd-head">
-                    <div class="pd-thumb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${categoryIcon(p.category)}</svg></div>
+                    <div class="pd-thumb">${p.image
+                        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(p.category)}</svg>'">`
+                        : `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${categoryIcon(p.category)}</svg>`}</div>
                     <div>
                         <div class="product-cat">${categoryLabel(p.category)} · ${skuFor(p.id)}</div>
                         <h2>${p.name}</h2>
