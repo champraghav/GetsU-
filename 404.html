@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — GetsU</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232D5016'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23F7F5F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#0D0D0B;--ink-soft:#5A5A54;--ink-faint:#8C8C82;
+  --paper:#FAFAF8;--paper-raised:#FFF;--line:#E8E4DB;
+  --moss:#2D5016;--on-moss:#F7F5F2;--turmeric:#D4A373;
+  --font-display:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#F2F0ED;--ink-soft:#BCBAB4;--ink-faint:#8A8880;
+  --paper:#12140F;--paper-raised:#1D1F1A;--line:#3A3E36;
+  --moss:#8ACC73;--on-moss:#12140F;--turmeric:#E8B968;
+}}
+:root[data-theme="dark"]{
+  --ink:#F2F0ED;--ink-soft:#BCBAB4;--ink-faint:#8A8880;
+  --paper:#12140F;--paper-raised:#1D1F1A;--line:#3A3E36;
+  --moss:#8ACC73;--on-moss:#12140F;--turmeric:#E8B968;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);
+  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:2rem;line-height:1.65}
+.wrap{max-width:520px;text-align:center}
+.code{font-family:var(--font-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--turmeric);margin-bottom:1.25rem}
+h1{font-family:var(--font-display);font-size:clamp(1.9rem,5vw,2.6rem);letter-spacing:-.02em;margin-bottom:1rem;text-wrap:balance}
+p{color:var(--ink-soft);font-size:17px;margin-bottom:2rem;text-wrap:balance}
+.actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.875rem 1.75rem;
+  border-radius:5px;font-weight:600;font-size:14px;text-decoration:none;border:1.5px solid transparent;
+  transition:background .25s ease,border-color .25s ease,color .25s ease}
+.btn-primary{background:var(--moss);color:var(--on-moss)}
+.btn-primary:hover{filter:brightness(.92)}
+.btn-secondary{background:var(--paper-raised);color:var(--ink);border-color:var(--line)}
+.btn-secondary:hover{border-color:var(--moss);color:var(--moss)}
+:focus-visible{outline:2px solid var(--moss);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="code">Error 404</div>
+  <h1>This page isn't on the shelf</h1>
+  <p>The link may be old, or the page may have moved. The shop is still where you left it.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="/GetsU-/#products">Go to the shop</a>
+    <a class="btn btn-secondary" href="/GetsU-/">Back to home</a>
+  </div>
+</div>
+</body>
+</html>
