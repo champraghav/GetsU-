@@ -56,6 +56,9 @@
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+
+    <!-- RAZORPAY CHECKOUT -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyCvRzjv-IEks_gAvCCA70-mDUnLD8wCrjU",
@@ -2952,14 +2955,15 @@
         <div class="modal-content">
             <button class="close" onclick="closeConfirmation()" aria-label="Close">&times;</button>
             <svg class="icon confirm-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h10"/><path d="M11 8l4 4-4 4"/><path d="M17 5v14"/></svg>
-            <h2>One last step<span id="confirmName"></span></h2>
-            <p>Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
+            <h2 id="confirmHeading">One last step<span id="confirmName"></span></h2>
+            <p id="confirmIntro">Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
             <div class="upi-pay-box" id="razorpayPayBox" style="display:none;">
-                <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now</div>
+                <div class="eyebrow" style="margin-bottom:0.6rem;">Amount to pay</div>
                 <div class="upi-pay-amount" id="razorpayPayAmount"></div>
-                <div id="razorpayButtonSlot" style="margin-top:0.85rem;"></div>
-                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Your order completes automatically the moment payment succeeds — no need to send anything.</p>
+                <button type="button" class="btn btn-primary btn-block" id="razorpayPayBtn"
+                        style="margin-top:0.85rem;" onclick="startRazorpayPayment()">Pay securely</button>
+                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.</p>
             </div>
             <div class="upi-pay-box" id="upiPayBox" style="display:none;">
                 <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
@@ -2968,7 +2972,7 @@
                 <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
             </div>
             <div class="confirm-actions" id="confirmActions"></div>
-            <p class="confirm-foot">We reply within a day to confirm stock, delivery date and payment.</p>
+            <p class="confirm-foot" id="confirmFoot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
     </div>
 
@@ -3036,11 +3040,13 @@
         // Set this and a one-tap WhatsApp button appears on every order. Highly
         // recommended: far more orders come through than mailto links.
         const WHATSAPP_NUMBER = ''; // e.g. '919876543210' — country code, no + or spaces
-        const RAZORPAY_PAYMENT_BUTTON_ID = 'pl_TSNL7ygxBlengj';
-        // In Razorpay Dashboard → this button → the redirect/callback step, set the
-        // customer's post-payment destination to this exact site URL so a successful
-        // payment lands back here and the order completes automatically.
-        const RAZORPAY_REDIRECT_URL = 'https://champraghav.github.io/GetsU-/';
+        // Razorpay Key ID from Dashboard → Account & Settings → API Keys.
+        // This is the PUBLIC key (rzp_live_… / rzp_test_…) and is meant to sit in
+        // client-side code — never put the Key SECRET here, it must stay server-side.
+        // A Payment Button is deliberately NOT used: buttons carry a fixed amount set
+        // in the dashboard, so they cannot charge each order's real total. Checkout
+        // takes the amount at call time, which is what makes per-order pricing correct.
+        const RAZORPAY_KEY_ID = '';
         // Displaying the FSSAI licence number is mandatory for food businesses in India.
         const FSSAI_LICENCE = '21526031000596';
         const UPI_VPA = 'soniraghav350-1@oksbi'; // your UPI ID — leave blank to hide the UPI QR option
@@ -3147,42 +3153,78 @@
             }
         }
 
+        function razorpayReady() {
+            return Boolean(RAZORPAY_KEY_ID) && typeof Razorpay !== 'undefined';
+        }
+
         function initializePaymentNote() {
             const note = document.getElementById('checkoutPaymentNote');
             if (!note) return;
-            if (RAZORPAY_PAYMENT_BUTTON_ID) {
-                note.textContent = 'Pay securely online via Razorpay — your order completes automatically the moment payment succeeds.';
+            if (razorpayReady()) {
+                note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
             } else if (UPI_VPA) {
                 note.textContent = "Place your order, then scan the UPI QR code shown next to pay instantly.";
             }
         }
 
-        // Injects the real Razorpay embed <script> into the DOM. A script tag written
-        // via innerHTML never executes, so this has to go through createElement — and
-        // only once, since the slot element persists across repeat modal openings.
-        function mountRazorpayButton() {
-            const slot = document.getElementById('razorpayButtonSlot');
-            if (!slot || slot.dataset.mounted) return;
-            slot.dataset.mounted = '1';
-            const form = document.createElement('form');
-            const script = document.createElement('script');
-            script.src = 'https://checkout.razorpay.com/v1/payment-button.js';
-            script.dataset.payment_button_id = RAZORPAY_PAYMENT_BUTTON_ID;
-            script.async = true;
-            form.appendChild(script);
-            slot.appendChild(form);
+        // Opens Razorpay Checkout for the order currently shown in the confirmation
+        // modal. The amount is passed at call time (in paise), so every order is
+        // charged its own real total.
+        function startRazorpayPayment() {
+            const order = window.pendingPaymentOrder;
+            if (!order) return;
+            if (!razorpayReady()) {
+                showNotification('Online payment is unavailable right now — please send your order below.');
+                revealConfirmFallback();
+                return;
+            }
+
+            const btn = document.getElementById('razorpayPayBtn');
+            btn.disabled = true;
+
+            const rzp = new Razorpay({
+                key: RAZORPAY_KEY_ID,
+                amount: Math.round(order.total * 100), // Razorpay bills in paise
+                currency: 'INR',
+                name: 'GetsU',
+                description: 'Order ' + order.id,
+                image: 'https://champraghav.github.io/GetsU-/og-image.png',
+                prefill: {
+                    name: order.customer.name || '',
+                    email: order.customer.email || '',
+                    contact: order.customer.phone || '',
+                },
+                notes: {
+                    order_id: order.id,
+                    address: `${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}`,
+                },
+                theme: { color: '#1F5C34' },
+                handler: function (response) {
+                    completePaidOrder(order.id, response.razorpay_payment_id);
+                },
+                modal: {
+                    ondismiss: function () {
+                        btn.disabled = false;
+                        // They backed out — surface the manual send options so the
+                        // order isn't stranded with no way to reach us.
+                        revealConfirmFallback();
+                    },
+                },
+            });
+
+            rzp.on('payment.failed', function (response) {
+                btn.disabled = false;
+                const reason = (response && response.error && response.error.description) || 'Please try again.';
+                showNotification('Payment failed — ' + reason);
+                revealConfirmFallback();
+            });
+
+            rzp.open();
         }
 
-        // Razorpay redirects back here with these query params after a successful
-        // payment (configured in Dashboard → this button → redirect URL). Completes
-        // the order automatically — no email or WhatsApp step needed on success.
-        function checkPaymentRedirect() {
-            const params = new URLSearchParams(window.location.search);
-            const status = params.get('razorpay_payment_link_status');
-            const paymentId = params.get('razorpay_payment_id');
-            if (status !== 'paid' || !paymentId) return;
-
-            const orderId = localStorage.getItem('getsuPendingPaymentOrderId');
+        // Marks an order paid and confirmed. This is the automatic completion path:
+        // no email or WhatsApp step is needed once payment succeeds.
+        function completePaidOrder(orderId, paymentId) {
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
             const order = orders.find(o => o.id === orderId);
             if (order) {
@@ -3190,17 +3232,33 @@
                 order.sent = true;
                 order.razorpay_payment_id = paymentId;
                 localStorage.setItem('getsuOrders', JSON.stringify(orders));
-                localStorage.removeItem('getsuPendingPaymentOrderId');
-                showNotification(`Payment received — order ${order.id} is confirmed!`);
-            } else {
-                showNotification('Payment received — thank you!');
+            }
+            hideRecovery();
+
+            if (typeof database !== 'undefined' && database) {
+                database.ref('payments').push({
+                    order_id: orderId,
+                    razorpay_payment_id: paymentId,
+                    amount: order ? order.total : null,
+                    timestamp: new Date().toISOString(),
+                });
             }
 
-            // Drop Razorpay's params from the URL so a page refresh doesn't re-trigger this.
-            const url = new URL(window.location.href);
-            ['razorpay_payment_id', 'razorpay_payment_link_id', 'razorpay_payment_link_reference_id',
-             'razorpay_payment_link_status', 'razorpay_signature'].forEach(k => url.searchParams.delete(k));
-            window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+            document.getElementById('confirmHeading').textContent = 'Payment received — order confirmed';
+            document.getElementById('confirmIntro').textContent =
+                "Thank you! We've got your payment and your order is confirmed. A receipt is on its way to your email, and we'll be in touch with delivery details.";
+            document.getElementById('razorpayPayBox').style.display = 'none';
+            document.getElementById('upiPayBox').style.display = 'none';
+            document.getElementById('confirmActions').innerHTML = '';
+            document.getElementById('confirmFoot').textContent = 'Order ' + orderId + ' · Paid online';
+            showNotification(`Payment received — order ${orderId} is confirmed!`);
+        }
+
+        // Manual send options stay hidden while online payment is the happy path;
+        // they only appear if the customer abandons or fails the payment.
+        function revealConfirmFallback() {
+            const actions = document.getElementById('confirmActions');
+            if (actions) actions.style.display = '';
         }
 
         // INITIALIZE
@@ -3209,7 +3267,6 @@
             renderCategoryGrid();
             renderProducts();
             updateCartUI();
-            checkPaymentRedirect();
             checkRecovery();
             document.getElementById('fssaiLine').textContent =
                 FSSAI_LICENCE ? 'FSSAI Licence No. ' + FSSAI_LICENCE : '';
@@ -3663,8 +3720,21 @@
         }
 
         function showOrderConfirmation(order) {
-            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
+            window.pendingPaymentOrder = order;
+            const payOnline = razorpayReady();
+
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
+            // Rewriting the heading recreates the name span, so fill it in afterwards.
+            document.getElementById('confirmHeading').innerHTML = payOnline
+                ? 'Almost done<span id="confirmName"></span>'
+                : 'One last step<span id="confirmName"></span>';
+            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
+            document.getElementById('confirmIntro').textContent = payOnline
+                ? 'Pay below to confirm your order. Nothing else to do — the moment payment goes through, your order is placed.'
+                : "Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.";
+            document.getElementById('confirmFoot').textContent = payOnline
+                ? "You'll get a payment receipt by email, and we'll confirm delivery details within a day."
+                : 'We reply within a day to confirm stock, delivery date and payment.';
 
             const text = orderText(order);
             const mailHref = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('GetsU Order ' + order.id)}&body=${encodeURIComponent(text)}`;
@@ -3674,10 +3744,11 @@
 
             const razorpayBox = document.getElementById('razorpayPayBox');
             const upiBox = document.getElementById('upiPayBox');
-            if (RAZORPAY_PAYMENT_BUTTON_ID) {
-                localStorage.setItem('getsuPendingPaymentOrderId', order.id);
+            const payBtn = document.getElementById('razorpayPayBtn');
+            if (payOnline) {
                 document.getElementById('razorpayPayAmount').textContent = '₹' + order.total;
-                mountRazorpayButton();
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay ₹' + order.total + ' securely';
                 razorpayBox.style.display = '';
                 upiBox.style.display = 'none';
             } else if (UPI_VPA) {
@@ -3691,13 +3762,17 @@
                 upiBox.style.display = 'none';
             }
 
-            document.getElementById('confirmActions').innerHTML = `
+            const actions = document.getElementById('confirmActions');
+            actions.innerHTML = `
                 ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
                      onclick="markOrderSent('${order.id}')">Send on WhatsApp</a>` : ''}
                 <a class="btn ${waHref ? 'btn-secondary' : 'btn-primary'} btn-block" href="${mailHref}"
                    onclick="markOrderSent('${order.id}')">Send by email</a>
                 <button class="btn btn-secondary btn-block" onclick="copyOrder('${order.id}')">Copy order details</button>
             `;
+            // With online payment available, paying IS placing the order — the manual
+            // send options would only confuse. They reappear if payment is abandoned.
+            actions.style.display = payOnline ? 'none' : '';
 
             openModal('confirmationModal');
         }
