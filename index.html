@@ -54,8 +54,11 @@
     </script>
 
     <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <!-- The -compat builds are required: from v9 onwards the plain firebase-app.js
+         is an ES module and cannot be loaded with a classic <script> tag, which
+         left `firebase` undefined and silently dropped every order. -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 
     <!-- RAZORPAY CHECKOUT -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -72,10 +75,11 @@
 
       let database;
       try {
+        if (typeof firebase === 'undefined') throw new Error('Firebase SDK did not load');
         const app = firebase.initializeApp(firebaseConfig);
         database = firebase.database(app);
       } catch (e) {
-        console.warn('Firebase failed to initialize; analytics/order sync to Firebase will be skipped.', e);
+        console.warn('Firebase failed to initialize; order sync to Firebase will be skipped.', e);
       }
     </script>
 
@@ -2438,6 +2442,17 @@
 <body>
     <a class="skip-link" href="#products">Skip to shop</a>
 
+    <!-- The catalog is rendered by JavaScript, so without it the shop is an empty
+         page. Give people a way to reach us rather than a dead end. -->
+    <noscript>
+        <div style="background:#123D21;color:#FBF9F2;padding:1rem 1.25rem;text-align:center;font-size:14px;line-height:1.5;">
+            This shop needs JavaScript to show products and take orders.
+            Please enable it, or email us at
+            <a href="mailto:teamgetsu.31@gmail.com" style="color:#F0C64B;">teamgetsu.31@gmail.com</a>
+            and we'll take your order directly.
+        </div>
+    </noscript>
+
     <!-- Recovers an order the customer placed but never sent through -->
     <div class="recovery" id="recoveryBanner" role="status">
         <span id="recoveryText"></span>
@@ -2479,7 +2494,8 @@
     <!-- SEARCH MODAL -->
     <div class="search-modal" id="searchModal">
         <div class="search-modal-content">
-            <input type="text" placeholder="Search products…" id="searchInput" onkeyup="searchProducts()">
+            <input type="search" placeholder="Search products…" id="searchInput"
+                   autocomplete="off" aria-label="Search products" oninput="searchProducts()">
             <div class="search-results" id="searchResults"></div>
         </div>
     </div>
@@ -2578,7 +2594,7 @@
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/><path d="M8 15h4"/></svg>
-            <div><strong>Pay after we confirm</strong><span>No card details on this site</span></div>
+            <div><strong>Secure payment</strong><span>UPI, cards and wallets — handled by Razorpay</span></div>
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
@@ -2722,7 +2738,7 @@
         <div class="faq-list">
             <details class="faq-item">
                 <summary>How do I pay?</summary>
-                <p>You don't pay on this site — we never ask for card details here. Place your order, we reply within a day to confirm stock and delivery, and collect payment by UPI or bank transfer at that point. Card payments are coming once our payment provider finishes verification.</p>
+                <p>You pay right after checkout, for the exact amount of your order. We show you a UPI QR code — scan it with GPay, PhonePe, Paytm or any UPI app — and card, netbanking and wallet payments run through Razorpay's secure checkout. Your card details are entered on Razorpay's form and never touch this site. Prefer not to pay online? Send us the order instead and we'll sort out payment with you by email.</p>
             </details>
             <details class="faq-item">
                 <summary>What does "clean label" actually mean?</summary>
@@ -2887,7 +2903,7 @@
         <div class="modal-content wide">
             <button class="close" onclick="closeCheckout()" aria-label="Close">&times;</button>
             <h2>Checkout</h2>
-            <p>Tell us where to send your order. We'll confirm payment with you directly.</p>
+            <p>Tell us where to send your order. You can pay on the next screen.</p>
 
             <div class="order-mini" id="checkoutOrderMini"></div>
 
@@ -2944,7 +2960,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
-                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
+                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">You'll be able to pay on the next screen.</p>
                 </form>
             </div>
         </div>
@@ -2970,7 +2986,14 @@
                 <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200">
                 <div class="upi-pay-amount" id="upiPayAmount"></div>
                 <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
+                <a id="upiPayLink" class="btn btn-secondary btn-block" href="#" style="margin-top:0.7rem;">Open my UPI app</a>
+                <button type="button" class="btn btn-primary btn-block" id="upiPaidBtn"
+                        style="margin-top:0.5rem;" onclick="confirmUpiPaid()">I've paid</button>
             </div>
+            <button type="button" id="confirmAltToggle" onclick="revealConfirmFallback()"
+                    style="display:none;background:none;border:0;padding:0;margin:0.9rem auto 0;font:inherit;font-size:12.5px;color:var(--ink-faint);text-decoration:underline;cursor:pointer;">
+                Prefer to send us the order instead?
+            </button>
             <div class="confirm-actions" id="confirmActions"></div>
             <p class="confirm-foot" id="confirmFoot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
@@ -3126,24 +3149,73 @@
             return cat ? cat.label : '';
         }
 
+        // Renders a product thumbnail, falling back to the category icon.
+        // The fallback must not be inlined into an onerror="" attribute: the icon
+        // paths contain double quotes, which close the attribute early and shred
+        // the rest of the tag. Going through a named handler keeps the markup intact.
+        function productThumb(p) {
+            return p.image
+                ? `<img src="${p.image}" alt="${p.name}" loading="lazy"
+                        data-category="${p.category}" onerror="iconFallback(this)">`
+                : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(p.category)}</svg>`;
+        }
+
+        function iconFallback(img) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.innerHTML = categoryIcon(img.dataset.category);
+            img.replaceWith(svg);
+        }
+
         let activeCategory = 'all';
 
         function skuFor(id) {
             return 'GU-' + String(id).padStart(2, '0');
         }
 
-        let cart = JSON.parse(localStorage.getItem('getsuCart')) || [];
+        const MAX_QTY = 20;
+
+        // A saved cart is a snapshot: it holds whatever the price was on the day the
+        // item went in, and can name products that no longer exist. Rebuilding it
+        // from the live catalog keeps the customer on today's price and stops a
+        // deleted product from riding along to checkout.
+        function loadCart() {
+            let saved;
+            try {
+                saved = JSON.parse(localStorage.getItem('getsuCart'));
+            } catch (e) {
+                saved = null; // corrupted storage shouldn't take the whole shop down
+            }
+            if (!Array.isArray(saved)) return [];
+
+            const rebuilt = [];
+            let changed = false;
+            saved.forEach(item => {
+                const product = products.find(p => p.id === item.id);
+                if (!product) { changed = true; return; }         // discontinued
+                const qty = Math.min(MAX_QTY, Math.max(1, parseInt(item.qty, 10) || 1));
+                if (qty !== item.qty || product.price !== item.price) changed = true;
+                rebuilt.push({ ...product, qty });
+            });
+
+            if (changed) localStorage.setItem('getsuCart', JSON.stringify(rebuilt));
+            return rebuilt;
+        }
+
+        let cart = loadCart();
 
         // Initialize user tracking ID
         function initializeTracking() {
             let userId = localStorage.getItem('getsuUserId');
             if (!userId) {
-                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
                 localStorage.setItem('getsuUserId', userId);
             }
 
             // Track page view in Firebase
-            if (typeof database !== 'undefined') {
+            if (database) {
                 database.ref('page_views').push({
                     user_id: userId,
                     timestamp: new Date().toISOString(),
@@ -3163,7 +3235,7 @@
             if (razorpayReady()) {
                 note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
             } else if (UPI_VPA) {
-                note.textContent = "Place your order, then scan the UPI QR code shown next to pay instantly.";
+                note.textContent = 'Pay by UPI on the next screen — a QR code with the exact amount is generated for your order.';
             }
         }
 
@@ -3200,7 +3272,7 @@
                 },
                 theme: { color: '#1F5C34' },
                 handler: function (response) {
-                    completePaidOrder(order.id, response.razorpay_payment_id);
+                    markOrderPaid(order.id, 'razorpay', response.razorpay_payment_id);
                 },
                 modal: {
                     ondismiss: function () {
@@ -3222,36 +3294,94 @@
             rzp.open();
         }
 
-        // Marks an order paid and confirmed. This is the automatic completion path:
-        // no email or WhatsApp step is needed once payment succeeds.
-        function completePaidOrder(orderId, paymentId) {
+        // IMPORTANT — this is a client-only integration, so "paid" here means "the
+        // browser was told the payment succeeded". There is no server to verify
+        // Razorpay's signature, which means this status is an operational
+        // convenience, not proof. Always confirm the money against the Razorpay
+        // dashboard (or the UPI account) before dispatching an order.
+        //
+        // Completes an order once money has moved. Two routes reach here:
+        //   'razorpay' — Razorpay confirmed the payment, so it is genuinely paid.
+        //   'upi'      — the customer scanned the QR and told us they paid. We have
+        //                no way to verify that from the browser, so it is recorded
+        //                as a claim for GetsU to check against the UPI app.
+        function markOrderPaid(orderId, method, paymentId) {
+            const verified = method === 'razorpay';
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
             const order = orders.find(o => o.id === orderId);
             if (order) {
-                order.status = 'paid';
+                order.status = verified ? 'paid' : 'payment_reported';
+                order.paymentMethod = method;
+                // `sent` means GetsU knows about it — true either way, so the
+                // recovery banner stops chasing an order that is already handled.
                 order.sent = true;
-                order.razorpay_payment_id = paymentId;
+                if (paymentId) order.razorpay_payment_id = paymentId;
                 localStorage.setItem('getsuOrders', JSON.stringify(orders));
             }
             hideRecovery();
 
-            if (typeof database !== 'undefined' && database) {
-                database.ref('payments').push({
-                    order_id: orderId,
-                    razorpay_payment_id: paymentId,
-                    amount: order ? order.total : null,
-                    timestamp: new Date().toISOString(),
+            // Revenue should only count money we actually received.
+            if (verified && typeof gtag !== 'undefined' && order) {
+                gtag('event', 'purchase', {
+                    transaction_id: order.id,
+                    value: order.total,
+                    currency: 'INR',
+                    tax: order.tax,
+                    shipping: 0,
+                    items: order.items.map(i => ({
+                        item_id: i.name,
+                        item_name: i.name,
+                        price: i.price,
+                        quantity: i.qty
+                    }))
                 });
             }
 
-            document.getElementById('confirmHeading').textContent = 'Payment received — order confirmed';
-            document.getElementById('confirmIntro').textContent =
-                "Thank you! We've got your payment and your order is confirmed. A receipt is on its way to your email, and we'll be in touch with delivery details.";
+            if (database) {
+                database.ref('payments').push({
+                    order_id: orderId,
+                    method: method,
+                    verified: verified,
+                    razorpay_payment_id: paymentId || null,
+                    amount: order ? order.total : null,
+                    timestamp: new Date().toISOString(),
+                });
+                // Write the outcome back onto the order row itself, so the orders
+                // list alone shows who has paid without cross-referencing.
+                if (order && order.firebaseKey) {
+                    database.ref('orders/' + order.firebaseKey).update({
+                        status: verified ? 'paid' : 'payment_reported',
+                        payment_method: method,
+                        razorpay_payment_id: paymentId || null,
+                        paid_at: new Date().toISOString(),
+                    });
+                }
+            }
+
+            document.getElementById('confirmHeading').textContent = verified
+                ? 'Payment received — order confirmed'
+                : 'Thanks — we\'re checking your payment';
+            document.getElementById('confirmIntro').textContent = verified
+                ? "Thank you! We've got your payment and your order is confirmed. A receipt is on its way to your email, and we'll be in touch with delivery details."
+                : "We've noted your payment against this order. We'll verify it against our UPI account and confirm by email, usually within a few hours.";
             document.getElementById('razorpayPayBox').style.display = 'none';
             document.getElementById('upiPayBox').style.display = 'none';
             document.getElementById('confirmActions').innerHTML = '';
-            document.getElementById('confirmFoot').textContent = 'Order ' + orderId + ' · Paid online';
-            showNotification(`Payment received — order ${orderId} is confirmed!`);
+            document.getElementById('confirmActions').style.display = 'none';
+            document.getElementById('confirmAltToggle').style.display = 'none';
+            document.getElementById('confirmFoot').textContent = verified
+                ? 'Order ' + orderId + ' · Paid online'
+                : 'Order ' + orderId + ' · Payment reported, awaiting confirmation';
+            showNotification(verified
+                ? `Payment received — order ${orderId} is confirmed!`
+                : `Thanks — we'll confirm order ${orderId} shortly.`);
+        }
+
+        // The customer scanned the UPI QR and says the transfer went through.
+        function confirmUpiPaid() {
+            const order = window.pendingPaymentOrder;
+            if (!order) return;
+            markOrderPaid(order.id, 'upi', null);
         }
 
         // Manual send options stay hidden while online payment is the happy path;
@@ -3259,6 +3389,8 @@
         function revealConfirmFallback() {
             const actions = document.getElementById('confirmActions');
             if (actions) actions.style.display = '';
+            const toggle = document.getElementById('confirmAltToggle');
+            if (toggle) toggle.style.display = 'none';
         }
 
         // INITIALIZE
@@ -3338,9 +3470,7 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        ${product.image
-                            ? `<img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(product.category)}</svg>'">`
-                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>`}
+                        ${productThumb(product)}
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${categoryLabel(product.category)}</div>
@@ -3386,7 +3516,7 @@
             }
 
             // Save to Firebase
-            if (typeof database !== 'undefined') {
+            if (database) {
                 database.ref('cart_events').push({
                     product_id: product.id,
                     product_name: product.name,
@@ -3406,8 +3536,6 @@
             saveCart();
             updateCartUI();
         }
-
-        const MAX_QTY = 20;
 
         function updateQty(productId, change) {
             const item = cart.find(item => item.id === productId);
@@ -3460,9 +3588,7 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image">${item.image
-                            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(item.category)}</svg>'">`
-                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg>`}</div>
+                        <div class="cart-item-image">${productThumb(item)}</div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
@@ -3655,14 +3781,13 @@
                 sent: false,
             };
 
-            // Track purchase in Google Analytics
+            // The order is only a checkout, not a sale — `purchase` is reported from
+            // markOrderPaid() once money actually arrives, so Analytics revenue
+            // reflects payments rather than abandoned carts.
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'purchase', {
-                    transaction_id: order.id,
+                gtag('event', 'begin_checkout', {
                     value: order.total,
                     currency: 'INR',
-                    tax: order.tax,
-                    shipping: 0,
                     items: order.items.map(i => ({
                         item_id: i.name,
                         item_name: i.name,
@@ -3672,16 +3797,21 @@
                 });
             }
 
-            // Save complete order to Firebase (with customer data)
-            if (typeof database !== 'undefined') {
-                database.ref('orders').push({
+            // Firebase is the only place GetsU sees an order, so it has to carry
+            // everything needed to actually pack and ship it — full address included.
+            if (database) {
+                const ref = database.ref('orders').push({
                     order_id: order.id,
                     date: order.date,
                     customer_name: order.customer.name,
                     customer_email: order.customer.email,
                     customer_phone: order.customer.phone,
+                    customer_address: order.customer.address,
                     customer_city: order.customer.city,
                     customer_state: order.customer.state,
+                    customer_pincode: order.customer.pincode,
+                    customer_landmark: order.customer.landmark || '',
+                    delivery_notes: order.customer.notes || '',
                     items_count: order.items.length,
                     subtotal: order.subtotal,
                     tax: order.tax,
@@ -3689,6 +3819,8 @@
                     status: order.status,
                     products: order.items
                 });
+                // Remember the row so the payment can be written back onto it later.
+                if (ref && ref.key) order.firebaseKey = ref.key;
             }
 
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
@@ -3722,16 +3854,19 @@
         function showOrderConfirmation(order) {
             window.pendingPaymentOrder = order;
             const payOnline = razorpayReady();
+            const payUpi = !payOnline && Boolean(UPI_VPA);
 
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
             // Rewriting the heading recreates the name span, so fill it in afterwards.
-            document.getElementById('confirmHeading').innerHTML = payOnline
+            document.getElementById('confirmHeading').innerHTML = (payOnline || payUpi)
                 ? 'Almost done<span id="confirmName"></span>'
                 : 'One last step<span id="confirmName"></span>';
             document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
             document.getElementById('confirmIntro').textContent = payOnline
                 ? 'Pay below to confirm your order. Nothing else to do — the moment payment goes through, your order is placed.'
-                : "Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.";
+                : payUpi
+                    ? "Scan the QR below with any UPI app to pay, then tap “I've paid” so we can match the payment to your order."
+                    : "Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.";
             document.getElementById('confirmFoot').textContent = payOnline
                 ? "You'll get a payment receipt by email, and we'll confirm delivery details within a day."
                 : 'We reply within a day to confirm stock, delivery date and payment.';
@@ -3751,10 +3886,14 @@
                 payBtn.textContent = 'Pay ₹' + order.total + ' securely';
                 razorpayBox.style.display = '';
                 upiBox.style.display = 'none';
-            } else if (UPI_VPA) {
+            } else if (payUpi) {
                 const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${order.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + order.id)}`;
                 document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
                 document.getElementById('upiPayAmount').textContent = '₹' + order.total;
+                // On a phone the QR is unscannable (it's on the same screen), so give
+                // them a link that hands the amount straight to their UPI app.
+                document.getElementById('upiPayLink').href = upiUri;
+                document.getElementById('upiPaidBtn').textContent = "I've paid ₹" + order.total;
                 razorpayBox.style.display = 'none';
                 upiBox.style.display = '';
             } else {
@@ -3770,9 +3909,13 @@
                    onclick="markOrderSent('${order.id}')">Send by email</a>
                 <button class="btn btn-secondary btn-block" onclick="copyOrder('${order.id}')">Copy order details</button>
             `;
-            // With online payment available, paying IS placing the order — the manual
-            // send options would only confuse. They reappear if payment is abandoned.
-            actions.style.display = payOnline ? 'none' : '';
+            // Whenever we can take the money on this screen, paying IS placing the
+            // order. Stacking "send us your order" buttons underneath only makes
+            // people think payment wasn't enough, so they stay tucked away behind a
+            // link and come back automatically if payment fails or is abandoned.
+            const canPay = payOnline || payUpi;
+            actions.style.display = canPay ? 'none' : '';
+            document.getElementById('confirmAltToggle').style.display = canPay ? '' : 'none';
 
             openModal('confirmationModal');
         }
@@ -3913,7 +4056,7 @@
                     <h3>What does "clean label" mean?</h3>
                     <p>Every ingredient on our packaging is something you can recognize and pronounce — no artificial preservatives, no hidden fillers, no misleading health claims.</p>
                     <h3>How do I pay?</h3>
-                    <p>We're rolling out online payments now. Until then, place your order on the site and we'll reach out by email to confirm and collect payment via UPI or bank transfer.</p>
+                    <p>Pay online as soon as you place your order — the checkout shows you the exact amount and takes UPI, cards, netbanking or wallets. If you'd rather not pay online, send us the order from the confirmation screen and we'll arrange payment with you by email.</p>
                     <h3>Where do you ship?</h3>
                     <p>Currently across India. Reach out if you need delivery outside India and we'll see what we can do.</p>
                     <h3>Can I change or cancel an order?</h3>
@@ -3925,8 +4068,12 @@
                 body: `
                     <h3>What we collect</h3>
                     <p>When you place an order or contact us, we collect your name, phone number, email, and delivery address. We use this only to process your order and communicate with you about it.</p>
-                    <h3>How it's stored</h3>
-                    <p>Order details you submit are currently stored locally in your browser and shared with us directly by email — we don't sell or share your data with third parties for marketing.</p>
+                    <h3>Where it goes</h3>
+                    <p>Your order — including your delivery address — is sent to our order database, hosted on Google Firebase, so we can pack and ship it. A copy is also kept in your own browser so you can see your order history on this device.</p>
+                    <p>If you pay online, the payment itself is handled by Razorpay. Your card or UPI details are entered on Razorpay's own secure form and are never seen or stored by this website.</p>
+                    <p>We also use Google Analytics to understand how the site is used. We do not sell your data, and we don't share it with anyone for marketing.</p>
+                    <h3>Your choices</h3>
+                    <p>Want your details removed from our records? Email us and we'll delete them. Clearing your browser data removes the copy stored on your device.</p>
                     <h3>Contact</h3>
                     <p>Questions about your data? Email <a href="mailto:teamgetsu.31@gmail.com">teamgetsu.31@gmail.com</a>.</p>
                 `
@@ -3935,7 +4082,7 @@
                 title: 'Terms of Service',
                 body: `
                     <h3>Orders</h3>
-                    <p>Placing an order through this site is a request to purchase — it's confirmed once we get back to you to arrange payment. Prices are listed in Indian Rupees (₹) and may change without notice.</p>
+                    <p>Placing an order through this site is a request to purchase. Once payment is received your order is confirmed, subject to stock — if an item turns out to be unavailable we'll tell you and refund that item in full. Orders left unpaid are confirmed only once we've reached you to arrange payment. Prices are listed in Indian Rupees (₹) and include applicable tax; they may change without notice.</p>
                     <h3>Product information</h3>
                     <p>We describe our products as accurately as we can. Always check the ingredient list on the physical packaging if you have allergies or dietary restrictions.</p>
                     <h3>Limitation</h3>
@@ -3957,6 +4104,25 @@
         }
 
         // ==================== ORDER HISTORY ====================
+        // How an order reads back to the customer. Paid is worth calling out on its
+        // own — telling someone who has already paid that their order was merely
+        // "sent" reads like it might still fall through.
+        function orderState(o) {
+            if (o.status === 'paid') return { cls: 'sent', label: 'Paid' };
+            if (o.status === 'payment_reported') return { cls: 'sent', label: 'Payment being verified' };
+            if (o.sent) return { cls: 'sent', label: 'Sent to GetsU' };
+            return { cls: 'unsent', label: 'Not sent yet' };
+        }
+
+        // Reopening goes through the stored order rather than a copy embedded in the
+        // markup, so a stray quote in an address can't break the button.
+        function reopenOrder(id) {
+            const order = (JSON.parse(localStorage.getItem('getsuOrders')) || []).find(o => o.id === id);
+            if (!order) return;
+            closeOrders();
+            showOrderConfirmation(order);
+        }
+
         function openOrders() {
             const orders = (JSON.parse(localStorage.getItem('getsuOrders')) || []).slice().reverse();
             const body = document.getElementById('ordersBody');
@@ -3964,20 +4130,23 @@
             if (orders.length === 0) {
                 body.innerHTML = '<div class="cart-empty">No orders yet. Anything you order will show up here.</div>';
             } else {
-                body.innerHTML = orders.map(o => `
+                body.innerHTML = orders.map(o => {
+                    const state = orderState(o);
+                    return `
                     <div class="order-row">
                         <div class="order-row-top">
                             <div>
                                 <div class="order-row-id">${o.id}</div>
                                 <div class="order-row-date">${new Date(o.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                             </div>
-                            <span class="order-status ${o.sent ? 'sent' : 'unsent'}">${o.sent ? 'Sent to GetsU' : 'Not sent yet'}</span>
+                            <span class="order-status ${state.cls}">${state.label}</span>
                         </div>
                         <div class="order-row-items">${o.items.map(i => `${i.name} × ${i.qty}`).join('<br>')}</div>
                         <div class="order-row-total"><span>Total</span><span>₹${o.total}</span></div>
-                        ${o.sent ? '' : `<button class="btn btn-primary btn-block" onclick="closeOrders(); showOrderConfirmation(${JSON.stringify(o).replace(/"/g, '&quot;')})">Send this order</button>`}
+                        ${o.sent ? '' : `<button class="btn btn-primary btn-block" onclick="reopenOrder('${o.id}')">Finish this order</button>`}
                     </div>
-                `).join('');
+                `;
+                }).join('');
             }
             openModal('ordersModal');
         }
@@ -3993,9 +4162,7 @@
 
             document.getElementById('productBody').innerHTML = `
                 <div class="pd-head">
-                    <div class="pd-thumb">${p.image
-                        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(p.category)}</svg>'">`
-                        : `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${categoryIcon(p.category)}</svg>`}</div>
+                    <div class="pd-thumb">${productThumb(p)}</div>
                     <div>
                         <div class="product-cat">${categoryLabel(p.category)} · ${skuFor(p.id)}</div>
                         <h2>${p.name}</h2>
@@ -4068,8 +4235,24 @@
             document.getElementById('searchInput').focus();
         }
 
+        let searchLogTimer;
+
+        function logSearch(query, count) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'search', { search_term: query, results_count: count });
+            }
+            if (database) {
+                database.ref('searches').push({
+                    query: query,
+                    results_count: count,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
+            }
+        }
+
         function searchProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             // search name, description, category label, features and ingredients
             const results = products.filter(p => [
                 p.name, p.desc, p.category, categoryLabel(p.category),
@@ -4078,27 +4261,15 @@
             const resultsDiv = document.getElementById('searchResults');
 
             if (query.length === 0) {
+                clearTimeout(searchLogTimer); // don't log a query they just cleared
                 resultsDiv.innerHTML = '';
                 return;
             }
 
-            // Track search in Google Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'search', {
-                    search_term: query,
-                    results_count: results.length
-                });
-            }
-
-            // Save search to Firebase
-            if (typeof database !== 'undefined') {
-                database.ref('searches').push({
-                    query: query,
-                    results_count: results.length,
-                    timestamp: new Date().toISOString(),
-                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
-                });
-            }
+            // Results redraw on every keystroke, but the search is only *logged*
+            // once typing settles — otherwise "protein" files seven searches.
+            clearTimeout(searchLogTimer);
+            searchLogTimer = setTimeout(() => logSearch(query, results.length), 600);
 
             if (results.length === 0) {
                 resultsDiv.innerHTML = '<div class="search-empty">No products match your search.</div>';
