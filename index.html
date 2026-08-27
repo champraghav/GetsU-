@@ -19,7 +19,7 @@
     <meta property="og:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="GetsU — healthy eating should be delicious">
+    <meta property="og:image:alt" content="GetsU Chocolate Delight protein bar — healthy eating should be delicious">
     <meta name="twitter:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GetsU — Clean-Label Protein Food, Made For You">
@@ -54,8 +54,14 @@
     </script>
 
     <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    <!-- The -compat builds are required: from v9 onwards the plain firebase-app.js
+         is an ES module and cannot be loaded with a classic <script> tag, which
+         left `firebase` undefined and silently dropped every order. -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+    <!-- RAZORPAY CHECKOUT -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyCvRzjv-IEks_gAvCCA70-mDUnLD8wCrjU",
@@ -69,10 +75,11 @@
 
       let database;
       try {
+        if (typeof firebase === 'undefined') throw new Error('Firebase SDK did not load');
         const app = firebase.initializeApp(firebaseConfig);
         database = firebase.database(app);
       } catch (e) {
-        console.warn('Firebase failed to initialize; analytics/order sync to Firebase will be skipped.', e);
+        console.warn('Firebase failed to initialize; order sync to Firebase will be skipped.', e);
       }
     </script>
 
@@ -510,43 +517,62 @@
             background: linear-gradient(135deg, var(--paper-tin) 0%, var(--paper-raised) 100%);
             border: 1.5px solid var(--line);
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
+            width: 100%;
+            padding: 0;
             overflow: hidden;
             box-shadow: var(--shadow-md);
+            cursor: pointer;
+            font: inherit;
+            color: inherit;
+            text-align: left;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
         }
 
-        .hero-art svg {
-            width: 55%;
-            height: 55%;
-            opacity: 0.95;
+        .hero-art:hover {
+            border-color: var(--moss);
+            box-shadow: var(--shadow-lg);
         }
 
-        .hero-art::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(var(--line) 0.5px, transparent 0.5px);
-            background-size: 16px 16px;
-            opacity: 0.3;
+        .hero-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
         }
 
+        .hero-art:hover img { transform: scale(1.04); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-art:hover img { transform: none; }
+        }
+
+        /* The label sits on photography, so it carries its own surface rather
+           than relying on whatever pixels happen to be behind it. */
         .hero-art .label-tag {
             position: absolute;
-            top: 1.5rem;
-            left: 1.5rem;
+            top: 1.25rem;
+            left: 1.25rem;
             font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.08em;
+            font-size: 10px;
+            letter-spacing: 0.1em;
             color: var(--ink-faint);
             text-transform: uppercase;
+            background: color-mix(in srgb, var(--paper) 92%, transparent);
+            backdrop-filter: blur(6px);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            max-width: calc(100% - 2.5rem);
         }
 
         .hero-art .label-tag strong {
             display: block;
             color: var(--ink);
+            font-family: var(--font-body);
             font-size: 13px;
+            letter-spacing: -0.01em;
+            text-transform: none;
             margin-top: 2px;
         }
 
@@ -1129,6 +1155,71 @@
         .to-top.show { opacity: 1; visibility: visible; }
         .to-top:hover { border-color: var(--moss); color: var(--moss); }
 
+        /* ==================== STICKY MOBILE CART BAR ==================== */
+        /* Phone-only: on desktop the header cart is always visible anyway. */
+        .cart-bar { display: none; }
+
+        @media (max-width: 768px) {
+            .cart-bar {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 95;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+                background: color-mix(in srgb, var(--paper) 94%, transparent);
+                backdrop-filter: blur(10px);
+                border-top: 1.5px solid var(--line);
+                box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+                transform: translateY(110%);
+                transition: transform 0.3s ease;
+            }
+
+            .cart-bar.show { transform: translateY(0); }
+
+            .cart-bar-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1px;
+                background: none;
+                border: 0;
+                padding: 0;
+                font: inherit;
+                color: inherit;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .cart-bar-count {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--ink-faint);
+            }
+
+            .cart-bar-total {
+                font-family: var(--font-mono);
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--moss);
+            }
+
+            .cart-bar-go { padding: 0.75rem 1.5rem; white-space: nowrap; }
+
+            /* keep the bar clear of the back-to-top button */
+            body.cart-bar-open .to-top { bottom: calc(4.75rem + env(safe-area-inset-bottom)); }
+            /* and stop it covering the last of the footer */
+            body.cart-bar-open footer { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+            /* "added to cart" toasts must not land on top of the bar they refer to */
+            body.cart-bar-open .success-message { bottom: calc(9rem + env(safe-area-inset-bottom)); }
+        }
+
         .skip-link {
             position: absolute;
             left: -9999px;
@@ -1270,6 +1361,60 @@
             z-index: 1;
         }
 
+        /* ---- Designed stand-in for products without a photograph yet ---- */
+        .thumb-plate {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.9rem;
+            /* Each category gets its own wash so a grid of stand-ins reads as a
+               considered set rather than a run of identical empty beige boxes. */
+            background:
+                radial-gradient(120% 90% at 50% 0%,
+                    color-mix(in srgb, var(--plate-tint, var(--moss)) 16%, transparent) 0%,
+                    transparent 70%),
+                linear-gradient(160deg,
+                    color-mix(in srgb, var(--plate-tint, var(--moss)) 9%, var(--paper-raised)) 0%,
+                    var(--paper-raised) 100%);
+        }
+
+        .thumb-plate[data-cat="breakfast"]   { --plate-tint: var(--turmeric); }
+        .thumb-plate[data-cat="snacks"]      { --plate-tint: var(--beet); }
+        .thumb-plate[data-cat="beverages"]   { --plate-tint: var(--moss); }
+        .thumb-plate[data-cat="ready"]       { --plate-tint: var(--turmeric-deep); }
+        .thumb-plate[data-cat="spreads"]     { --plate-tint: var(--beet-deep); }
+        .thumb-plate[data-cat="specialized"] { --plate-tint: var(--moss-deep); }
+
+        .thumb-medallion {
+            width: 46%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: var(--paper);
+            border: 1.5px solid color-mix(in srgb, var(--plate-tint) 30%, var(--line));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .thumb-medallion .icon {
+            width: 46%;
+            height: 46%;
+            color: color-mix(in srgb, var(--plate-tint) 78%, var(--ink));
+        }
+
+        .thumb-mark {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
         .product-image img {
             width: 100%;
             height: 100%;
@@ -1286,7 +1431,8 @@
             font-size: 10px;
             color: var(--turmeric);
             letter-spacing: 0.08em;
-            z-index: 1;
+            /* above .thumb-plate, which fills the frame at z-index 1 */
+            z-index: 3;
             font-weight: 600;
         }
 
@@ -1301,7 +1447,7 @@
             font-size: 11px;
             font-weight: 700;
             font-family: var(--font-mono);
-            z-index: 1;
+            z-index: 3;
             letter-spacing: 0.05em;
         }
 
@@ -1368,6 +1514,22 @@
             color: var(--ink-faint);
             text-decoration: line-through;
             margin-right: 0.5rem;
+        }
+
+        .product-save {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--moss);
+            background: color-mix(in srgb, var(--moss) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--moss) 28%, transparent);
+            padding: 2px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
         }
 
         .add-to-cart {
@@ -2435,6 +2597,17 @@
 <body>
     <a class="skip-link" href="#products">Skip to shop</a>
 
+    <!-- The catalog is rendered by JavaScript, so without it the shop is an empty
+         page. Give people a way to reach us rather than a dead end. -->
+    <noscript>
+        <div style="background:#123D21;color:#FBF9F2;padding:1rem 1.25rem;text-align:center;font-size:14px;line-height:1.5;">
+            This shop needs JavaScript to show products and take orders.
+            Please enable it, or email us at
+            <a href="mailto:teamgetsu.31@gmail.com" style="color:#F0C64B;">teamgetsu.31@gmail.com</a>
+            and we'll take your order directly.
+        </div>
+    </noscript>
+
     <!-- Recovers an order the customer placed but never sent through -->
     <div class="recovery" id="recoveryBanner" role="status">
         <span id="recoveryText"></span>
@@ -2474,9 +2647,10 @@
     </header>
 
     <!-- SEARCH MODAL -->
-    <div class="search-modal" id="searchModal">
+    <div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-label="Search products">
         <div class="search-modal-content">
-            <input type="text" placeholder="Search products…" id="searchInput" onkeyup="searchProducts()">
+            <input type="search" placeholder="Search products…" id="searchInput"
+                   autocomplete="off" aria-label="Search products" oninput="searchProducts()">
             <div class="search-results" id="searchResults"></div>
         </div>
     </div>
@@ -2500,15 +2674,16 @@
                 <div><strong>60%</strong>less sugar</div>
             </div>
         </div>
-        <div class="hero-art">
-            <span class="label-tag">GetsU No. 01<strong>High-Protein Oats</strong></span>
-            <svg viewBox="0 0 24 24" class="icon" style="stroke-width:1.1;">
-                <path d="M6 3h12l1 5a7 7 0 0 1-14 0z"/>
-                <path d="M6 8h12"/>
-                <path d="M9 3v-1h6v1"/>
-            </svg>
-            <span class="badge-accent">Sugar −60%</span>
-        </div>
+        <!-- People buy food with their eyes, so the hero leads with the product
+             itself and doubles as the shortcut into its page. -->
+        <button class="hero-art" onclick="openProduct(2)"
+                aria-label="View Protein Bar — Chocolate Delight">
+            <img src="images/products/protein-bar-chocolate.jpg"
+                 alt="GetsU Chocolate Delight protein bar, 20g protein per bar"
+                 width="779" height="500" fetchpriority="high" decoding="async">
+            <span class="label-tag">Best seller<strong>Protein Bar — Chocolate Delight</strong></span>
+            <span class="badge-accent">20g protein</span>
+        </button>
     </section>
 
     <!-- PROBLEM & SOLUTION -->
@@ -2575,7 +2750,7 @@
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/><path d="M8 15h4"/></svg>
-            <div><strong>Pay after we confirm</strong><span>No card details on this site</span></div>
+            <div><strong>Secure payment</strong><span>UPI, cards and wallets — handled by Razorpay</span></div>
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
@@ -2719,7 +2894,7 @@
         <div class="faq-list">
             <details class="faq-item">
                 <summary>How do I pay?</summary>
-                <p>You don't pay on this site — we never ask for card details here. Place your order, we reply within a day to confirm stock and delivery, and collect payment by UPI or bank transfer at that point. Card payments are coming once our payment provider finishes verification.</p>
+                <p>You pay right after checkout, for the exact amount of your order. We show you a UPI QR code — scan it with GPay, PhonePe, Paytm or any UPI app — and card, netbanking and wallet payments run through Razorpay's secure checkout. Your card details are entered on Razorpay's form and never touch this site. Prefer not to pay online? Send us the order instead and we'll sort out payment with you by email.</p>
             </details>
             <details class="faq-item">
                 <summary>What does "clean label" actually mean?</summary>
@@ -2843,15 +3018,26 @@
         </div>
     </footer>
 
+    <!-- On a phone the cart lives in the header, so once you've scrolled into the
+         catalog there's nothing showing what you've added or how to pay for it.
+         This keeps the running total and the way out in reach the whole time. -->
+    <div class="cart-bar" id="cartBar" role="region" aria-label="Cart summary">
+        <button class="cart-bar-info" onclick="openCart()">
+            <span class="cart-bar-count" id="cartBarCount"></span>
+            <span class="cart-bar-total" id="cartBarTotal"></span>
+        </button>
+        <button class="btn btn-primary cart-bar-go" onclick="openCheckout()">Checkout</button>
+    </div>
+
     <button class="to-top" id="toTop" onclick="scrollToTop()" aria-label="Back to top">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
     </button>
 
     <!-- CONTACT MODAL -->
-    <div id="contactModal" class="modal">
+    <div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
         <div class="modal-content">
             <button class="close" onclick="closeContact()" aria-label="Close">&times;</button>
-            <h2>Contact us</h2>
+            <h2 id="contactModalTitle">Contact us</h2>
             <p>We'd love to hear from you. Fill out the form below and we'll get back to you within 24 hours.</p>
             <form onsubmit="submitContact(event)">
                 <div class="form-group">
@@ -2880,11 +3066,11 @@
     </div>
 
     <!-- CHECKOUT MODAL -->
-    <div id="checkoutModal" class="modal">
+    <div id="checkoutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
         <div class="modal-content wide">
             <button class="close" onclick="closeCheckout()" aria-label="Close">&times;</button>
-            <h2>Checkout</h2>
-            <p>Tell us where to send your order. We'll confirm payment with you directly.</p>
+            <h2 id="checkoutModalTitle">Checkout</h2>
+            <p>Tell us where to send your order. You can pay on the next screen.</p>
 
             <div class="order-mini" id="checkoutOrderMini"></div>
 
@@ -2892,41 +3078,41 @@
                 <form id="checkoutForm" onsubmit="submitCheckout(event)" novalidate>
                     <div class="form-group" id="fld-ckName">
                         <label for="ckName">Full name</label>
-                        <input type="text" id="ckName" autocomplete="name" required>
-                        <div class="form-error">Please enter your name.</div>
+                        <input type="text" id="ckName" autocomplete="name" required aria-describedby="err-ckName">
+                        <div class="form-error" id="err-ckName">Please enter your name.</div>
                     </div>
                     <div class="field-row">
                         <div class="form-group" id="fld-ckPhone">
                             <label for="ckPhone">Phone number</label>
-                            <input type="tel" id="ckPhone" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="10-digit mobile number" required>
-                            <div class="form-error">Enter a valid 10-digit phone number.</div>
+                            <input type="tel" id="ckPhone" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="10-digit mobile number" required aria-describedby="err-ckPhone">
+                            <div class="form-error" id="err-ckPhone">Enter a valid 10-digit phone number.</div>
                         </div>
                         <div class="form-group" id="fld-ckEmail">
                             <label for="ckEmail">Email</label>
-                            <input type="email" id="ckEmail" inputmode="email" autocomplete="email" autocapitalize="off" required>
-                            <div class="form-error">Enter a valid email address.</div>
+                            <input type="email" id="ckEmail" inputmode="email" autocomplete="email" autocapitalize="off" required aria-describedby="err-ckEmail">
+                            <div class="form-error" id="err-ckEmail">Enter a valid email address.</div>
                         </div>
                     </div>
                     <div class="form-group" id="fld-ckAddress">
                         <label for="ckAddress">Delivery address</label>
-                        <input type="text" id="ckAddress" autocomplete="street-address" placeholder="House no., street, area" required>
-                        <div class="form-error">Please enter your delivery address.</div>
+                        <input type="text" id="ckAddress" autocomplete="street-address" placeholder="House no., street, area" required aria-describedby="err-ckAddress">
+                        <div class="form-error" id="err-ckAddress">Please enter your delivery address.</div>
                     </div>
                     <div class="field-row three">
                         <div class="form-group" id="fld-ckCity">
                             <label for="ckCity">City</label>
-                            <input type="text" id="ckCity" autocomplete="address-level2" required>
-                            <div class="form-error">Required.</div>
+                            <input type="text" id="ckCity" autocomplete="address-level2" required aria-describedby="err-ckCity">
+                            <div class="form-error" id="err-ckCity">Required.</div>
                         </div>
                         <div class="form-group" id="fld-ckState">
                             <label for="ckState">State</label>
-                            <input type="text" id="ckState" autocomplete="address-level1" required>
-                            <div class="form-error">Required.</div>
+                            <input type="text" id="ckState" autocomplete="address-level1" required aria-describedby="err-ckState">
+                            <div class="form-error" id="err-ckState">Required.</div>
                         </div>
                         <div class="form-group" id="fld-ckPincode">
                             <label for="ckPincode">Pincode</label>
-                            <input type="text" id="ckPincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" placeholder="6-digit" required>
-                            <div class="form-error">Enter a valid 6-digit pincode.</div>
+                            <input type="text" id="ckPincode" inputmode="numeric" autocomplete="postal-code" maxlength="6" placeholder="6-digit" required aria-describedby="err-ckPincode">
+                            <div class="form-error" id="err-ckPincode">Enter a valid 6-digit pincode.</div>
                         </div>
                     </div>
 
@@ -2941,39 +3127,47 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Place Order</button>
-                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">Online payment is being set up. We'll email you to confirm and collect payment.</p>
+                    <p id="checkoutPaymentNote" style="font-size:12.5px; color: var(--ink-faint); text-align:center; margin-top:0.75rem;">You'll be able to pay on the next screen.</p>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- ORDER CONFIRMATION MODAL -->
-    <div id="confirmationModal" class="modal">
+    <div id="confirmationModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmHeading">
         <div class="modal-content">
             <button class="close" onclick="closeConfirmation()" aria-label="Close">&times;</button>
             <svg class="icon confirm-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h10"/><path d="M11 8l4 4-4 4"/><path d="M17 5v14"/></svg>
-            <h2>One last step<span id="confirmName"></span></h2>
-            <p>Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
+            <h2 id="confirmHeading">One last step<span id="confirmName"></span></h2>
+            <p id="confirmIntro">Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.</p>
             <div class="confirm-id" id="confirmOrderId"></div>
             <div class="upi-pay-box" id="razorpayPayBox" style="display:none;">
-                <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now</div>
+                <div class="eyebrow" style="margin-bottom:0.6rem;">Amount to pay</div>
                 <div class="upi-pay-amount" id="razorpayPayAmount"></div>
-                <div id="razorpayButtonSlot" style="margin-top:0.85rem;"></div>
-                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Your order completes automatically the moment payment succeeds — no need to send anything.</p>
+                <button type="button" class="btn btn-primary btn-block" id="razorpayPayBtn"
+                        style="margin-top:0.85rem;" onclick="startRazorpayPayment()">Pay securely</button>
+                <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.6rem;">Cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.</p>
             </div>
             <div class="upi-pay-box" id="upiPayBox" style="display:none;">
                 <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
                 <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200">
                 <div class="upi-pay-amount" id="upiPayAmount"></div>
                 <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
+                <a id="upiPayLink" class="btn btn-secondary btn-block" href="#" style="margin-top:0.7rem;">Open my UPI app</a>
+                <button type="button" class="btn btn-primary btn-block" id="upiPaidBtn"
+                        style="margin-top:0.5rem;" onclick="confirmUpiPaid()">I've paid</button>
             </div>
+            <button type="button" id="confirmAltToggle" onclick="revealConfirmFallback()"
+                    style="display:none;background:none;border:0;padding:0;margin:0.9rem auto 0;font:inherit;font-size:12.5px;color:var(--ink-faint);text-decoration:underline;cursor:pointer;">
+                Prefer to send us the order instead?
+            </button>
             <div class="confirm-actions" id="confirmActions"></div>
-            <p class="confirm-foot">We reply within a day to confirm stock, delivery date and payment.</p>
+            <p class="confirm-foot" id="confirmFoot">We reply within a day to confirm stock, delivery date and payment.</p>
         </div>
     </div>
 
     <!-- POLICY MODAL (Shipping / Returns / FAQ / Privacy / Terms) -->
-    <div id="policyModal" class="modal">
+    <div id="policyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="policyTitle">
         <div class="modal-content wide">
             <button class="close" onclick="closePolicy()" aria-label="Close">&times;</button>
             <h2 id="policyTitle"></h2>
@@ -2982,17 +3176,17 @@
     </div>
 
     <!-- ORDER HISTORY -->
-    <div id="ordersModal" class="modal">
+    <div id="ordersModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="ordersModalTitle">
         <div class="modal-content wide">
             <button class="close" onclick="closeOrders()" aria-label="Close">&times;</button>
-            <h2>Your orders</h2>
+            <h2 id="ordersModalTitle">Your orders</h2>
             <p>Saved on this device. Clearing your browser data will remove them.</p>
             <div class="modal-scroll" id="ordersBody"></div>
         </div>
     </div>
 
     <!-- PRODUCT DETAIL -->
-    <div id="productModal" class="modal">
+    <div id="productModal" class="modal" role="dialog" aria-modal="true" aria-label="Product details">
         <div class="modal-content wide">
             <button class="close" onclick="closeProduct()" aria-label="Close">&times;</button>
             <div class="modal-scroll" id="productBody"></div>
@@ -3001,9 +3195,9 @@
 
     <!-- CART SIDEBAR -->
     <div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar" id="cartSidebar" role="dialog" aria-modal="true" aria-labelledby="cartSidebarTitle">
         <div class="cart-header">
-            <h2>Your cart</h2>
+            <h2 id="cartSidebarTitle">Your cart</h2>
             <button class="close" onclick="toggleCart()" aria-label="Close cart">&times;</button>
         </div>
         <div class="cart-items" id="cartItemsContainer">
@@ -3036,11 +3230,13 @@
         // Set this and a one-tap WhatsApp button appears on every order. Highly
         // recommended: far more orders come through than mailto links.
         const WHATSAPP_NUMBER = ''; // e.g. '919876543210' — country code, no + or spaces
-        const RAZORPAY_PAYMENT_BUTTON_ID = 'pl_TSNL7ygxBlengj';
-        // In Razorpay Dashboard → this button → the redirect/callback step, set the
-        // customer's post-payment destination to this exact site URL so a successful
-        // payment lands back here and the order completes automatically.
-        const RAZORPAY_REDIRECT_URL = 'https://champraghav.github.io/GetsU-/';
+        // Razorpay Key ID from Dashboard → Account & Settings → API Keys.
+        // This is the PUBLIC key (rzp_live_… / rzp_test_…) and is meant to sit in
+        // client-side code — never put the Key SECRET here, it must stay server-side.
+        // A Payment Button is deliberately NOT used: buttons carry a fixed amount set
+        // in the dashboard, so they cannot charge each order's real total. Checkout
+        // takes the amount at call time, which is what makes per-order pricing correct.
+        const RAZORPAY_KEY_ID = '';
         // Displaying the FSSAI licence number is mandatory for food businesses in India.
         const FSSAI_LICENCE = '21526031000596';
         const UPI_VPA = 'soniraghav350-1@oksbi'; // your UPI ID — leave blank to hide the UPI QR option
@@ -3120,24 +3316,99 @@
             return cat ? cat.label : '';
         }
 
+        // Renders a product thumbnail, falling back to the category icon.
+        // The fallback must not be inlined into an onerror="" attribute: the icon
+        // paths contain double quotes, which close the attribute early and shred
+        // the rest of the tag. Going through a named handler keeps the markup intact.
+        //
+        // Most of the range has no photograph yet. A bare icon floating in an empty
+        // box reads as a *failed* image, especially sitting beside the products that
+        // do have one — so on the catalog card the fallback is given a deliberate
+        // treatment (tinted by category, icon on a raised medallion) that looks like
+        // a designed label plate rather than a hole where a photo should be.
+        function productThumb(p, variant) {
+            if (p.image) {
+                return `<img src="${p.image}" alt="${p.name}" loading="lazy"
+                             data-category="${p.category}" onerror="iconFallback(this)">`;
+            }
+            const icon = `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(p.category)}</svg>`;
+            if (variant !== 'card') return icon;
+            return `<span class="thumb-plate" data-cat="${p.category}">
+                        <span class="thumb-medallion">${icon}</span>
+                        <span class="thumb-mark">GetsU · ${categoryLabel(p.category)}</span>
+                    </span>`;
+        }
+
+        function iconFallback(img) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.innerHTML = categoryIcon(img.dataset.category);
+            img.replaceWith(svg);
+        }
+
+        // Every product already carries a struck-through original price, but the
+        // saving was left for the customer to work out. Stating it plainly is the
+        // difference between a price that looks high and one that looks like a deal.
+        // Derived from the two prices, so it can never drift out of step with them.
+        function savingsPercent(p) {
+            if (!p.original || p.original <= p.price) return 0;
+            return Math.round((1 - p.price / p.original) * 100);
+        }
+
+        function savingsLabel(p) {
+            const pct = savingsPercent(p);
+            return pct >= 5 ? `<span class="product-save">Save ${pct}%</span>` : '';
+        }
+
         let activeCategory = 'all';
 
         function skuFor(id) {
             return 'GU-' + String(id).padStart(2, '0');
         }
 
-        let cart = JSON.parse(localStorage.getItem('getsuCart')) || [];
+        const MAX_QTY = 20;
+
+        // A saved cart is a snapshot: it holds whatever the price was on the day the
+        // item went in, and can name products that no longer exist. Rebuilding it
+        // from the live catalog keeps the customer on today's price and stops a
+        // deleted product from riding along to checkout.
+        function loadCart() {
+            let saved;
+            try {
+                saved = JSON.parse(localStorage.getItem('getsuCart'));
+            } catch (e) {
+                saved = null; // corrupted storage shouldn't take the whole shop down
+            }
+            if (!Array.isArray(saved)) return [];
+
+            const rebuilt = [];
+            let changed = false;
+            saved.forEach(item => {
+                const product = products.find(p => p.id === item.id);
+                if (!product) { changed = true; return; }         // discontinued
+                const qty = Math.min(MAX_QTY, Math.max(1, parseInt(item.qty, 10) || 1));
+                if (qty !== item.qty || product.price !== item.price) changed = true;
+                rebuilt.push({ ...product, qty });
+            });
+
+            if (changed) localStorage.setItem('getsuCart', JSON.stringify(rebuilt));
+            return rebuilt;
+        }
+
+        let cart = loadCart();
 
         // Initialize user tracking ID
         function initializeTracking() {
             let userId = localStorage.getItem('getsuUserId');
             if (!userId) {
-                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
                 localStorage.setItem('getsuUserId', userId);
             }
 
             // Track page view in Firebase
-            if (typeof database !== 'undefined') {
+            if (database) {
                 database.ref('page_views').push({
                     user_id: userId,
                     timestamp: new Date().toISOString(),
@@ -3147,60 +3418,172 @@
             }
         }
 
+        function razorpayReady() {
+            return Boolean(RAZORPAY_KEY_ID) && typeof Razorpay !== 'undefined';
+        }
+
         function initializePaymentNote() {
             const note = document.getElementById('checkoutPaymentNote');
             if (!note) return;
-            if (RAZORPAY_PAYMENT_BUTTON_ID) {
-                note.textContent = 'Pay securely online via Razorpay — your order completes automatically the moment payment succeeds.';
+            if (razorpayReady()) {
+                note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
             } else if (UPI_VPA) {
-                note.textContent = "Place your order, then scan the UPI QR code shown next to pay instantly.";
+                note.textContent = 'Pay by UPI on the next screen — a QR code with the exact amount is generated for your order.';
             }
         }
 
-        // Injects the real Razorpay embed <script> into the DOM. A script tag written
-        // via innerHTML never executes, so this has to go through createElement — and
-        // only once, since the slot element persists across repeat modal openings.
-        function mountRazorpayButton() {
-            const slot = document.getElementById('razorpayButtonSlot');
-            if (!slot || slot.dataset.mounted) return;
-            slot.dataset.mounted = '1';
-            const form = document.createElement('form');
-            const script = document.createElement('script');
-            script.src = 'https://checkout.razorpay.com/v1/payment-button.js';
-            script.dataset.payment_button_id = RAZORPAY_PAYMENT_BUTTON_ID;
-            script.async = true;
-            form.appendChild(script);
-            slot.appendChild(form);
+        // Opens Razorpay Checkout for the order currently shown in the confirmation
+        // modal. The amount is passed at call time (in paise), so every order is
+        // charged its own real total.
+        function startRazorpayPayment() {
+            const order = window.pendingPaymentOrder;
+            if (!order) return;
+            if (!razorpayReady()) {
+                showNotification('Online payment is unavailable right now — please send your order below.');
+                revealConfirmFallback();
+                return;
+            }
+
+            const btn = document.getElementById('razorpayPayBtn');
+            btn.disabled = true;
+
+            const rzp = new Razorpay({
+                key: RAZORPAY_KEY_ID,
+                amount: Math.round(order.total * 100), // Razorpay bills in paise
+                currency: 'INR',
+                name: 'GetsU',
+                description: 'Order ' + order.id,
+                image: 'https://champraghav.github.io/GetsU-/og-image.png',
+                prefill: {
+                    name: order.customer.name || '',
+                    email: order.customer.email || '',
+                    contact: order.customer.phone || '',
+                },
+                notes: {
+                    order_id: order.id,
+                    address: `${order.customer.address}, ${order.customer.city}, ${order.customer.state} ${order.customer.pincode}`,
+                },
+                theme: { color: '#1F5C34' },
+                handler: function (response) {
+                    markOrderPaid(order.id, 'razorpay', response.razorpay_payment_id);
+                },
+                modal: {
+                    ondismiss: function () {
+                        btn.disabled = false;
+                        // They backed out — surface the manual send options so the
+                        // order isn't stranded with no way to reach us.
+                        revealConfirmFallback();
+                    },
+                },
+            });
+
+            rzp.on('payment.failed', function (response) {
+                btn.disabled = false;
+                const reason = (response && response.error && response.error.description) || 'Please try again.';
+                showNotification('Payment failed — ' + reason);
+                revealConfirmFallback();
+            });
+
+            rzp.open();
         }
 
-        // Razorpay redirects back here with these query params after a successful
-        // payment (configured in Dashboard → this button → redirect URL). Completes
-        // the order automatically — no email or WhatsApp step needed on success.
-        function checkPaymentRedirect() {
-            const params = new URLSearchParams(window.location.search);
-            const status = params.get('razorpay_payment_link_status');
-            const paymentId = params.get('razorpay_payment_id');
-            if (status !== 'paid' || !paymentId) return;
-
-            const orderId = localStorage.getItem('getsuPendingPaymentOrderId');
+        // IMPORTANT — this is a client-only integration, so "paid" here means "the
+        // browser was told the payment succeeded". There is no server to verify
+        // Razorpay's signature, which means this status is an operational
+        // convenience, not proof. Always confirm the money against the Razorpay
+        // dashboard (or the UPI account) before dispatching an order.
+        //
+        // Completes an order once money has moved. Two routes reach here:
+        //   'razorpay' — Razorpay confirmed the payment, so it is genuinely paid.
+        //   'upi'      — the customer scanned the QR and told us they paid. We have
+        //                no way to verify that from the browser, so it is recorded
+        //                as a claim for GetsU to check against the UPI app.
+        function markOrderPaid(orderId, method, paymentId) {
+            const verified = method === 'razorpay';
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
             const order = orders.find(o => o.id === orderId);
             if (order) {
-                order.status = 'paid';
+                order.status = verified ? 'paid' : 'payment_reported';
+                order.paymentMethod = method;
+                // `sent` means GetsU knows about it — true either way, so the
+                // recovery banner stops chasing an order that is already handled.
                 order.sent = true;
-                order.razorpay_payment_id = paymentId;
+                if (paymentId) order.razorpay_payment_id = paymentId;
                 localStorage.setItem('getsuOrders', JSON.stringify(orders));
-                localStorage.removeItem('getsuPendingPaymentOrderId');
-                showNotification(`Payment received — order ${order.id} is confirmed!`);
-            } else {
-                showNotification('Payment received — thank you!');
+            }
+            hideRecovery();
+
+            // Revenue should only count money we actually received.
+            if (verified && typeof gtag !== 'undefined' && order) {
+                gtag('event', 'purchase', {
+                    transaction_id: order.id,
+                    value: order.total,
+                    currency: 'INR',
+                    tax: order.tax,
+                    shipping: 0,
+                    items: order.items.map(i => ({
+                        item_id: i.name,
+                        item_name: i.name,
+                        price: i.price,
+                        quantity: i.qty
+                    }))
+                });
             }
 
-            // Drop Razorpay's params from the URL so a page refresh doesn't re-trigger this.
-            const url = new URL(window.location.href);
-            ['razorpay_payment_id', 'razorpay_payment_link_id', 'razorpay_payment_link_reference_id',
-             'razorpay_payment_link_status', 'razorpay_signature'].forEach(k => url.searchParams.delete(k));
-            window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+            if (database) {
+                database.ref('payments').push({
+                    order_id: orderId,
+                    method: method,
+                    verified: verified,
+                    razorpay_payment_id: paymentId || null,
+                    amount: order ? order.total : null,
+                    timestamp: new Date().toISOString(),
+                });
+                // Write the outcome back onto the order row itself, so the orders
+                // list alone shows who has paid without cross-referencing.
+                if (order && order.firebaseKey) {
+                    database.ref('orders/' + order.firebaseKey).update({
+                        status: verified ? 'paid' : 'payment_reported',
+                        payment_method: method,
+                        razorpay_payment_id: paymentId || null,
+                        paid_at: new Date().toISOString(),
+                    });
+                }
+            }
+
+            document.getElementById('confirmHeading').textContent = verified
+                ? 'Payment received — order confirmed'
+                : 'Thanks — we\'re checking your payment';
+            document.getElementById('confirmIntro').textContent = verified
+                ? "Thank you! We've got your payment and your order is confirmed. A receipt is on its way to your email, and we'll be in touch with delivery details."
+                : "We've noted your payment against this order. We'll verify it against our UPI account and confirm by email, usually within a few hours.";
+            document.getElementById('razorpayPayBox').style.display = 'none';
+            document.getElementById('upiPayBox').style.display = 'none';
+            document.getElementById('confirmActions').innerHTML = '';
+            document.getElementById('confirmActions').style.display = 'none';
+            document.getElementById('confirmAltToggle').style.display = 'none';
+            document.getElementById('confirmFoot').textContent = verified
+                ? 'Order ' + orderId + ' · Paid online'
+                : 'Order ' + orderId + ' · Payment reported, awaiting confirmation';
+            showNotification(verified
+                ? `Payment received — order ${orderId} is confirmed!`
+                : `Thanks — we'll confirm order ${orderId} shortly.`);
+        }
+
+        // The customer scanned the UPI QR and says the transfer went through.
+        function confirmUpiPaid() {
+            const order = window.pendingPaymentOrder;
+            if (!order) return;
+            markOrderPaid(order.id, 'upi', null);
+        }
+
+        // Manual send options stay hidden while online payment is the happy path;
+        // they only appear if the customer abandons or fails the payment.
+        function revealConfirmFallback() {
+            const actions = document.getElementById('confirmActions');
+            if (actions) actions.style.display = '';
+            const toggle = document.getElementById('confirmAltToggle');
+            if (toggle) toggle.style.display = 'none';
         }
 
         // INITIALIZE
@@ -3209,7 +3592,6 @@
             renderCategoryGrid();
             renderProducts();
             updateCartUI();
-            checkPaymentRedirect();
             checkRecovery();
             document.getElementById('fssaiLine').textContent =
                 FSSAI_LICENCE ? 'FSSAI Licence No. ' + FSSAI_LICENCE : '';
@@ -3281,9 +3663,7 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        ${product.image
-                            ? `<img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(product.category)}</svg>'">`
-                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(product.category)}</svg>`}
+                        ${productThumb(product, 'card')}
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${categoryLabel(product.category)}</div>
@@ -3296,6 +3676,7 @@
                             <div>
                                 <span class="product-price-original">₹${product.original}</span>
                                 <span class="product-price">₹${product.price}</span>
+                                ${savingsLabel(product)}
                             </div>
                             <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Add</button>
                         </div>
@@ -3329,7 +3710,7 @@
             }
 
             // Save to Firebase
-            if (typeof database !== 'undefined') {
+            if (database) {
                 database.ref('cart_events').push({
                     product_id: product.id,
                     product_name: product.name,
@@ -3349,8 +3730,6 @@
             saveCart();
             updateCartUI();
         }
-
-        const MAX_QTY = 20;
 
         function updateQty(productId, change) {
             const item = cart.find(item => item.id === productId);
@@ -3374,6 +3753,21 @@
             localStorage.setItem('getsuCart', JSON.stringify(cart));
         }
 
+        // Keeps the phone-only bottom bar in step with the cart. Called before the
+        // empty-cart branch below returns, so emptying the cart hides it too.
+        function syncCartBar(count) {
+            const bar = document.getElementById('cartBar');
+            if (!bar) return;
+            const show = count > 0;
+            if (show) {
+                document.getElementById('cartBarCount').textContent =
+                    count + (count === 1 ? ' item' : ' items');
+                document.getElementById('cartBarTotal').textContent = '₹' + cartTotals().total;
+            }
+            bar.classList.toggle('show', show);
+            document.body.classList.toggle('cart-bar-open', show);
+        }
+
         function updateCartUI() {
             const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
             const countElement = document.getElementById('cartCount');
@@ -3384,6 +3778,8 @@
             } else {
                 countElement.style.display = 'none';
             }
+
+            syncCartBar(cartCount);
 
             const cartItemsContainer = document.getElementById('cartItemsContainer');
             const cartSummary = document.getElementById('cartSummary');
@@ -3403,9 +3799,7 @@
                 subtotal += item.price * item.qty;
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-image">${item.image
-                            ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(item.category)}</svg>'">`
-                            : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(item.category)}</svg>`}</div>
+                        <div class="cart-item-image">${productThumb(item)}</div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-price">₹${item.price}</div>
@@ -3550,7 +3944,36 @@
 
         function setFieldError(fieldId, isInvalid) {
             document.getElementById('fld-' + fieldId).classList.toggle('invalid', isInvalid);
+            document.getElementById(fieldId).setAttribute('aria-invalid', String(isInvalid));
         }
+
+        // Same rules validateCheckoutForm uses, keyed by field id so a single
+        // field can be re-checked as the customer types.
+        const CHECKOUT_FIELD_CHECKS = {
+            ckName: v => v.trim().length > 0,
+            ckPhone: v => /^[6-9]\d{9}$/.test(v.trim()),
+            ckEmail: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+            ckAddress: v => v.trim().length > 0,
+            ckCity: v => v.trim().length > 0,
+            ckState: v => v.trim().length > 0,
+            ckPincode: v => /^\d{6}$/.test(v.trim()),
+        };
+
+        // A field flagged invalid on submit stayed red even after it was fixed,
+        // since nothing re-checked it until the next submit attempt. Clear the
+        // error the moment the field becomes valid again.
+        document.addEventListener('DOMContentLoaded', function () {
+            Object.keys(CHECKOUT_FIELD_CHECKS).forEach(fieldId => {
+                const el = document.getElementById(fieldId);
+                if (!el) return;
+                el.addEventListener('input', () => {
+                    const group = document.getElementById('fld-' + fieldId);
+                    if (group.classList.contains('invalid') && CHECKOUT_FIELD_CHECKS[fieldId](el.value)) {
+                        setFieldError(fieldId, false);
+                    }
+                });
+            });
+        });
 
         function validateCheckoutForm(fields) {
             let valid = true;
@@ -3598,14 +4021,13 @@
                 sent: false,
             };
 
-            // Track purchase in Google Analytics
+            // The order is only a checkout, not a sale — `purchase` is reported from
+            // markOrderPaid() once money actually arrives, so Analytics revenue
+            // reflects payments rather than abandoned carts.
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'purchase', {
-                    transaction_id: order.id,
+                gtag('event', 'begin_checkout', {
                     value: order.total,
                     currency: 'INR',
-                    tax: order.tax,
-                    shipping: 0,
                     items: order.items.map(i => ({
                         item_id: i.name,
                         item_name: i.name,
@@ -3615,16 +4037,21 @@
                 });
             }
 
-            // Save complete order to Firebase (with customer data)
-            if (typeof database !== 'undefined') {
-                database.ref('orders').push({
+            // Firebase is the only place GetsU sees an order, so it has to carry
+            // everything needed to actually pack and ship it — full address included.
+            if (database) {
+                const ref = database.ref('orders').push({
                     order_id: order.id,
                     date: order.date,
                     customer_name: order.customer.name,
                     customer_email: order.customer.email,
                     customer_phone: order.customer.phone,
+                    customer_address: order.customer.address,
                     customer_city: order.customer.city,
                     customer_state: order.customer.state,
+                    customer_pincode: order.customer.pincode,
+                    customer_landmark: order.customer.landmark || '',
+                    delivery_notes: order.customer.notes || '',
                     items_count: order.items.length,
                     subtotal: order.subtotal,
                     tax: order.tax,
@@ -3632,6 +4059,8 @@
                     status: order.status,
                     products: order.items
                 });
+                // Remember the row so the payment can be written back onto it later.
+                if (ref && ref.key) order.firebaseKey = ref.key;
             }
 
             const orders = JSON.parse(localStorage.getItem('getsuOrders')) || [];
@@ -3663,8 +4092,24 @@
         }
 
         function showOrderConfirmation(order) {
-            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
+            window.pendingPaymentOrder = order;
+            const payOnline = razorpayReady();
+            const payUpi = !payOnline && Boolean(UPI_VPA);
+
             document.getElementById('confirmOrderId').textContent = 'Order ' + order.id;
+            // Rewriting the heading recreates the name span, so fill it in afterwards.
+            document.getElementById('confirmHeading').innerHTML = (payOnline || payUpi)
+                ? 'Almost done<span id="confirmName"></span>'
+                : 'One last step<span id="confirmName"></span>';
+            document.getElementById('confirmName').textContent = order.customer.name ? ', ' + order.customer.name.split(' ')[0] : '';
+            document.getElementById('confirmIntro').textContent = payOnline
+                ? 'Pay below to confirm your order. Nothing else to do — the moment payment goes through, your order is placed.'
+                : payUpi
+                    ? "Scan the QR below with any UPI app to pay, then tap “I've paid” so we can match the payment to your order."
+                    : "Your order isn't with us yet — this site can't send it on its own. Tap a button below and your order details are filled in for you. It takes one tap.";
+            document.getElementById('confirmFoot').textContent = payOnline
+                ? "You'll get a payment receipt by email, and we'll confirm delivery details within a day."
+                : 'We reply within a day to confirm stock, delivery date and payment.';
 
             const text = orderText(order);
             const mailHref = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent('GetsU Order ' + order.id)}&body=${encodeURIComponent(text)}`;
@@ -3674,16 +4119,21 @@
 
             const razorpayBox = document.getElementById('razorpayPayBox');
             const upiBox = document.getElementById('upiPayBox');
-            if (RAZORPAY_PAYMENT_BUTTON_ID) {
-                localStorage.setItem('getsuPendingPaymentOrderId', order.id);
+            const payBtn = document.getElementById('razorpayPayBtn');
+            if (payOnline) {
                 document.getElementById('razorpayPayAmount').textContent = '₹' + order.total;
-                mountRazorpayButton();
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay ₹' + order.total + ' securely';
                 razorpayBox.style.display = '';
                 upiBox.style.display = 'none';
-            } else if (UPI_VPA) {
+            } else if (payUpi) {
                 const upiUri = `upi://pay?pa=${encodeURIComponent(UPI_VPA)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${order.total}&cu=INR&tn=${encodeURIComponent('GetsU Order ' + order.id)}`;
                 document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
                 document.getElementById('upiPayAmount').textContent = '₹' + order.total;
+                // On a phone the QR is unscannable (it's on the same screen), so give
+                // them a link that hands the amount straight to their UPI app.
+                document.getElementById('upiPayLink').href = upiUri;
+                document.getElementById('upiPaidBtn').textContent = "I've paid ₹" + order.total;
                 razorpayBox.style.display = 'none';
                 upiBox.style.display = '';
             } else {
@@ -3691,13 +4141,21 @@
                 upiBox.style.display = 'none';
             }
 
-            document.getElementById('confirmActions').innerHTML = `
+            const actions = document.getElementById('confirmActions');
+            actions.innerHTML = `
                 ${waHref ? `<a class="btn btn-whatsapp btn-block" href="${waHref}" target="_blank" rel="noopener"
                      onclick="markOrderSent('${order.id}')">Send on WhatsApp</a>` : ''}
                 <a class="btn ${waHref ? 'btn-secondary' : 'btn-primary'} btn-block" href="${mailHref}"
                    onclick="markOrderSent('${order.id}')">Send by email</a>
                 <button class="btn btn-secondary btn-block" onclick="copyOrder('${order.id}')">Copy order details</button>
             `;
+            // Whenever we can take the money on this screen, paying IS placing the
+            // order. Stacking "send us your order" buttons underneath only makes
+            // people think payment wasn't enough, so they stay tucked away behind a
+            // link and come back automatically if payment fails or is abandoned.
+            const canPay = payOnline || payUpi;
+            actions.style.display = canPay ? 'none' : '';
+            document.getElementById('confirmAltToggle').style.display = canPay ? '' : 'none';
 
             openModal('confirmationModal');
         }
@@ -3838,7 +4296,7 @@
                     <h3>What does "clean label" mean?</h3>
                     <p>Every ingredient on our packaging is something you can recognize and pronounce — no artificial preservatives, no hidden fillers, no misleading health claims.</p>
                     <h3>How do I pay?</h3>
-                    <p>We're rolling out online payments now. Until then, place your order on the site and we'll reach out by email to confirm and collect payment via UPI or bank transfer.</p>
+                    <p>Pay online as soon as you place your order — the checkout shows you the exact amount and takes UPI, cards, netbanking or wallets. If you'd rather not pay online, send us the order from the confirmation screen and we'll arrange payment with you by email.</p>
                     <h3>Where do you ship?</h3>
                     <p>Currently across India. Reach out if you need delivery outside India and we'll see what we can do.</p>
                     <h3>Can I change or cancel an order?</h3>
@@ -3850,8 +4308,12 @@
                 body: `
                     <h3>What we collect</h3>
                     <p>When you place an order or contact us, we collect your name, phone number, email, and delivery address. We use this only to process your order and communicate with you about it.</p>
-                    <h3>How it's stored</h3>
-                    <p>Order details you submit are currently stored locally in your browser and shared with us directly by email — we don't sell or share your data with third parties for marketing.</p>
+                    <h3>Where it goes</h3>
+                    <p>Your order — including your delivery address — is sent to our order database, hosted on Google Firebase, so we can pack and ship it. A copy is also kept in your own browser so you can see your order history on this device.</p>
+                    <p>If you pay online, the payment itself is handled by Razorpay. Your card or UPI details are entered on Razorpay's own secure form and are never seen or stored by this website.</p>
+                    <p>We also use Google Analytics to understand how the site is used. We do not sell your data, and we don't share it with anyone for marketing.</p>
+                    <h3>Your choices</h3>
+                    <p>Want your details removed from our records? Email us and we'll delete them. Clearing your browser data removes the copy stored on your device.</p>
                     <h3>Contact</h3>
                     <p>Questions about your data? Email <a href="mailto:teamgetsu.31@gmail.com">teamgetsu.31@gmail.com</a>.</p>
                 `
@@ -3860,7 +4322,7 @@
                 title: 'Terms of Service',
                 body: `
                     <h3>Orders</h3>
-                    <p>Placing an order through this site is a request to purchase — it's confirmed once we get back to you to arrange payment. Prices are listed in Indian Rupees (₹) and may change without notice.</p>
+                    <p>Placing an order through this site is a request to purchase. Once payment is received your order is confirmed, subject to stock — if an item turns out to be unavailable we'll tell you and refund that item in full. Orders left unpaid are confirmed only once we've reached you to arrange payment. Prices are listed in Indian Rupees (₹) and include applicable tax; they may change without notice.</p>
                     <h3>Product information</h3>
                     <p>We describe our products as accurately as we can. Always check the ingredient list on the physical packaging if you have allergies or dietary restrictions.</p>
                     <h3>Limitation</h3>
@@ -3882,6 +4344,25 @@
         }
 
         // ==================== ORDER HISTORY ====================
+        // How an order reads back to the customer. Paid is worth calling out on its
+        // own — telling someone who has already paid that their order was merely
+        // "sent" reads like it might still fall through.
+        function orderState(o) {
+            if (o.status === 'paid') return { cls: 'sent', label: 'Paid' };
+            if (o.status === 'payment_reported') return { cls: 'sent', label: 'Payment being verified' };
+            if (o.sent) return { cls: 'sent', label: 'Sent to GetsU' };
+            return { cls: 'unsent', label: 'Not sent yet' };
+        }
+
+        // Reopening goes through the stored order rather than a copy embedded in the
+        // markup, so a stray quote in an address can't break the button.
+        function reopenOrder(id) {
+            const order = (JSON.parse(localStorage.getItem('getsuOrders')) || []).find(o => o.id === id);
+            if (!order) return;
+            closeOrders();
+            showOrderConfirmation(order);
+        }
+
         function openOrders() {
             const orders = (JSON.parse(localStorage.getItem('getsuOrders')) || []).slice().reverse();
             const body = document.getElementById('ordersBody');
@@ -3889,20 +4370,23 @@
             if (orders.length === 0) {
                 body.innerHTML = '<div class="cart-empty">No orders yet. Anything you order will show up here.</div>';
             } else {
-                body.innerHTML = orders.map(o => `
+                body.innerHTML = orders.map(o => {
+                    const state = orderState(o);
+                    return `
                     <div class="order-row">
                         <div class="order-row-top">
                             <div>
                                 <div class="order-row-id">${o.id}</div>
                                 <div class="order-row-date">${new Date(o.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                             </div>
-                            <span class="order-status ${o.sent ? 'sent' : 'unsent'}">${o.sent ? 'Sent to GetsU' : 'Not sent yet'}</span>
+                            <span class="order-status ${state.cls}">${state.label}</span>
                         </div>
                         <div class="order-row-items">${o.items.map(i => `${i.name} × ${i.qty}`).join('<br>')}</div>
                         <div class="order-row-total"><span>Total</span><span>₹${o.total}</span></div>
-                        ${o.sent ? '' : `<button class="btn btn-primary btn-block" onclick="closeOrders(); showOrderConfirmation(${JSON.stringify(o).replace(/"/g, '&quot;')})">Send this order</button>`}
+                        ${o.sent ? '' : `<button class="btn btn-primary btn-block" onclick="reopenOrder('${o.id}')">Finish this order</button>`}
                     </div>
-                `).join('');
+                `;
+                }).join('');
             }
             openModal('ordersModal');
         }
@@ -3918,13 +4402,11 @@
 
             document.getElementById('productBody').innerHTML = `
                 <div class="pd-head">
-                    <div class="pd-thumb">${p.image
-                        ? `<img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='<svg class=&quot;icon&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 24 24&quot;>${categoryIcon(p.category)}</svg>'">`
-                        : `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${categoryIcon(p.category)}</svg>`}</div>
+                    <div class="pd-thumb">${productThumb(p)}</div>
                     <div>
                         <div class="product-cat">${categoryLabel(p.category)} · ${skuFor(p.id)}</div>
                         <h2>${p.name}</h2>
-                        <div class="pd-price"><s>₹${p.original}</s>₹${p.price}</div>
+                        <div class="pd-price"><s>₹${p.original}</s>₹${p.price}${savingsLabel(p)}</div>
                     </div>
                 </div>
 
@@ -3993,8 +4475,24 @@
             document.getElementById('searchInput').focus();
         }
 
+        let searchLogTimer;
+
+        function logSearch(query, count) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'search', { search_term: query, results_count: count });
+            }
+            if (database) {
+                database.ref('searches').push({
+                    query: query,
+                    results_count: count,
+                    timestamp: new Date().toISOString(),
+                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
+                });
+            }
+        }
+
         function searchProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             // search name, description, category label, features and ingredients
             const results = products.filter(p => [
                 p.name, p.desc, p.category, categoryLabel(p.category),
@@ -4003,27 +4501,15 @@
             const resultsDiv = document.getElementById('searchResults');
 
             if (query.length === 0) {
+                clearTimeout(searchLogTimer); // don't log a query they just cleared
                 resultsDiv.innerHTML = '';
                 return;
             }
 
-            // Track search in Google Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'search', {
-                    search_term: query,
-                    results_count: results.length
-                });
-            }
-
-            // Save search to Firebase
-            if (typeof database !== 'undefined') {
-                database.ref('searches').push({
-                    query: query,
-                    results_count: results.length,
-                    timestamp: new Date().toISOString(),
-                    user_id: localStorage.getItem('getsuUserId') || 'anonymous'
-                });
-            }
+            // Results redraw on every keystroke, but the search is only *logged*
+            // once typing settles — otherwise "protein" files seven searches.
+            clearTimeout(searchLogTimer);
+            searchLogTimer = setTimeout(() => logSearch(query, results.length), 600);
 
             if (results.length === 0) {
                 resultsDiv.innerHTML = '<div class="search-empty">No products match your search.</div>';
