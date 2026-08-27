@@ -19,7 +19,7 @@
     <meta property="og:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="GetsU — healthy eating should be delicious">
+    <meta property="og:image:alt" content="GetsU Chocolate Delight protein bar — healthy eating should be delicious">
     <meta name="twitter:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GetsU — Clean-Label Protein Food, Made For You">
@@ -517,43 +517,62 @@
             background: linear-gradient(135deg, var(--paper-tin) 0%, var(--paper-raised) 100%);
             border: 1.5px solid var(--line);
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
+            width: 100%;
+            padding: 0;
             overflow: hidden;
             box-shadow: var(--shadow-md);
+            cursor: pointer;
+            font: inherit;
+            color: inherit;
+            text-align: left;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
         }
 
-        .hero-art svg {
-            width: 55%;
-            height: 55%;
-            opacity: 0.95;
+        .hero-art:hover {
+            border-color: var(--moss);
+            box-shadow: var(--shadow-lg);
         }
 
-        .hero-art::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(var(--line) 0.5px, transparent 0.5px);
-            background-size: 16px 16px;
-            opacity: 0.3;
+        .hero-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
         }
 
+        .hero-art:hover img { transform: scale(1.04); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-art:hover img { transform: none; }
+        }
+
+        /* The label sits on photography, so it carries its own surface rather
+           than relying on whatever pixels happen to be behind it. */
         .hero-art .label-tag {
             position: absolute;
-            top: 1.5rem;
-            left: 1.5rem;
+            top: 1.25rem;
+            left: 1.25rem;
             font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.08em;
+            font-size: 10px;
+            letter-spacing: 0.1em;
             color: var(--ink-faint);
             text-transform: uppercase;
+            background: color-mix(in srgb, var(--paper) 92%, transparent);
+            backdrop-filter: blur(6px);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            max-width: calc(100% - 2.5rem);
         }
 
         .hero-art .label-tag strong {
             display: block;
             color: var(--ink);
+            font-family: var(--font-body);
             font-size: 13px;
+            letter-spacing: -0.01em;
+            text-transform: none;
             margin-top: 2px;
         }
 
@@ -1136,6 +1155,71 @@
         .to-top.show { opacity: 1; visibility: visible; }
         .to-top:hover { border-color: var(--moss); color: var(--moss); }
 
+        /* ==================== STICKY MOBILE CART BAR ==================== */
+        /* Phone-only: on desktop the header cart is always visible anyway. */
+        .cart-bar { display: none; }
+
+        @media (max-width: 768px) {
+            .cart-bar {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 95;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+                background: color-mix(in srgb, var(--paper) 94%, transparent);
+                backdrop-filter: blur(10px);
+                border-top: 1.5px solid var(--line);
+                box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+                transform: translateY(110%);
+                transition: transform 0.3s ease;
+            }
+
+            .cart-bar.show { transform: translateY(0); }
+
+            .cart-bar-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1px;
+                background: none;
+                border: 0;
+                padding: 0;
+                font: inherit;
+                color: inherit;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .cart-bar-count {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--ink-faint);
+            }
+
+            .cart-bar-total {
+                font-family: var(--font-mono);
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--moss);
+            }
+
+            .cart-bar-go { padding: 0.75rem 1.5rem; white-space: nowrap; }
+
+            /* keep the bar clear of the back-to-top button */
+            body.cart-bar-open .to-top { bottom: calc(4.75rem + env(safe-area-inset-bottom)); }
+            /* and stop it covering the last of the footer */
+            body.cart-bar-open footer { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+            /* "added to cart" toasts must not land on top of the bar they refer to */
+            body.cart-bar-open .success-message { bottom: calc(9rem + env(safe-area-inset-bottom)); }
+        }
+
         .skip-link {
             position: absolute;
             left: -9999px;
@@ -1277,6 +1361,60 @@
             z-index: 1;
         }
 
+        /* ---- Designed stand-in for products without a photograph yet ---- */
+        .thumb-plate {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.9rem;
+            /* Each category gets its own wash so a grid of stand-ins reads as a
+               considered set rather than a run of identical empty beige boxes. */
+            background:
+                radial-gradient(120% 90% at 50% 0%,
+                    color-mix(in srgb, var(--plate-tint, var(--moss)) 16%, transparent) 0%,
+                    transparent 70%),
+                linear-gradient(160deg,
+                    color-mix(in srgb, var(--plate-tint, var(--moss)) 9%, var(--paper-raised)) 0%,
+                    var(--paper-raised) 100%);
+        }
+
+        .thumb-plate[data-cat="breakfast"]   { --plate-tint: var(--turmeric); }
+        .thumb-plate[data-cat="snacks"]      { --plate-tint: var(--beet); }
+        .thumb-plate[data-cat="beverages"]   { --plate-tint: var(--moss); }
+        .thumb-plate[data-cat="ready"]       { --plate-tint: var(--turmeric-deep); }
+        .thumb-plate[data-cat="spreads"]     { --plate-tint: var(--beet-deep); }
+        .thumb-plate[data-cat="specialized"] { --plate-tint: var(--moss-deep); }
+
+        .thumb-medallion {
+            width: 46%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: var(--paper);
+            border: 1.5px solid color-mix(in srgb, var(--plate-tint) 30%, var(--line));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .thumb-medallion .icon {
+            width: 46%;
+            height: 46%;
+            color: color-mix(in srgb, var(--plate-tint) 78%, var(--ink));
+        }
+
+        .thumb-mark {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
         .product-image img {
             width: 100%;
             height: 100%;
@@ -1293,7 +1431,8 @@
             font-size: 10px;
             color: var(--turmeric);
             letter-spacing: 0.08em;
-            z-index: 1;
+            /* above .thumb-plate, which fills the frame at z-index 1 */
+            z-index: 3;
             font-weight: 600;
         }
 
@@ -1308,7 +1447,7 @@
             font-size: 11px;
             font-weight: 700;
             font-family: var(--font-mono);
-            z-index: 1;
+            z-index: 3;
             letter-spacing: 0.05em;
         }
 
@@ -1375,6 +1514,22 @@
             color: var(--ink-faint);
             text-decoration: line-through;
             margin-right: 0.5rem;
+        }
+
+        .product-save {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--moss);
+            background: color-mix(in srgb, var(--moss) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--moss) 28%, transparent);
+            padding: 2px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
         }
 
         .add-to-cart {
@@ -2519,15 +2674,16 @@
                 <div><strong>60%</strong>less sugar</div>
             </div>
         </div>
-        <div class="hero-art">
-            <span class="label-tag">GetsU No. 01<strong>High-Protein Oats</strong></span>
-            <svg viewBox="0 0 24 24" class="icon" style="stroke-width:1.1;">
-                <path d="M6 3h12l1 5a7 7 0 0 1-14 0z"/>
-                <path d="M6 8h12"/>
-                <path d="M9 3v-1h6v1"/>
-            </svg>
-            <span class="badge-accent">Sugar −60%</span>
-        </div>
+        <!-- People buy food with their eyes, so the hero leads with the product
+             itself and doubles as the shortcut into its page. -->
+        <button class="hero-art" onclick="openProduct(2)"
+                aria-label="View Protein Bar — Chocolate Delight">
+            <img src="images/products/protein-bar-chocolate.jpg"
+                 alt="GetsU Chocolate Delight protein bar, 20g protein per bar"
+                 width="779" height="500" fetchpriority="high" decoding="async">
+            <span class="label-tag">Best seller<strong>Protein Bar — Chocolate Delight</strong></span>
+            <span class="badge-accent">20g protein</span>
+        </button>
     </section>
 
     <!-- PROBLEM & SOLUTION -->
@@ -2862,6 +3018,17 @@
         </div>
     </footer>
 
+    <!-- On a phone the cart lives in the header, so once you've scrolled into the
+         catalog there's nothing showing what you've added or how to pay for it.
+         This keeps the running total and the way out in reach the whole time. -->
+    <div class="cart-bar" id="cartBar" role="region" aria-label="Cart summary">
+        <button class="cart-bar-info" onclick="openCart()">
+            <span class="cart-bar-count" id="cartBarCount"></span>
+            <span class="cart-bar-total" id="cartBarTotal"></span>
+        </button>
+        <button class="btn btn-primary cart-bar-go" onclick="openCheckout()">Checkout</button>
+    </div>
+
     <button class="to-top" id="toTop" onclick="scrollToTop()" aria-label="Back to top">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
     </button>
@@ -3153,11 +3320,23 @@
         // The fallback must not be inlined into an onerror="" attribute: the icon
         // paths contain double quotes, which close the attribute early and shred
         // the rest of the tag. Going through a named handler keeps the markup intact.
-        function productThumb(p) {
-            return p.image
-                ? `<img src="${p.image}" alt="${p.name}" loading="lazy"
-                        data-category="${p.category}" onerror="iconFallback(this)">`
-                : `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(p.category)}</svg>`;
+        //
+        // Most of the range has no photograph yet. A bare icon floating in an empty
+        // box reads as a *failed* image, especially sitting beside the products that
+        // do have one — so on the catalog card the fallback is given a deliberate
+        // treatment (tinted by category, icon on a raised medallion) that looks like
+        // a designed label plate rather than a hole where a photo should be.
+        function productThumb(p, variant) {
+            if (p.image) {
+                return `<img src="${p.image}" alt="${p.name}" loading="lazy"
+                             data-category="${p.category}" onerror="iconFallback(this)">`;
+            }
+            const icon = `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${categoryIcon(p.category)}</svg>`;
+            if (variant !== 'card') return icon;
+            return `<span class="thumb-plate" data-cat="${p.category}">
+                        <span class="thumb-medallion">${icon}</span>
+                        <span class="thumb-mark">GetsU · ${categoryLabel(p.category)}</span>
+                    </span>`;
         }
 
         function iconFallback(img) {
@@ -3167,6 +3346,20 @@
             svg.setAttribute('viewBox', '0 0 24 24');
             svg.innerHTML = categoryIcon(img.dataset.category);
             img.replaceWith(svg);
+        }
+
+        // Every product already carries a struck-through original price, but the
+        // saving was left for the customer to work out. Stating it plainly is the
+        // difference between a price that looks high and one that looks like a deal.
+        // Derived from the two prices, so it can never drift out of step with them.
+        function savingsPercent(p) {
+            if (!p.original || p.original <= p.price) return 0;
+            return Math.round((1 - p.price / p.original) * 100);
+        }
+
+        function savingsLabel(p) {
+            const pct = savingsPercent(p);
+            return pct >= 5 ? `<span class="product-save">Save ${pct}%</span>` : '';
         }
 
         let activeCategory = 'all';
@@ -3470,7 +3663,7 @@
                     <div class="product-image">
                         <span class="sku">${skuFor(product.id)}</span>
                         ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-                        ${productThumb(product)}
+                        ${productThumb(product, 'card')}
                     </div>
                     <div class="product-info">
                         <div class="product-cat">${categoryLabel(product.category)}</div>
@@ -3483,6 +3676,7 @@
                             <div>
                                 <span class="product-price-original">₹${product.original}</span>
                                 <span class="product-price">₹${product.price}</span>
+                                ${savingsLabel(product)}
                             </div>
                             <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Add</button>
                         </div>
@@ -3559,6 +3753,21 @@
             localStorage.setItem('getsuCart', JSON.stringify(cart));
         }
 
+        // Keeps the phone-only bottom bar in step with the cart. Called before the
+        // empty-cart branch below returns, so emptying the cart hides it too.
+        function syncCartBar(count) {
+            const bar = document.getElementById('cartBar');
+            if (!bar) return;
+            const show = count > 0;
+            if (show) {
+                document.getElementById('cartBarCount').textContent =
+                    count + (count === 1 ? ' item' : ' items');
+                document.getElementById('cartBarTotal').textContent = '₹' + cartTotals().total;
+            }
+            bar.classList.toggle('show', show);
+            document.body.classList.toggle('cart-bar-open', show);
+        }
+
         function updateCartUI() {
             const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
             const countElement = document.getElementById('cartCount');
@@ -3569,6 +3778,8 @@
             } else {
                 countElement.style.display = 'none';
             }
+
+            syncCartBar(cartCount);
 
             const cartItemsContainer = document.getElementById('cartItemsContainer');
             const cartSummary = document.getElementById('cartSummary');
@@ -4195,7 +4406,7 @@
                     <div>
                         <div class="product-cat">${categoryLabel(p.category)} · ${skuFor(p.id)}</div>
                         <h2>${p.name}</h2>
-                        <div class="pd-price"><s>₹${p.original}</s>₹${p.price}</div>
+                        <div class="pd-price"><s>₹${p.original}</s>₹${p.price}${savingsLabel(p)}</div>
                     </div>
                 </div>
 
