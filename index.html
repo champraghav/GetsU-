@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GetsU — Clean-Label Protein Food, Made For You</title>
-    <meta name="description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read. Free delivery across India. No added sugar, no artificial preservatives.">
-    <meta name="keywords" content="healthy food, protein snacks, functional beverages, clean ingredients, nutrition">
+    <meta name="description" content="High-protein pancake premix, protein bars and oats with ingredients you can actually read. Free delivery across India. No added sugar, no artificial preservatives.">
+    <meta name="keywords" content="protein bar, pancake premix, high protein oats, clean label food, healthy snacks india">
 <meta name="theme-color" content="#1F5C34">
     <link rel="canonical" href="https://champraghav.github.io/GetsU-/">
 
@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="GetsU">
     <meta property="og:title" content="GetsU — Clean-Label Protein Food, Made For You">
-    <meta property="og:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read. Free delivery across India.">
+    <meta property="og:description" content="High-protein pancake premix, protein bars and oats with ingredients you can actually read. Free delivery across India.">
     <meta property="og:url" content="https://champraghav.github.io/GetsU-/">
     <meta property="og:locale" content="en_IN">
     <meta property="og:image" content="https://champraghav.github.io/GetsU-/og-image.png">
@@ -23,7 +23,7 @@
     <meta name="twitter:image" content="https://champraghav.github.io/GetsU-/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GetsU — Clean-Label Protein Food, Made For You">
-    <meta name="twitter:description" content="High-protein oats, bars, drinks and spreads with ingredients you can actually read.">
+    <meta name="twitter:description" content="High-protein pancake premix, protein bars and oats with ingredients you can actually read.">
 
     <!-- Inline favicon: no external request, works offline -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F5C34'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23FBF9F2' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
@@ -720,40 +720,6 @@
             line-height: 1.5;
         }
 
-        /* ==================== PRODUCTS GRID (catalog index) ==================== */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            background: transparent;
-            border: none;
-        }
-
-        .product-category {
-            background: var(--paper-raised);
-            padding: 2.5rem;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            display: block;
-            width: 100%;
-            text-align: left;
-            font: inherit;
-            color: inherit;
-        }
-
-        .cat-count {
-            display: inline-block;
-            margin-top: 1rem;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--moss);
-        }
-
         .product-cat {
             font-family: var(--font-mono);
             font-size: 10px;
@@ -761,42 +727,6 @@
             text-transform: uppercase;
             color: var(--ink-faint);
             margin-bottom: 0.4rem;
-        }
-
-        .product-category:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--moss);
-        }
-
-        .cat-code {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--turmeric);
-            letter-spacing: 0.08em;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .product-category .icon {
-            width: 30px;
-            height: 30px;
-            color: var(--moss);
-            margin-bottom: 1rem;
-        }
-
-        .product-category h3 {
-            font-size: 17px;
-            color: var(--ink);
-            margin-bottom: 0.4rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-        }
-
-        .product-category p {
-            font-size: 14px;
-            color: var(--ink-soft);
-            line-height: 1.6;
         }
 
         /* ==================== PRODUCT DETAIL ==================== */
@@ -854,6 +784,32 @@
         .nutri-row strong { color: var(--ink); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
         .nutri-row.lead { background: var(--paper-tin); }
         .nutri-row.lead strong, .nutri-row.lead span { color: var(--ink); font-weight: 700; }
+
+        .upi-vpa-line {
+            font-size: 12.5px;
+            color: var(--ink-faint);
+            margin-top: 0.7rem;
+        }
+
+        .upi-vpa-line button {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--moss);
+            background: none;
+            border: 0;
+            border-bottom: 1px dashed currentColor;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        #upiQrImage.qr-failed { display: none; }
+
+        /* shown in place of the panel until verified figures exist */
+        .nutri-pending { border-style: dashed; }
+        .nutri-note { padding: 1rem; font-size: 13.5px; color: var(--ink-soft); }
+        .nutri-note p + p { margin-top: 0.6rem; }
+        .nutri-note a { color: var(--moss); }
 
         .pd-block { margin-bottom: 1.25rem; }
 
@@ -1243,40 +1199,6 @@
             border-bottom: 1px solid var(--line);
         }
 
-        .filter-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--paper-raised);
-            border: 1.5px solid var(--line);
-            color: var(--ink-soft);
-            padding: 0.6rem 1.1rem;
-            border-radius: 100px;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-size: 13.5px;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        }
-
-        .filter-chip:hover {
-            border-color: var(--moss);
-            color: var(--moss);
-        }
-
-        .filter-chip[aria-pressed="true"] {
-            background: var(--moss);
-            border-color: var(--moss);
-            color: var(--on-moss);
-        }
-
-        .filter-chip .count {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
         .shop-empty {
             grid-column: 1 / -1;
             text-align: center;
@@ -1288,8 +1210,12 @@
         /* ==================== FEATURED PRODUCTS ==================== */
         .featured-products {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            /* Sized for the current three-product range: a fixed 4-up track left
+               a dead column on the right. auto-fit keeps the row full whether
+               there are three products or twelve. */
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 2rem;
+            max-width: 1040px;
         }
 
         .product-card {
@@ -2318,7 +2244,6 @@
             .hero { grid-template-columns: 1fr; }
             .hero-art { max-width: 420px; margin: 0 auto; }
             .featured-products { grid-template-columns: repeat(2, 1fr); }
-            .products-grid { grid-template-columns: repeat(2, 1fr); }
             .values-grid { grid-template-columns: repeat(2, 1fr); }
             .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
@@ -2398,7 +2323,6 @@
             .product-footer { flex-direction: column; align-items: stretch; gap: 0.6rem; }
             .add-to-cart { width: 100%; padding: 0.6rem; }
 
-            .products-grid,
             .values-grid,
             .stats,
             .footer-content {
@@ -2668,10 +2592,13 @@
                 <button class="btn btn-primary" onclick="scrollToSection('products')">Start Shopping</button>
                 <button class="btn btn-secondary" onclick="scrollToSection('why')">Learn Our Story</button>
             </div>
+            <!-- Each of these is checkable against the pack or a stated policy.
+                 Comparative claims ("25% more protein") need a published basis
+                 under FSSAI rules, so they don't belong here without one. -->
             <div class="hero-proof">
-                <div><strong>100%</strong>clean ingredients</div>
-                <div><strong>25%</strong>more protein</div>
-                <div><strong>60%</strong>less sugar</div>
+                <div><strong>20g</strong>protein per bar</div>
+                <div><strong>Free</strong>delivery across India</div>
+                <div><strong>48h</strong>replacement promise</div>
             </div>
         </div>
         <!-- People buy food with their eyes, so the hero leads with the product
@@ -2681,7 +2608,7 @@
             <img src="images/products/protein-bar-chocolate.jpg"
                  alt="GetsU Chocolate Delight protein bar, 20g protein per bar"
                  width="779" height="500" fetchpriority="high" decoding="async">
-            <span class="label-tag">Best seller<strong>Protein Bar — Chocolate Delight</strong></span>
+            <span class="label-tag">Just launched<strong>Protein Bar — Chocolate Delight</strong></span>
             <span class="badge-accent">20g protein</span>
         </button>
     </section>
@@ -2716,23 +2643,25 @@
         </div>
 
         <div class="facts-panel">
-            <div class="facts-header">Nutrition facts, by the numbers</div>
+            <div class="facts-header">Our products, by the numbers</div>
+            <!-- Every figure here traces to a specific product's declared panel,
+                 so it can be checked against the pack. -->
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-number num">100%</div>
-                    <div class="stat-label">Clean ingredients</div>
+                    <div class="stat-number num">20g</div>
+                    <div class="stat-label">Protein in one bar</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number num">+25%</div>
-                    <div class="stat-label">More protein</div>
+                    <div class="stat-number num">0g</div>
+                    <div class="stat-label">Added sugar in the bar</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number num">−60%</div>
-                    <div class="stat-label">Less sugar</div>
+                    <div class="stat-number num">129</div>
+                    <div class="stat-label">Calories per pancake serving</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number num">₹</div>
-                    <div class="stat-label">Fair, everyday pricing</div>
+                    <div class="stat-number num">₹99</div>
+                    <div class="stat-label">Starting price</div>
                 </div>
             </div>
         </div>
@@ -2750,7 +2679,7 @@
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/><path d="M8 15h4"/></svg>
-            <div><strong>Secure payment</strong><span>UPI, cards and wallets — handled by Razorpay</span></div>
+            <div><strong>Secure payment</strong><span id="trustPaymentNote">Pay online when you order</span></div>
         </div>
         <div class="trust-item">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
@@ -2764,25 +2693,11 @@
             <span class="tag">§ 02</span>
             <div>
                 <h2>Shop the range</h2>
-                <p class="section-subtitle">Every product we make, in one place. Filter by what you're after — breakfast, snacks, drinks, or nutrition built for a specific need.</p>
+                <p class="section-subtitle">Three products, each one we'd eat every day. Tap any of them for the full ingredient list, allergens and nutrition before you buy.</p>
             </div>
         </div>
 
-        <div class="filter-bar" id="filterBar" role="group" aria-label="Filter products by category"></div>
         <div class="featured-products" id="featuredProducts"></div>
-    </section>
-
-    <!-- PRODUCT CATEGORIES -->
-    <section class="section">
-        <div class="section-head">
-            <span class="tag">§ 03</span>
-            <div>
-                <h2>The full catalog</h2>
-                <p class="section-subtitle">From breakfast to sports nutrition, we've got every part of your day covered.</p>
-            </div>
-        </div>
-
-        <div class="products-grid" id="categoryGrid"></div>
     </section>
 
     <!-- STANDARDS -->
@@ -2793,7 +2708,7 @@
     -->
     <section class="section">
         <div class="section-head">
-            <span class="tag">§ 04</span>
+            <span class="tag">§ 03</span>
             <div>
                 <h2>What we will and won't do</h2>
                 <p class="section-subtitle">We're new, so we haven't earned your trust yet. Here's what we're committing to in writing instead.</p>
@@ -2822,7 +2737,7 @@
     <!-- VALUES SECTION -->
     <section id="values" class="section">
         <div class="section-head">
-            <span class="tag">§ 05</span>
+            <span class="tag">§ 04</span>
             <div>
                 <h2>Our brand values</h2>
                 <p class="section-subtitle">Everything we do is guided by these six principles.</p>
@@ -2884,7 +2799,7 @@
     <!-- FAQ -->
     <section id="faq" class="section">
         <div class="section-head">
-            <span class="tag">§ 06</span>
+            <span class="tag">§ 05</span>
             <div>
                 <h2>Questions, answered</h2>
                 <p class="section-subtitle">The things people ask before their first order.</p>
@@ -2894,7 +2809,7 @@
         <div class="faq-list">
             <details class="faq-item">
                 <summary>How do I pay?</summary>
-                <p>You pay right after checkout, for the exact amount of your order. We show you a UPI QR code — scan it with GPay, PhonePe, Paytm or any UPI app — and card, netbanking and wallet payments run through Razorpay's secure checkout. Your card details are entered on Razorpay's form and never touch this site. Prefer not to pay online? Send us the order instead and we'll sort out payment with you by email.</p>
+                <p>You pay right after checkout, for the exact amount of your order. We show you a UPI QR code with the amount already filled in — scan it with GPay, PhonePe, Paytm or any UPI app, then tap "I've paid" so we can match it to your order. Card, netbanking and wallet payments run through Razorpay's secure checkout, and your card details are entered on Razorpay's own form, never on this site. Prefer not to pay online? Send us the order instead and we'll sort out payment with you by email.</p>
             </details>
             <details class="faq-item">
                 <summary>What does "clean label" actually mean?</summary>
@@ -2906,7 +2821,7 @@
             </details>
             <details class="faq-item">
                 <summary>I have a food allergy — is this safe for me?</summary>
-                <p>Every product page lists its allergens. Most of our range contains milk, and several contain tree nuts or peanuts. Everything is packed in a facility that also handles milk and nuts, so we can't guarantee against trace cross-contact. Always check the physical pack before eating.</p>
+                <p>Every product page lists its allergens in full. Our High-Protein Oats contain milk and almonds, and the Protein Bar contains tree nuts and peanuts. The Pancake Premix has no declared allergens, but everything is packed in a facility that also handles milk and nuts, so we can't guarantee against trace cross-contact. Always check the physical pack before eating.</p>
             </details>
             <details class="faq-item">
                 <summary>What if my order arrives damaged?</summary>
@@ -2936,7 +2851,7 @@
     <!-- CONTACT SECTION -->
     <section id="contact" class="section">
         <div class="section-head">
-            <span class="tag">§ 07</span>
+            <span class="tag">§ 06</span>
             <div>
                 <h2>Get in touch</h2>
                 <p class="section-subtitle">Questions about ingredients, an order, or stocking GetsU — we read every message and reply within one business day.</p>
@@ -3150,10 +3065,16 @@
             </div>
             <div class="upi-pay-box" id="upiPayBox" style="display:none;">
                 <div class="eyebrow" style="margin-bottom:0.6rem;">Pay now via UPI</div>
-                <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200">
+                <img id="upiQrImage" alt="UPI QR code — scan to pay" width="200" height="200"
+                     onerror="qrUnavailable()">
                 <div class="upi-pay-amount" id="upiPayAmount"></div>
                 <p style="font-size:12.5px;color:var(--ink-faint);margin-top:0.4rem;">Scan with GPay, PhonePe, Paytm or any UPI app</p>
                 <a id="upiPayLink" class="btn btn-secondary btn-block" href="#" style="margin-top:0.7rem;">Open my UPI app</a>
+                <!-- The QR is drawn by a third-party service. If it ever fails to
+                     load, the UPI ID below is enough to complete the payment by
+                     hand, so a sale is never blocked by someone else's outage. -->
+                <p class="upi-vpa-line">or pay this UPI ID: <button type="button" id="upiVpaCopy"
+                        onclick="copyUpiId()" title="Copy UPI ID"><span id="upiVpaText"></span></button></p>
                 <button type="button" class="btn btn-primary btn-block" id="upiPaidBtn"
                         style="margin-top:0.5rem;" onclick="confirmUpiPaid()">I've paid</button>
             </div>
@@ -3225,11 +3146,23 @@
     </div>
 
     <script>
-        // BUSINESS CONFIG — fill these in as they become available
+        // ============================================================
+        // BUSINESS CONFIG — everything you need to set lives here.
+        //
+        // The site adapts to whichever of these are filled in, so nothing on the
+        // page can promise something that isn't switched on:
+        //   · WHATSAPP_NUMBER blank → no WhatsApp button anywhere
+        //   · RAZORPAY_KEY_ID blank → card/wallet checkout is hidden, and the
+        //     homepage and checkout both say "pay by UPI" instead
+        //   · UPI_VPA blank        → the UPI QR is hidden too, and orders fall
+        //     back to being sent by email
+        // ============================================================
         const BUSINESS_EMAIL = 'teamgetsu.31@gmail.com';
+
         // Set this and a one-tap WhatsApp button appears on every order. Highly
         // recommended: far more orders come through than mailto links.
         const WHATSAPP_NUMBER = ''; // e.g. '919876543210' — country code, no + or spaces
+
         // Razorpay Key ID from Dashboard → Account & Settings → API Keys.
         // This is the PUBLIC key (rzp_live_… / rzp_test_…) and is meant to sit in
         // client-side code — never put the Key SECRET here, it must stay server-side.
@@ -3237,73 +3170,90 @@
         // in the dashboard, so they cannot charge each order's real total. Checkout
         // takes the amount at call time, which is what makes per-order pricing correct.
         const RAZORPAY_KEY_ID = '';
+
         // Displaying the FSSAI licence number is mandatory for food businesses in India.
         const FSSAI_LICENCE = '21526031000596';
+
         const UPI_VPA = 'soniraghav350-1@oksbi'; // your UPI ID — leave blank to hide the UPI QR option
         const UPI_PAYEE_NAME = 'GetsU'; // name shown to the customer in their UPI app
 
-        // CATEGORIES — order here drives the filter bar and the catalog grid
+        // CATEGORIES — supplies each product's label and its icon. Add a new
+        // entry here before giving a product a new category key.
         const CATEGORIES = [
             {
                 key: 'breakfast',
                 label: 'Breakfast',
-                blurb: 'High-protein oats, millet mixes, and pancake premix to start the day right.',
                 icon: '<path d="M4 12h16l-1.5 6a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5z"/><path d="M4 12a8 8 0 0 1 16 0"/><line x1="9" y1="4" x2="8" y2="7"/><line x1="15" y1="4" x2="16" y2="7"/>',
             },
             {
                 key: 'snacks',
                 label: 'Snacks',
-                blurb: 'Protein bars, roasted crunchies, and cookies that hold up between meals.',
                 icon: '<rect x="4" y="9" width="16" height="6" rx="1"/><line x1="7" y1="9" x2="7" y2="15"/><line x1="17" y1="9" x2="17" y2="15"/>',
-            },
-            {
-                key: 'beverages',
-                label: 'Drinks',
-                blurb: 'Protein cold coffee and functional mixes — shake, sip, done.',
-                icon: '<path d="M6 3h9l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M5 8h11"/><path d="M15 8l3 1v3l-3-1"/>',
-            },
-            {
-                key: 'ready',
-                label: 'Ready-to-Eat',
-                blurb: 'Instant porridges and nutrition bowls for days with no time to cook.',
-                icon: '<path d="M5 11a7 7 0 0 1 14 0v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><line x1="5" y1="14" x2="19" y2="14"/>',
-            },
-            {
-                key: 'spreads',
-                label: 'Spreads',
-                blurb: 'Chocolate and nut spreads with a fraction of the sugar.',
-                icon: '<rect x="7" y="4" width="10" height="17" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/>',
-            },
-            {
-                key: 'specialized',
-                label: 'Specialized',
-                blurb: "Women's health, kids' nutrition, and sports formulations.",
-                icon: '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/>',
             },
         ];
 
         // PRODUCTS DATABASE
+        // LAUNCH CATALOG — the three products GetsU actually sells today.
+        // To add a product later, copy one of these rows and give it a new id.
+        // `nutrition` is optional: leave it off until you have verified figures
+        // for that product, and the page shows a "check the pack" note instead of
+        // numbers. Never publish a panel you cannot back up — declared nutrition
+        // is regulated under the FSSAI labelling rules, not marketing copy.
         const products = [
-            { id: 1,  name: 'High-Protein Oats',      category: 'breakfast',   price: 349, original: 449,  features: ['25g Protein', 'No Sugar'],        badge: 'Popular',     desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.' , serving: '45 g', nutrition: { kcal: 340, protein: 25, carbs: 38, fat: 7, fibre: 6, sugar: 1 }, ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.', allergens: 'Milk, Tree nuts', note: 'Gluten-free oats' },
-            { id: 4,  name: 'Millet Breakfast Mix',   category: 'breakfast',   price: 299, original: 399,  features: ['Gluten Free', 'High Fiber'],      badge: '',            desc: 'Five heritage millets, lightly roasted. Nutty, filling, gluten free.' , serving: '50 g', nutrition: { kcal: 312, protein: 9, carbs: 58, fat: 5, fibre: 9, sugar: 2 }, ingredients: 'Ragi, jowar, bajra, foxtail millet, little millet, cardamom.', allergens: 'None', note: 'Naturally gluten free' },
-            { id: 9,  name: 'Pancake Premix',         category: 'breakfast',   price: 379, original: 479,  features: ['20g Protein', '100% Plant Based', 'No Refined Sugar'], badge: 'New', desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.' , serving: '35 g (3 scoops)', nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 }, ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.', allergens: 'None', note: '100% plant based', image: 'images/products/pancake-premix.jpg' },
-
-            { id: 2,  name: 'Protein Bar — Chocolate Delight', category: 'snacks', price: 99,  original: 129,  features: ['20g Protein', 'Plant Powered', 'No Added Sugar', 'Gluten Free'], badge: 'Best Seller', desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.' , serving: '50 g', nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 }, ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.', allergens: 'Nuts, Peanuts', note: 'Gluten free', image: 'images/products/protein-bar-chocolate.jpg' },
-            { id: 7,  name: 'Roasted Chickpea Snack', category: 'snacks',      price: 149, original: 199,  features: ['15g Protein', 'Crunchy'],         badge: '',            desc: 'Air-roasted chana with masala. All the crunch, none of the oil.' , serving: '30 g', nutrition: { kcal: 128, protein: 15, carbs: 14, fat: 3, fibre: 5, sugar: 1 }, ingredients: 'Bengal gram, sunflower oil, chilli, amchur, black salt.', allergens: 'None', note: 'Air roasted' },
-            { id: 10, name: 'Almond Butter Cookies',  category: 'snacks',      price: 199, original: 259,  features: ['No Maida', 'Jaggery Sweetened'],  badge: '',            desc: 'Baked with almond flour and jaggery. No refined flour anywhere.' , serving: '35 g', nutrition: { kcal: 156, protein: 6, carbs: 19, fat: 7, fibre: 3, sugar: 6 }, ingredients: 'Almond flour, jaggery, ghee, oats, vanilla, baking soda.', allergens: 'Milk, Tree nuts', note: 'No maida' },
-
-            { id: 3,  name: 'Protein Cold Coffee',    category: 'beverages',   price: 199, original: 249,  features: ['Instant Mix', '15g Protein'],     badge: '',            desc: 'Real coffee and whey in one shaker. Cold, smooth, not chalky.' , serving: '25 g', nutrition: { kcal: 110, protein: 15, carbs: 7, fat: 2, fibre: 1, sugar: 2 }, ingredients: 'Whey protein concentrate, freeze-dried coffee, cocoa, stevia leaf extract.', allergens: 'Milk', note: 'No added sugar' },
-            { id: 11, name: 'Berry Recovery Shake',   category: 'beverages',   price: 279, original: 349,  features: ['Post-Workout', 'No Additives'],   badge: 'New',         desc: 'Freeze-dried berries and protein for the half hour after training.' , serving: '30 g', nutrition: { kcal: 124, protein: 18, carbs: 9, fat: 1, fibre: 2, sugar: 3 }, ingredients: 'Whey protein isolate, freeze-dried strawberry and blueberry, beetroot powder.', allergens: 'Milk', note: 'No additives' },
-
-            { id: 12, name: 'Instant Protein Porridge', category: 'ready',     price: 229, original: 299,  features: ['3-Min Prep', '16g Protein'],      badge: '',            desc: 'Hot, savoury porridge in one cup. Pour water, wait, eat.' , serving: '55 g', nutrition: { kcal: 242, protein: 16, carbs: 32, fat: 5, fibre: 6, sugar: 2 }, ingredients: 'Broken wheat, moong dal, whey protein, turmeric, cumin, rock salt.', allergens: 'Milk, Gluten', note: 'Ready in 3 minutes' },
-            { id: 13, name: 'Quinoa Nutrition Bowl',  category: 'ready',       price: 299, original: 379,  features: ['Complete Meal', 'High Fiber'],    badge: 'New',         desc: 'Quinoa, lentils, and vegetables in a single-serve bowl.' , serving: '70 g', nutrition: { kcal: 268, protein: 14, carbs: 41, fat: 6, fibre: 8, sugar: 3 }, ingredients: 'Quinoa, red lentils, dehydrated peas, carrot, herbs, rock salt.', allergens: 'None', note: 'Complete meal' },
-
-            { id: 5,  name: 'Chocolate Nut Spread',   category: 'spreads',     price: 449, original: 599,  features: ['80% Less Sugar', 'All Natural'],  badge: 'Popular',     desc: 'Cocoa and hazelnut, sweetened lightly. Nothing artificial.' , serving: '20 g', nutrition: { kcal: 118, protein: 4, carbs: 9, fat: 8, fibre: 2, sugar: 5 }, ingredients: 'Hazelnuts, cocoa, milk solids, coconut sugar, sunflower lecithin.', allergens: 'Milk, Tree nuts', note: '80% less sugar' },
-            { id: 14, name: 'Peanut Protein Spread',  category: 'spreads',     price: 349, original: 449,  features: ['30g Protein', 'No Palm Oil'],     badge: '',            desc: 'Stone-ground peanuts with added whey. No palm oil, no sugar.' , serving: '20 g', nutrition: { kcal: 132, protein: 30, carbs: 6, fat: 9, fibre: 2, sugar: 1 }, ingredients: 'Roasted peanuts, whey protein isolate, sea salt.', allergens: 'Milk, Peanuts', note: 'No palm oil' },
-
-            { id: 6,  name: 'PCOS Nutrition Pack',    category: 'specialized', price: 999, original: 1299, features: ['Doctor Approved', 'Science Backed'], badge: '',         desc: 'A 30-day pack formulated with nutritionists for PCOS support.' , serving: '30 g', nutrition: { kcal: 136, protein: 12, carbs: 14, fat: 4, fibre: 5, sugar: 2 }, ingredients: 'Inositol, flaxseed, cinnamon, fenugreek, whey protein, vitamin D3.', allergens: 'Milk', note: 'Formulated with nutritionists' },
-            { id: 8,  name: 'Kids Nutrition Bites',   category: 'specialized', price: 249, original: 349,  features: ['Zero Junk', 'Kid Approved'],      badge: 'Popular',     desc: 'Bite-sized, lunchbox-safe, and genuinely liked by children.' , serving: '25 g', nutrition: { kcal: 104, protein: 6, carbs: 15, fat: 3, fibre: 2, sugar: 6 }, ingredients: 'Oats, dates, milk solids, cocoa, ragi, sunflower oil.', allergens: 'Milk', note: 'Lunchbox safe' },
-            { id: 15, name: 'Sports Protein Blend',   category: 'specialized', price: 1499, original: 1899, features: ['27g Protein', 'No Fillers'],     badge: '',            desc: 'Unflavoured whey isolate. One ingredient, third-party tested.' , serving: '32 g', nutrition: { kcal: 122, protein: 27, carbs: 2, fat: 1, fibre: 0, sugar: 0 }, ingredients: 'Whey protein isolate. Nothing else.', allergens: 'Milk', note: 'Third-party tested' },
+            {
+                id: 2,
+                name: 'Protein Bar — Chocolate Delight',
+                category: 'snacks',
+                price: 99,
+                original: 129,
+                features: ['20g protein per bar', 'Plant powered', 'No added sugar', 'Gluten free'],
+                badge: '',
+                desc: 'Dates, almonds, cashews and peanut butter with pea protein and cocoa. Plant-powered, nothing artificial.',
+                serving: '50 g bar',
+                nutrition: { kcal: 212, protein: 20, carbs: 18, fat: 9, fibre: 4, sugar: 8 },
+                ingredients: 'Dates, almonds, cashews, peanut butter, pea protein isolate, cocoa powder, natural flavour, pink salt.',
+                allergens: 'Nuts, Peanuts',
+                note: 'Gluten free',
+                image: 'images/products/protein-bar-chocolate.jpg',
+            },
+            {
+                id: 9,
+                name: 'Pancake Premix',
+                category: 'breakfast',
+                // The pack claims "high in protein" rather than a gram figure, and
+                // 7 g in a 35 g serving is 20 g per 100 g — so the chip says per
+                // 100 g. Quoting "20g protein" next to a 7 g panel reads as a
+                // contradiction to anyone who checks.
+                price: 379,
+                original: 479,
+                features: ['20g protein / 100g', '100% plant based', 'No refined sugar'],
+                badge: '',
+                desc: 'Ragi, oats and sattu with pea protein and monk fruit. Just add milk and cook.',
+                serving: '35 g (3 scoops)',
+                nutrition: { kcal: 129, protein: 7, carbs: 19, fat: 2, fibre: 2, sugar: 2 },
+                ingredients: 'Ragi flour, oats flour, sattu (roasted gram flour), pea protein, monk fruit, baking powder, flaxseed powder, chia seeds, pink salt.',
+                allergens: 'None',
+                note: '100% plant based',
+                image: 'images/products/pancake-premix.jpg',
+            },
+            {
+                id: 1,
+                name: 'High-Protein Oats',
+                category: 'breakfast',
+                price: 349,
+                original: 449,
+                features: ['High in protein', 'Ready in 3 minutes'],
+                badge: '',
+                desc: 'Slow-cooked oats with whey and almonds. Ready in three minutes.',
+                serving: '45 g',
+                // Nutrition intentionally omitted. The previous figures declared
+                // 70 g of macronutrients inside a 45 g serving, which cannot be
+                // true, so they were not safe to publish. Add the real panel from
+                // your lab report or pack and this product shows it automatically.
+                ingredients: 'Rolled oats, whey protein concentrate, almonds, cinnamon, natural vanilla.',
+                allergens: 'Milk, Tree nuts',
+                note: 'Made with gluten-free oats',
+            },
         ];
 
         function categoryIcon(category) {
@@ -3321,7 +3271,7 @@
         // paths contain double quotes, which close the attribute early and shred
         // the rest of the tag. Going through a named handler keeps the markup intact.
         //
-        // Most of the range has no photograph yet. A bare icon floating in an empty
+        // Not every product has a photograph yet. A bare icon floating in an empty
         // box reads as a *failed* image, especially sitting beside the products that
         // do have one — so on the catalog card the fallback is given a deliberate
         // treatment (tinted by category, icon on a raised medallion) that looks like
@@ -3361,8 +3311,6 @@
             const pct = savingsPercent(p);
             return pct >= 5 ? `<span class="product-save">Save ${pct}%</span>` : '';
         }
-
-        let activeCategory = 'all';
 
         function skuFor(id) {
             return 'GU-' + String(id).padStart(2, '0');
@@ -3422,13 +3370,30 @@
             return Boolean(RAZORPAY_KEY_ID) && typeof Razorpay !== 'undefined';
         }
 
+        // Both the checkout note and the trust bar describe how payment works, so
+        // both are written from the same readiness check. Otherwise the homepage
+        // goes on promising card payments for as long as the Razorpay key is blank.
         function initializePaymentNote() {
+            const ready = razorpayReady();
+
             const note = document.getElementById('checkoutPaymentNote');
-            if (!note) return;
-            if (razorpayReady()) {
-                note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
-            } else if (UPI_VPA) {
-                note.textContent = 'Pay by UPI on the next screen — a QR code with the exact amount is generated for your order.';
+            if (note) {
+                if (ready) {
+                    note.textContent = 'Pay securely online — cards, UPI, netbanking and wallets. Your order completes automatically the moment payment succeeds.';
+                } else if (UPI_VPA) {
+                    note.textContent = 'Pay by UPI on the next screen — a QR code with the exact amount is generated for your order.';
+                }
+            }
+
+            const trust = document.getElementById('trustPaymentNote');
+            if (trust) {
+                if (ready) {
+                    trust.textContent = 'UPI, cards and wallets — handled by Razorpay';
+                } else if (UPI_VPA) {
+                    trust.textContent = 'Pay by UPI — scan and pay the exact amount';
+                } else {
+                    trust.textContent = "We'll confirm your order and arrange payment";
+                }
             }
         }
 
@@ -3570,6 +3535,22 @@
                 : `Thanks — we'll confirm order ${orderId} shortly.`);
         }
 
+        // The QR comes from an external service; if it doesn't load, hide the
+        // broken image and lean on the UPI ID and the app link instead.
+        function qrUnavailable() {
+            const img = document.getElementById('upiQrImage');
+            if (img) img.classList.add('qr-failed');
+        }
+
+        function copyUpiId() {
+            const done = () => showNotification('UPI ID copied — paste it in your UPI app.');
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(UPI_VPA).then(done).catch(() => fallbackCopy(UPI_VPA, done));
+            } else {
+                fallbackCopy(UPI_VPA, done);
+            }
+        }
+
         // The customer scanned the UPI QR and says the transfer went through.
         function confirmUpiPaid() {
             const order = window.pendingPaymentOrder;
@@ -3588,8 +3569,6 @@
 
         // INITIALIZE
         document.addEventListener('DOMContentLoaded', function() {
-            renderFilterBar();
-            renderCategoryGrid();
             renderProducts();
             updateCartUI();
             checkRecovery();
@@ -3604,55 +3583,12 @@
             document.getElementById('toTop').classList.toggle('show', window.scrollY > 700);
         }, { passive: true });
 
-        function countIn(key) {
-            return key === 'all' ? products.length : products.filter(p => p.category === key).length;
-        }
-
-        function renderFilterBar() {
-            const chips = [{ key: 'all', label: 'Everything' }].concat(CATEGORIES);
-            document.getElementById('filterBar').innerHTML = chips.map(c => `
-                <button class="filter-chip" role="button" aria-pressed="${c.key === activeCategory}"
-                        onclick="setCategory('${c.key}')">
-                    ${c.label}<span class="count">${countIn(c.key)}</span>
-                </button>
-            `).join('');
-        }
-
-        function renderCategoryGrid() {
-            document.getElementById('categoryGrid').innerHTML = CATEGORIES.map((c, i) => `
-                <button class="product-category" onclick="setCategory('${c.key}', true)"
-                        aria-label="Show ${c.label} products">
-                    <span class="cat-code">CAT. ${String(i + 1).padStart(2, '0')}</span>
-                    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">${c.icon}</svg>
-                    <h3>${c.label}</h3>
-                    <p>${c.blurb}</p>
-                    <span class="cat-count">${countIn(c.key)} product${countIn(c.key) === 1 ? '' : 's'}</span>
-                </button>
-            `).join('');
-        }
-
-        function setCategory(key, scroll) {
-            activeCategory = key;
-            renderFilterBar();
-            renderProducts();
-
-            // keep the selected chip in view when the bar scrolls sideways on a phone
-            const active = document.querySelector('.filter-chip[aria-pressed="true"]');
-            if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
-
-            if (scroll) {
-                document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
         function renderProducts() {
-            const list = activeCategory === 'all'
-                ? products
-                : products.filter(p => p.category === activeCategory);
+            const list = products;
             const container = document.getElementById('featuredProducts');
 
             if (list.length === 0) {
-                container.innerHTML = '<div class="shop-empty">Nothing in this category yet — check back soon.</div>';
+                container.innerHTML = '<div class="shop-empty">Our shop is restocking — check back shortly.</div>';
                 return;
             }
 
@@ -4134,6 +4070,8 @@
                 // them a link that hands the amount straight to their UPI app.
                 document.getElementById('upiPayLink').href = upiUri;
                 document.getElementById('upiPaidBtn').textContent = "I've paid ₹" + order.total;
+                document.getElementById('upiVpaText').textContent = UPI_VPA;
+                document.getElementById('upiQrImage').classList.remove('qr-failed');
                 razorpayBox.style.display = 'none';
                 upiBox.style.display = '';
             } else {
@@ -4394,10 +4332,38 @@
         function closeOrders() { closeModal('ordersModal'); }
 
         // ==================== PRODUCT DETAIL ====================
+        // Renders the declared nutrition panel, or says plainly that it isn't
+        // published yet. Showing an honest gap beats showing numbers we cannot
+        // stand behind — a wrong panel on food is a labelling problem, not a
+        // cosmetic one.
+        function nutritionPanel(p) {
+            const n = p.nutrition;
+            if (!n) {
+                return `
+                <div class="nutri nutri-pending">
+                    <div class="nutri-head"><span>Nutrition</span><span>Per ${p.serving} serving</span></div>
+                    <div class="nutri-note">
+                        <p>We're finalising the verified nutrition panel for this product and will publish it here as soon as it's confirmed.</p>
+                        <p>The full declaration is printed on every pack. Ask us at
+                           <a href="mailto:${BUSINESS_EMAIL}">${BUSINESS_EMAIL}</a> and we'll send you the figures.</p>
+                    </div>
+                </div>`;
+            }
+            return `
+                <div class="nutri">
+                    <div class="nutri-head"><span>Nutrition</span><span>Per ${p.serving} serving</span></div>
+                    <div class="nutri-row lead"><span>Energy</span><strong>${n.kcal} kcal</strong></div>
+                    <div class="nutri-row lead"><span>Protein</span><strong>${n.protein} g</strong></div>
+                    <div class="nutri-row"><span>Carbohydrate</span><strong>${n.carbs} g</strong></div>
+                    <div class="nutri-row"><span>&nbsp;&nbsp;of which sugars</span><strong>${n.sugar} g</strong></div>
+                    <div class="nutri-row"><span>Fat</span><strong>${n.fat} g</strong></div>
+                    <div class="nutri-row"><span>Fibre</span><strong>${n.fibre} g</strong></div>
+                </div>`;
+        }
+
         function openProduct(id) {
             const p = products.find(x => x.id === id);
             if (!p) return;
-            const n = p.nutrition;
             const hasAllergens = p.allergens && p.allergens !== 'None';
 
             document.getElementById('productBody').innerHTML = `
@@ -4412,15 +4378,7 @@
 
                 <div class="pd-block"><p>${p.desc}</p></div>
 
-                <div class="nutri">
-                    <div class="nutri-head"><span>Nutrition</span><span>Per ${p.serving} serving</span></div>
-                    <div class="nutri-row lead"><span>Energy</span><strong>${n.kcal} kcal</strong></div>
-                    <div class="nutri-row lead"><span>Protein</span><strong>${n.protein} g</strong></div>
-                    <div class="nutri-row"><span>Carbohydrate</span><strong>${n.carbs} g</strong></div>
-                    <div class="nutri-row"><span>&nbsp;&nbsp;of which sugars</span><strong>${n.sugar} g</strong></div>
-                    <div class="nutri-row"><span>Fat</span><strong>${n.fat} g</strong></div>
-                    <div class="nutri-row"><span>Fibre</span><strong>${n.fibre} g</strong></div>
-                </div>
+                ${nutritionPanel(p)}
 
                 <div class="pd-block">
                     <h3>Ingredients</h3>
